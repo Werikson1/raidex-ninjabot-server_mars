@@ -140,7 +140,7 @@ class FarmerRunner:
     async def _navigate_to_saved_planets(self, page: Page):
         """Navigate to the saved planets page for the configured planet."""
         planet_id = self.config.get("planet_id") or config.MAIN_PLANET_ID
-        url = f"https://cypher.ogamex.net/galaxy/savedplanets?planet={planet_id}"
+        url = f"https://mars.ogamex.net/galaxy/savedplanets?planet={planet_id}"
         logger.info(f"? Opening saved planets page for planet {planet_id}")
         await page.goto(url, wait_until="load", timeout=self.nav_timeout_ms)
         try:

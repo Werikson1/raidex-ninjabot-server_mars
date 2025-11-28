@@ -3,6 +3,8 @@ import os
 import logging
 from bs4 import BeautifulSoup
 import asyncio
+from urllib.parse import urlparse
+import modules.config as config
 
 logger = logging.getLogger("OgameBot")
 
@@ -32,12 +34,14 @@ class EmpireManager:
         Fetches empire data using the existing browser context.
         """
         try:
+            base_url = self._get_base_url()
             logger.info("🕷 Starting Empire Crawl...")
             page = await context.new_page()
             
             # 1. Navigate to Home page to get Planet IDs
-            logger.info("Navigate to Home page for Planet IDs...")
-            await page.goto("https://cypher.ogamex.net/home", timeout=60000)
+            logger.info(f"Navigate to Home page for Planet IDs... (base: {base_url})")
+            home_url = f"file:///{config.LOCAL_FILE_PATH}" if config.USE_LOCAL_FILE else f"{base_url}/home"
+            await page.goto(home_url, timeout=60000)
             home_content = await page.content()
             
             # Parse IDs from Home page
@@ -45,12 +49,15 @@ class EmpireManager:
             logger.info(f"Extracted {len(coords_to_id)} planet IDs from Home page")
 
             # 2. Navigate to empire view
-            url = "https://cypher.ogamex.net/empire"
-            logger.info("Navigate to Empire page for data...")
-            response = await page.goto(url, timeout=60000)
+            empire_url = f"{base_url}/empire"
+            logger.info(f"Navigate to Empire page for data... ({empire_url})")
+            response = await page.goto(empire_url, timeout=60000)
             
-            if not response.ok:
-                logger.error(f"Failed to fetch empire page: {response.status} {response.status_text}")
+            if not response or not response.ok:
+                status = response.status if response else "n/a"
+                status_text = response.status_text if response else "no response"
+                logger.error(f"Failed to fetch empire page: {status} {status_text}")
+                logger.error(f"Final URL reached: {page.url}")
                 await page.close()
                 return False
 
@@ -134,9 +141,14 @@ class EmpireManager:
             planets = []
             
             # 1. Identify Planets from the top header section
-            container = soup.select_one('.planetViewContainer') or soup.select_one('.planet-view-container')
+            container = (
+                soup.select_one('.planetViewContainer')
+                or soup.select_one('.planet-view-container')
+                or soup.select_one('#empire-container')
+                or soup.select_one('.empire-container')
+            )
             if not container:
-                logger.error("Could not find .planetViewContainer or .planet-view-container")
+                logger.error("Could not find empire container (.planetViewContainer / .planet-view-container / #empire-container)")
                 return
 
             # The first child div contains the headers/planet info
@@ -300,3 +312,13 @@ class EmpireManager:
 
     def get_data(self):
         return self.data
+
+    def _get_base_url(self):
+        """Derive the base URL from LIVE_URL to support different servers."""
+        try:
+            parsed = urlparse(config.LIVE_URL)
+            if parsed.scheme and parsed.netloc:
+                return f"{parsed.scheme}://{parsed.netloc}"
+        except Exception:
+            pass
+        return "https://mars.ogamex.net"

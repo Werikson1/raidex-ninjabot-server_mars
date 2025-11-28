@@ -160,7 +160,7 @@ class ExpeditionRunner:
     async def _navigate_to_expedition(self, page: Page):
         """Navigate to the autoexpedition page for the configured planet."""
         planet_id = self.config.get("planet_id") or config.MAIN_PLANET_ID
-        url = f"https://cypher.ogamex.net/fleet/autoexpedition?planet={planet_id}"
+        url = f"https://mars.ogamex.net/fleet/autoexpedition?planet={planet_id}"
         logger.info(f"? Opening expedition page for planet {planet_id}")
         await page.goto(url, wait_until="load", timeout=self.nav_timeout_ms)
         try:

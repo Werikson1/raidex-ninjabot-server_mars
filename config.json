@@ -4,18 +4,19 @@
     "TELEGRAM_BOT_TOKEN": "8512782833:AAEyT2bEFDyY68djCmUh30NWu43CjO3U9go",
     "TELEGRAM_CHAT_ID": "960771858",
     "TELEGRAM_USERNAME": "@ogame_xbot",
-    "FLEET_GROUP_NAME": "200 MM",
+    "FLEET_GROUP_NAME": "5433d121-6efd-455d-a58f-0aef576a77bf",
     "COOLDOWN_HOURS": 1,
-    "SEARCH_DELAY_MIN": 0.5,
-    "SEARCH_DELAY_MAX": 1,
+    "SEARCH_DELAY_MIN": 0.3,
+    "SEARCH_DELAY_MAX": 0.7,
     "NO_ASTEROID_WAIT_MIN": 30,
     "NO_ASTEROID_WAIT_MAX": 45,
     "FLEET_FAIL_WAIT_MINUTES": 35,
+    "ASTEROID_ENABLED": true,
     "expedition_mode": {
         "enabled": true,
-        "planet_id": "b112b711-2fa5-47fe-ab0b-6bf377267217",
-        "fleet_group_name": "EXPEDITION GROUP",
-        "fleet_group_value": "36f37c84-5093-47fc-9b62-dc1cbfbfbf1d",
+        "planet_id": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
+        "fleet_group_name": "Exped",
+        "fleet_group_value": "a7be13c9-8a44-459a-a193-2f9b7d3ead4f",
         "headless": false,
         "sleep_start": {
             "hour": 22,
@@ -27,7 +28,7 @@
         },
         "dispatch_cooldown": {
             "hour": 1,
-            "minute": 5
+            "minute": 40
         },
         "sleep_mode": true,
         "random_sleep_mode": true
@@ -48,5 +49,6 @@
         "random_sleep_mode": false,
         "attack_cooldown_min": 19,
         "attack_cooldown_max": 23
-    }
+    },
+    "FLEET_GROUP_VALUE": "5433d121-6efd-455d-a58f-0aef576a77bf"
 }

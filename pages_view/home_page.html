@@ -16,27 +16,11 @@
 
     <title>Mars | OgameX</title>
 
-
-
-<!DOCTYPE html>
-
-<html x-ms-format-detection="none" lang="pt">
-<head>
-    <meta name="viewport" content="width=device-width" />
-    
-    <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <meta name="format-detection" content="telephone=none" />
-    <meta name="format-detection" content="address=no">
-    <meta http-equiv="content-language" content="pt">
-    
-
-    <title>Cypher | OgameX</title>
-
     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
     <link rel="stylesheet" href="/assets/other/fonts/fa-pro/css/pro.min.css" />
 
-    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3925">
-    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3925">
+    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3990">
+    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3990">
 
     
 
@@ -52,11 +36,11 @@
         window.localization.BATTLE_REPORT = 'Battle Report';
 
         window.timeoffset_cookie_name = 'timeZoneOffset';
-        window.currentPlayerName = 'HELLCAT';
-        window.currentPlayerId = '00944278-b50e-47cf-a078-b6991de1ca43';
-        window.currentPlanetId = 'ae2da001-49d9-4c0e-b1f7-71b564ca0259';
+        window.currentPlayerName = 'The Doctor';
+        window.currentPlayerId = '4baa56a7-85dc-4d9b-9f69-7edc966613af';
+        window.currentPlanetId = '144b0289-44ed-49a5-af7b-b3e54a74d28a';
         window.isVacation = false;
-        window.allianceId = 'f498d798-ba12-4afa-9ca3-40252458fe16';
+        window.allianceId = '';
 
         window.currentPlayerClass = null;
 
@@ -66,31 +50,31 @@
 
 
         var resources = {
-            initialMetal:223413793896909.32642300951314,
-            initialCrystal:181180337251992.15277255789296,
-            initialDeuterium:23920560817929.926342217399790,
-            metal: 223413793896909.32642300951314,
-            crystal: 181180337251992.15277255789296,
-            deuterium: 23920560817929.926342217399790,
-            energy: 2899891200.0000000000,
-            energyConsumption: 2005205826.5358501502362879681,
-            darkmatter: 2027782,
-            metalProduction: 101008067.69386858412609484618,
-            crystalProduction: 65990552.346064379824413448394,
-            deuteriumProduction: 8539471.160528518116649169199,
-            metalStorageCapacity: 559778108747588,
-            crystalStorageCapacity: 364892611591020,
-            deuteriumStorageCapacity: 237733274900210
+            initialMetal:9253233640026,
+            initialCrystal:5445244300484,
+            initialDeuterium:2930951706708,
+            metal: 9253233640026,
+            crystal: 5445244300484,
+            deuterium: 2930951706708,
+            energy: 0,
+            energyConsumption: 0,
+            darkmatter: 664679,
+            metalProduction: 0,
+            crystalProduction: 0,
+            deuteriumProduction: 0,
+            metalStorageCapacity: 10000000.000000,
+            crystalStorageCapacity: 10000000.000000,
+            deuteriumStorageCapacity: 10000000.000000
         };
 
-        var initialServerTime = 1763947797000;
-        var currentServerTime = 1763947797000;
+        var initialServerTime = 1764344441000;
+        var currentServerTime = 1764344441000;
 
         var lang = 'pt';
 
     </script>
-    <script src="/assets/js/default.js?v=3925"></script>
-    <script src="/assets/js/app/tooltip.js?v=3925"></script>
+    <script src="/assets/js/default.js?v=3990"></script>
+    <script src="/assets/js/app/tooltip.js?v=3990"></script>
     <script src="/assets/js/libs/autonumeric.min.js"></script>
 
     
@@ -229,54 +213,54 @@
                 </div>
                 <div class="resources-section">
                     <div class="resources-content">
-                        <a href="/resource" class="resource-item resource-item-metal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>223.413.793.896.909</td></tr><tr><td>Production per hour : </td><td><span>363.629.043.698</span></td></tr><tr><td>Production per day : </td><td><span>8.727.097.048.750</span></td></tr><tr><td>Storage capacity : </td><td><span>559.778.108.747.588</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-metal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>9.253.233.640.026</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-metal"></span>
 
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
-                                                <span id="metal-amount" style="font-size:10px;">223.413.793.896.909</span>
-                                                
-                                            </span>
-                                        </div>
+                                    <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                        <span class="resource-amount">
+                                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
+                                            <span id="metal-amount" style="color:#F00;font-size:10px;">9.253.233.640.026</span>
+                                            
+                                        </span>
+                                    </div>
 
 
 
 
                         </a>
-                        <a href="/resource" class="resource-item resource-item-crystal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>181.180.337.251.992</td></tr><tr><td>Production per hour : </td><td><span>237.565.988.446</span></td></tr><tr><td>Production per day : </td><td><span>5.701.583.722.700</span></td></tr><tr><td>Storage capacity : </td><td><span>364.892.611.591.020</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-crystal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>5.445.244.300.484</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-crystal"></span>
 
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
-                                                <span id="crystal-amount" style="font-size:10px;">181.180.337.251.992</span>
-                                                
-                                            </span>
-                                        </div>
+                                    <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                        <span class="resource-amount">
+                                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
+                                            <span id="crystal-amount" style="color:#F00;font-size:10px;">5.445.244.300.484</span>
+                                            
+                                        </span>
+                                    </div>
 
 
 
                         </a>
-                        <a href="/resource" class="resource-item resource-item-deuterium tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>23.920.560.817.930</td></tr><tr><td>Production per hour : </td><td><span>30.742.096.178</span></td></tr><tr><td>Production per day : </td><td><span>737.810.308.270</span></td></tr><tr><td>Storage capacity : </td><td><span>237.733.274.900.210</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-deuterium tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>2.930.951.706.708</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-deuterium"></span>
 
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Deuterium</span>
-                                                <span id="deuterium-amount" style="font-size:10px;">23.920.560.817.930</span>
-                                                
-                                            </span>
-                                        </div>
+                                    <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                        <span class="resource-amount">
+                                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Deuterium</span>
+                                            <span id="deuterium-amount" style="color:#F00;font-size:10px;">2.930.951.706.708</span>
+                                            
+                                        </span>
+                                    </div>
 
 
                         </a>
-                        <a href="/resource" class="resource-item resource-item-energy tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Energy</td></tr><tr><td>Energy production : </td><td><span>2.899.891.200</span></td></tr><tr><td>Energy consumption : </td><td><span style='color:#dc0606;'>2.005.205.827</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-energy tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Energy</td></tr><tr><td>Energy production : </td><td><span>0</span></td></tr><tr><td>Energy consumption : </td><td><span style='color:#dc0606;'>0</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-energy"></span>
 
                                     <div style="position: absolute;top: 18px;width: 116px;left: 56px;text-align: left;">
                                         <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -10px;left: 0px;">Energy</span>
-                                        <span class="resource-amount" style="color:#0f0 !important;font-size:10px;">894.685.373</span>
+                                        <span class="resource-amount" style="color:#0f0 !important;font-size:10px;">0</span>
                                     </div>
 
 
@@ -284,7 +268,7 @@
                         <a href="/darkmatter/purchase" class="resource-item right-item resource-item-darkmatter tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Dark matter</td></tr></table></div>">
                             <span class="resource-icon resource-icon-darkmatter" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
                             <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: 8px;right: 56px;">Dark matter</span>
-                            <span class="resource-amount" style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">2.027.782</span>
+                            <span class="resource-amount" style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">664.679</span>
                         </a>
                         <a href="/wiki" class="resource-item right-item resource-item-wiki tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Wiki</td></tr></table></div>">
                             <span class="resource-icon resource-icon-wiki" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
@@ -303,20 +287,37 @@
                 </div>
                 <div class="fleet-info-section ">
 
-                            <div style="color:#6f9fc8;font-size:12px;text-align:center;font-weight:700;line-height:40px;">
-                                No fleet movement
+                            <div style="cursor:pointer;text-align:left;padding-left:20px;" id="fleet-movement-detail-btn">
+                                <div style="padding:4px;color:#FFF;font-size:11px;">
+                                    <span><b>12</b> Missions: </span>
+                                            <span style="color:#9C0;">12 Own</span>
+
+                                </div>
+                                <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
+                                    <span>
+
+
+
+                                        Next: <span id="NextMissionRemainingTime">35:50</span>
+                                    </span>
+                                </div>
+                                <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
+                                    <span>Type:</span>
+                                            <span style="color:#9C0;">Expedition</span>
+
+                                </div>
                             </div>
 
 
                 </div>
 
-                <div id="system-clock">23.11.2025 22:29:57</div>
-                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>HELLCAT</div> <div style='float:left;width:100%;color:#6f9fc8;line-height:18px;max-width: 170px;max-height: 17px;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;'><span style='font-weight:bold;'>[GMC]</span> Galactic Mining Corp</div> <div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>57</span> / 1.696</div></div></div></div>">
+                <div id="system-clock">28.11.2025 12:40:41</div>
+                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>The Doctor</div><div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>778</span> / 3.010</div></div></div></div>">
 
                             <div class="avatar-box player_class_MINER"></div>
 
-                    <div class="player-name">HELLCAT</div>
-                    <div class="player-ranking"><i class="fad fa-crown"></i> 57</div>
+                    <div class="player-name">The Doctor</div>
+                    <div class="player-ranking"><i class="fad fa-crown"></i> 778</div>
                 </a>
 
 
@@ -334,21 +335,17 @@
                             <a href="/home" class="text-item">Overview</a>
                         </div>
 
-                                <div class="menu-item btn-planet-debris ">
-                                    <a href="/planetdebris" class="text-item">Planet debris</a>
-                                </div>
 
 
-                                <div class="menu-item ">
-                                    <a href="/building/resource" class="text-item">Resources</a>
-                                    
-                                </div>
 
 
                         <div class="menu-item ">
                             <a href="/building/facility" class="text-item">Facilities</a>
                             
                         </div>
+                                <div class="menu-item ">
+                                    <a href="/building/jumpgate" class="text-item">Jump Gate</a>
+                                </div>
 
 
 
@@ -426,1578 +423,18 @@
 
 
 
-<link href="/assets/styles/app/pages/overviewV2.css?v=3925" rel="stylesheet" />
+<link href="/assets/styles/app/pages/overviewV2.css?v=3990" rel="stylesheet" />
 
 <div id="overview-container">
 
 
 
-    <div id="overview" style="background:url(../../assets/images/V2/planet/2/2_overview.jpg) no-repeat;">
+    <div id="overview" style="background:url(../../assets/images/V2/planet/moon/1/1_overview.jpg) no-repeat;">
         <div style="position:absolute;left:0px;height:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);"></div>
 
 
 
-                <div class="planet-name">Overview - HONDA HRV <a href="#" style="color: #f1f1f1;margin-left: 10px;font-size: 18px;" class="tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Rename planet</p></div>" data-ajax-modal data-modal-title="Rename planet" data-modal-url="/home/renameplanet?id=ae2da001-49d9-4c0e-b1f7-71b564ca0259" data-modal-size="medium"><i class="fas fa-cogs"></i></a></div>
-
-
-        <a style="position: absolute;width: 240px;height:35px;background-color: rgba(0,0,0,0.8);right: 8px;top: 50px;font-size: 14px;padding: 10px 4px;border-radius: 4px;text-align: center;vertical-align: middle;border:1px solid #555;" class="tooltip" data-tooltip-position="left" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tbody><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Server properties</td></tr><tr><td>Resource production: </td><td><span>x400</span></td></tr><tr><td>Energy production: </td><td><span>%120</span></td></tr><tr><td>Construction speed: </td><td><span>x200</span></td></tr><tr><td>Hangar speed: </td><td><span>x200</span></td></tr><tr><td>Research speed: </td><td><span>x200</span></td></tr><tr><td>Fleet speed: </td><td><span>x4</span></td></tr><tr><td>Fleet debris: </td><td><span>%80</span></td></tr><tr><td>Defense debris: </td><td><span>%0</span></td></tr></tbody></table></div>">
-            Server properties
-        </a>
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-        <div class="planet-properties">
-            <div class="overlay"></div>
-            <div class="planet-props-container">
-
-                <a href="#" class="btn-invite-friends" data-ajax-modal data-modal-title="Invite your friends" data-modal-url="/home/invitefriends" data-modal-size="medium">
-                    Invite <i class="fas fa-user-friends" style="margin-left: 5px;"></i>
-                </a>
-
-                <div class="planet-prop" style="margin-bottom: 5px;border-bottom: 1px solid #444;padding-bottom: 5px;">
-                    <span class="prop-title" style="line-height:20px;">Online players: <span style="color:#9C0;">31</span></span>
-                </div>
-
-                <div class="planet-view-container">
-
-                                <a href="/home?planet=ae2da001-49d9-4c0e-b1f7-71b564ca0259" class="planetBox active" style="background:url(../../assets/images/V2/planet/2/2_small.jpg);">
-                                    
-                                </a>
-                                <a href="/home?planet=b112b711-2fa5-47fe-ab0b-6bf377267217" class="moonBox tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Switch to moon</p></div>" style="background: url(../../assets/images/V2/planet/moon/1/1_small.jpg);">
-                                </a>
-
-                </div>
-
-                <div style="float: left;width: calc(100% - 116px);margin-left: 8px;">
-
-                    
-                    <div class="planet-prop">
-                        <span style="cursor:help;" class="prop-title tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#f1f1f1;max-width:320px;line-height:16px;'><span style='font-size: 12px;font-weight: bold;line-height: 20px;'>Diameter</span></br> Diameter is used to express the size of the planet and moons. Planets with large diameters also have high usable areas, so they are more suitable for settlement. The 1st and 15th positions in the solar system usually have the lowest diameters and the highest diameter planets are in the middle areas.</p></div>"><i class="fas fa-info" style="background-color: #010101;color: #CCC;padding: 2px 5px;border-radius: 3px;"></i> Diameter</span>
-                        <span class="prop-text">15.283 km (<b style="color:#26c157;">508</b> / <b style="color:#26c157;">519</b> fields)</span>
-                    </div>
-                    <script>
-                        $(function () {
-                            var intervalXX = setInterval(function () {
-                                if ($('#left-menu-1 .menu-item a:contains("OgameXReborn")').length > 0) {
-                                    PostRequest('/home/ping', null, null, null);
-                                    clearInterval(intervalXX);
-                                }
-                            }, 2000);
-                        })
-                    </script>
-                    <div class="planet-prop">
-                        <span style="cursor:help;" class="prop-title tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#f1f1f1;max-width:320px;line-height:16px;'><span style='font-size: 12px;font-weight: bold;line-height: 20px;'>Temperature</span></br>The temperature of the planet depends on its distance from the star in its system. Planets closer to position 1 in the solar system are warmer, planets closer to position 15 are ice planets and their temperature is very low. The energy produced by solar satellites is very high in planets with high temperatures. However, deuterium production is equally very low on these planets. On the colder planets, while the energy produced by solar satellites decreases, the amount of deuterium produced by the deuterium synthesizer increases.</p></div>"><i class="fas fa-info" style="background-color: #010101;color: #CCC;padding: 2px 5px;border-radius: 3px;"></i> Temperature</span>
-                        <span class="prop-text">Approximately 75°C to 90°C</span>
-                    </div>
-                    <div class="planet-prop">
-                        <span style="cursor:help;" class="prop-title tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#f1f1f1;max-width:320px;line-height:16px;'><span style='font-size: 12px;font-weight: bold;line-height: 20px;'>Coordinates</span></br>The coordinate information of the planets is used to express their position in the universe. The coordinate system is described by [X: Y: Z] (X: Galaxy, Y: System, Z: Planetary order).</br> Coordinates also determine the distance between the planets. While the flight time of the planets in the same system is shorter, fleets sent from different galaxies reach the target planets in much longer times.</p></div>"><i class="fas fa-info" style="background-color: #010101;color: #CCC;padding: 2px 5px;border-radius: 3px;"></i> Coordinates</span>
-                        <a href="/galaxy?x=3&y=260" class="prop-text">[3:260:1]</a>
-                    </div>
-
-                    
-
-                    <div class="planet-prop" style="margin-top: 5px;padding-top: 5px;font-weight: bold;border-top: 1px solid #444;">
-
-                                <a href="/merchant/planetrelocation" class="overview-small-planet-btn tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Relocate planet</p></div>">
-                                    <i class="fas fa-external-link"></i>
-                                </a>
-                                <a href="#" class="overview-small-planet-btn tooltip" data-ajax-modal data-modal-title="Rename planet" data-modal-url="/home/renameplanet?id=ae2da001-49d9-4c0e-b1f7-71b564ca0259" data-modal-size="medium" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Rename planet</p></div>">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="#" class="overview-small-planet-btn tooltip" data-ajax-modal data-modal-title="Abandon planet" data-modal-url="/home/abandonplanet?id=ae2da001-49d9-4c0e-b1f7-71b564ca0259" data-modal-size="medium" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Abandon planet</p></div>">
-                                    <i class="fad fa-globe-americas" style="padding-right:5px;"></i>
-                                    <i class="far fa-times" style="position: absolute; color: #F00; font-size: 16px; left: 16px; top: 16px;"></i>
-                                </a>
-
-
-
-
-
-
-
-
-
-
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="corner_left"></div>
-        <div class="corner_right"></div>
-    </div>
-
-
-
-    <script>
-            
-
-                var currentHangarProductionId = 'a31ad646-771e-46ca-a841-6e2c6b630a36';
-                var currentHangarProductionHasTimer = false;
-                var currentHangarProductionItemType = 'SHIP';
-                var currentHangarProductionRemainingSeconds = 3194;
-                var currentHangarProductionPendingItems = 985190992;
-                var currentHangarProductionFullTimeOnSeconds = 0;
-                var currentHangarProductionItemsPerSeconds = 308521;
-                var currentHangarProductionTotalSeconds = 3194;
-                var currentHangarProductionCompleted = false;
-            
-                
-                var currentProductionShipType = 'ASTEROID_MINER';
-                
-
-    </script>
-
-    <div id="overview-bottom">
-        <div class="smallbox">
-            <div class="header">
-                <h3>Buildings</h3>
-            </div>
-            <div class="content">
-                <div class="container">
-                            <a href="#" class="empty-text">
-                                No buildings in construction.
-                            </a>
-
-                </div>
-
-
-
-            </div>
-            <div class="footer"></div>
-        </div>
-
-        <div class="smallbox">
-            <div class="header">
-                <h3>Research</h3>
-            </div>
-            <div class="content">
-                <div class="container">
-                            <a href="#" class="empty-text">
-                                There is no research in progress.
-                            </a>
-
-
-                </div>
-
-
-
-            </div>
-            <div class="footer"></div>
-        </div>
-
-        <div class="smallbox">
-            <div class="header">
-                <h3>Shipyard</h3>
-            </div>
-            <div class="content">
-                <div class="container">
-
-                            <div style="float:left;width:100%;" data-cancel-message="Cancel the production of Asteroid Miner ?" data-unit-type="ASTEROID_MINER">
-
-                                <a href="#" id="cancelCurrentHangarProductionBtn" data-production-id="a31ad646-771e-46ca-a841-6e2c6b630a36" data-cancel-message="Cancel the production of Asteroid Miner ?" data-sub-cancel-message="50% of resources will be returned!" class="btn-cancel-building-construction tooltip" style="top:41px;" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;'>Cancel the production of <span style='color:#d29d00;'>Asteroid Miner</span> ?</div><div style='font-size:10px;color:#F00;'>50% of resources will be returned!</div>"><img /></a>
-
-                                        <img src="/assets/images/V2/hangar/ASTEROID_MINER.gif" style="width:48px;height:48px;float:left;" />
-
-
-                                <div style="float:left;width:calc(100% - 58px);font-size:10px;text-align:left;padding-left:5px;">
-                                    <span style="display:block;float:left;width:100%;font-size:11px;color:#d29d00;text-align:left;">Asteroid Miner</span>
-                                            <div id="remaining-hangar-items" style="float:left;width:100%;margin-top:6px;"><span style="color:#6f9fc8;">Remaining </span><span id="remaining-hangar-items-count" style="color:#d29d00;"> 985.190.992</span></div>
-
-
-
-
-
-
-                                    <div style="float:left;width:100%;margin-top:6px;"><span style="color:#6f9fc8;"><span style="color:#FFF;font-size:11px;" id="firstHangarQueueItemTotalTime">53:14</span></span></div>
-
-                                </div>
-                                <div style="float:left;width:100%;">
-                                            <a href="#" class="complete-btn tooltip" id="completeHangarProdWithDm" style="margin-top:5px;" data-queue-id="a31ad646-771e-46ca-a841-6e2c6b630a36" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;'>Pay <span style='color:#d29d00;'>5.300</span> DM and complete the production.</div>">
-                                                <span class="btn-dm-complete-text">Complete</span>
-                                                <span class="btn-dm-complete-cost">Cost : 5.300 DM</span>
-                                            </a>
-
-                                </div>
-                            </div>
-
-
-                </div>
-
-
-
-            </div>
-            <div class="footer"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-
-
-
-    //function getUserScreenSize() {
-    //    var data = { iw: window.innerWidth, ih: window.innerHeight, w: window.screen.width, h: window.screen.height };
-    //    PostRequest('/Home/ScreenResSave', JSON.stringify(data), function (res) { });
-    //}
-
-    //getUserScreenSize();
-
-</script>
-
-<script src="/assets/js/app/pages/overview.js?v=3925"></script>
-
-                    </div>
-
-                    <div id="planet-selection">
-                        <span class="planet-info">[29/29] Planets</span>
-                        <div id="other-planets">
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=f411deba-7506-4502-a956-1fbb626b0ee8">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/6/6_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">JETTA GLI</span>
-                                                <span class="planet-coords">
-                                                    [1:60:1]
-                                                                <i class="fas fa-space-shuttle tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Crawler (27.406.090)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=62eebbbd-8d91-4e01-97af-d55a064edef8" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=66181a17-5c5e-4643-9756-5d2edbeb683a">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/9/9_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">TIGUAN R LINE</span>
-                                                <span class="planet-coords">
-                                                    [1:145:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=c3b138c1-b39a-439c-ae8b-f342f172a7cc" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=14801b48-b87b-4120-b030-355ee5cc4f63">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/10/10_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AZERA</span>
-                                                <span class="planet-coords">
-                                                    [1:260:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=43697616-869c-43aa-87e5-f30172b4ad60" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=ed2af0a6-c75c-4e46-bb1d-7b287c8306af">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/3/3_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AUDI RS6</span>
-                                                <span class="planet-coords">
-                                                    [1:360:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=a21418c5-504f-4b23-9fcc-1888689947cd" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=28ab8035-4e00-4d20-8eb2-346adb01c964">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/4/4_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AMG G63</span>
-                                                <span class="planet-coords">
-                                                    [2:105:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=e449db25-a6fd-48ba-bd5f-d8d61c7711eb" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=f3584875-880b-4538-9e03-f4e1e80d7b22">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/3/3_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">GOLF GTI</span>
-                                                <span class="planet-coords">
-                                                    [2:260:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=f5c0a4fb-2e28-4cbd-b7c6-ab21269bae03" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=c9e6b7c5-2234-4ad2-8253-d89a962abbbd">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/1/1_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">BMW M2</span>
-                                                <span class="planet-coords">
-                                                    [2:310:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=5c6535d9-5acd-42c4-95ea-d6acb7e97be5" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=0403b921-f0d6-4c19-8e7d-26df21165e15">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/10/10_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AUDI TTRS</span>
-                                                <span class="planet-coords">
-                                                    [2:410:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=0708a4e8-8aee-498d-8a2b-adc46394bd89" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=849b82ea-6bc6-47dc-8bc6-121ab0e22da8">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/32/32_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">Colony</span>
-                                                <span class="planet-coords">
-                                                    [3:52:8]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=ca605b11-20a1-4cb2-965b-c44ed052443c" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=af8e358b-f105-45f3-ac3e-f2e01a04948a">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/9/9_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">CHEROKEE SRT</span>
-                                                <span class="planet-coords">
-                                                    [3:60:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=767fe9e6-4a1f-426f-87f5-0af839f50bdd" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=b7ce33c9-0c13-41cd-a50b-8e4a6a164c74">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/6/6_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">JEEP RENEGADE</span>
-                                                <span class="planet-coords">
-                                                    [3:160:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=82686a39-0077-4f81-8997-0f6af5d96a81" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=c028091b-1419-4161-a1f9-39d233489064">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/1/1_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AUDI A5</span>
-                                                <span class="planet-coords">
-                                                    [3:220:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=0772ff0b-a7d9-490f-a319-8ccd2fa1cc9e" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=d4a05f83-d03e-4e8d-86e7-95f91dbc4294">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/2/2_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">RSQ8</span>
-                                                <span class="planet-coords">
-                                                    [3:240:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=d0e8e481-eede-4a15-bd12-a224b4107ac3" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  selected">
-                                            <a class="planet-select selected" href="?planet=ae2da001-49d9-4c0e-b1f7-71b564ca0259">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/2/2_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">HONDA HRV</span>
-                                                <span class="planet-coords">
-                                                    [3:260:1]
-                                                                <i class="fas fa-space-shuttle tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Asteroid Miner (985.190.992)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=b112b711-2fa5-47fe-ab0b-6bf377267217" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=83429f9d-d4d1-4d10-9f91-657fb6da2d11">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/42/42_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">TIGGO 8 PRO</span>
-                                                <span class="planet-coords">
-                                                    [3:260:11]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=32274252-fbd5-4834-9170-2675199c833b" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=7c2a1285-da06-4857-810d-1141422376fe">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/4/4_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">NISSAN SENTRA</span>
-                                                <span class="planet-coords">
-                                                    [3:261:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=8816f342-a368-45c3-92ea-0ee3a1b01ef4" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=bc82ef87-6a0b-45a5-8095-12ede5c0d05c">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/10/10_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">PORSCHE 911</span>
-                                                <span class="planet-coords">
-                                                    [3:270:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=d0125a08-6b28-4d10-8d19-461fef51dcb5" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=f4c199fe-c3e5-443b-b51c-5e3033765803">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/10/10_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">JEEP COMPASS</span>
-                                                <span class="planet-coords">
-                                                    [3:370:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=fda12404-6ece-4fa8-80d9-a8615de7eaaa" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=c22da62f-9a5b-48d9-9ab5-b0928a9ede8f">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/5/5_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">BYD SEAL</span>
-                                                <span class="planet-coords">
-                                                    [3:410:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=9d504082-a00b-4473-8a32-c3f1e716502a" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=2a48c554-7b25-4b66-a538-b673b5d5bb9f">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/6/6_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">Colony</span>
-                                                <span class="planet-coords">
-                                                    [3:447:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=c37a797e-2e2f-4004-963c-33f09fce4643" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=f3e26ce4-5f46-4868-93de-b52d5b98dfac">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/41/41_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">DODGE CHARGER</span>
-                                                <span class="planet-coords">
-                                                    [3:454:10]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=88cb9fc2-d284-4985-98b2-761b9aa42016" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=c0e9e433-5f88-46fc-aacb-0236652780ec">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/9/9_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">HONDA FIT</span>
-                                                <span class="planet-coords">
-                                                    [4:70:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=d8481563-59c4-42ab-924b-b2895c5d5290" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=7cf31504-9f32-4cc0-950b-f9bca81a1ac8">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/7/7_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">BMW  M3</span>
-                                                <span class="planet-coords">
-                                                    [4:170:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=e5aaf166-acc0-470e-ac7b-476b70e243fd" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=41ee4945-ee97-464a-a56a-60089293ee94">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/2/2_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">JEEP COMMANDER</span>
-                                                <span class="planet-coords">
-                                                    [4:260:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=d8293760-c52e-46bd-b996-cf3b0205605d" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=eac926ad-4298-4f3f-a1c0-4b3aa1e2599b">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/2/2_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AUDI A3</span>
-                                                <span class="planet-coords">
-                                                    [5:70:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=9af1e776-4e1d-4cc6-bdeb-0b84bd8d734c" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=00567842-73aa-4a40-bc0e-0c2cdce56dc4">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/5/5_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">300C HEMI</span>
-                                                <span class="planet-coords">
-                                                    [5:170:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=c883cb8f-ec84-4474-83f8-d7f6ef42a645" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=df8225ef-bbfa-4f8b-a87d-29532293bbe6">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/8/8_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">NISSAN GTR</span>
-                                                <span class="planet-coords">
-                                                    [5:270:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=042dc0e0-2108-41ae-abb2-c452cc4e022b" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=1f48f14a-d23a-4934-8d28-a3675a0dbb61">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/7/7_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">HONDA CIVIC</span>
-                                                <span class="planet-coords">
-                                                    [5:330:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=1c08e151-8c34-453c-bc30-35169bc53777" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-                                        <div class="planet-item  ">
-                                            <a class="planet-select " href="?planet=6819a4fa-7c60-47a4-8dab-e8fb1d509bf5">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/5/5_small.jpg?v=4" />
-
-
-                                                
-
-                                                <span class="planet-name">AMG E63</span>
-                                                <span class="planet-coords">
-                                                    [5:430:1]
-
-                                                </span>
-
-                                            </a>
-
-                                            <a class="moon-select " href="?planet=f1752c94-21a5-4ffe-9c10-94d10ccaa73d" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
-                                        </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="footer"></div>
-
-    <!-- AJAX-MODAL -->
-    <div class="modal micromodal-slide" id="ajax-modal" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container modal__medium" id="ajax-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
-                <header class="modal__header">
-                    <h2 class="modal__title" id="ajax-modal-title"></h2>
-                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="ajax-modal-content">
-
-                </main>
-                
-
-                
-            </div>
-        </div>
-    </div>
-
-    
-
-
-    <!-- AJAX-MODAL-END -->
-    <!-- COMBAT-REPORT-MODAL -->
-    <div class="modal micromodal-slide" id="ajax-combatreport-modal" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container modal__chat" id="ajax-combatreport-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title" style="padding: 5px 5px;">
-                <header class="modal__header">
-                    <div class="navigation">
-                        <a href="#" class="nav-item modal__title" id="ajax-combatreport-modal-title" data-target="combatReport-tab" data-ajax-loaded="true">Battle Report</a>
-                        <a href="#" class="nav-item" data-target="comments-tab">Comments</a>
-                    </div>
-                    <button class="modal__close" style="border: 1px solid #0b9eb7;" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="ajax-combatreport-modal-content">
-                    <div class="content">
-                        <div class="tab-item" id="combatReport-tab" style="min-height:200px;">
-                        </div>
-                        <div class="tab-item" id="comments-tab" style="min-height:200px;">
-
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
-    </div>
-    <!--  COMBAT-REPORT-MODAL -->
-    <!-- PLAYER-BADGE-MODAL -->
-    <div class="modal micromodal-slide" id="ajax-playerBadge-modal" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container " id="ajax-playerBadge-modal-container" style="background:linear-gradient( 180deg,rgb(29,42,59) 0%, rgb(0,0,0) 100%);" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
-                <header class="modal__header">
-                    <h2 class="modal__title" id="ajax-playerBadge-modal-title"></h2>
-                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="ajax-playerBadge-modal-content" style="margin-top:0px !important;">
-
-                </main>
-                
-            </div>
-        </div>
-    </div>
-    <!--  PLAYER-BADGE-MODAL -->
-    <!-- CHAT-MODAL -->
-    <div class="modal micromodal-slide" id="ajax-chat-modal" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container modal__chat" id="ajax-chat-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
-                <header class="modal__header">
-                    <h2 class="modal__title" id="ajax-chat-modal-title"></h2>
-                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="ajax-chat-modal-content">
-
-                </main>
-                
-            </div>
-        </div>
-    </div>
-    <!-- CHAT-MODAL-END -->
-    <!-- IFRAME-MODAL -->
-    <div class="modal micromodal-slide" id="iframe-modal" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container modal__medium" id="iframe-modal-container" role="dialog" aria-modal="true" aria-labelledby="iframe-modal-title">
-                <header class="modal__header">
-                    <h2 class="modal__title" id="iframe-modal-title"></h2>
-                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="iframe-modal-content">
-
-                </main>
-                
-            </div>
-        </div>
-    </div>
-    <!-- IFRAME-MODAL-END -->
-    <!-- PLAYER FRIEDNS ADD-MODAL -->
-    <div class="modal micromodal-slide" id="ajax-playerfriendcreate-modal" aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container modal__chat" id="ajax-playerfriendcreate-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
-                <header class="modal__header">
-                    <h2 class="modal__title" id="ajax-playerfriendcreate-modal-title"></h2>
-                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content" id="ajax-playerfriendcreate-modal-content">
-
-                </main>
-                
-            </div>
-        </div>
-    </div>
-    <!--  PLAYER FRIEDNS ADD-MODAL -->
-
-
-
-    <div id="BackGroundFreezerPreloader" class="BackGroundFreezer" align="center">
-        <div class="loader">
-        </div>
-    </div>
-
-    <script>
-
-        var _browserLanguage = (window.navigator.userLanguage || window.navigator.language).substring(0, 2).toLowerCase();
-        var _fleetReturnCounterInterval = null;
-
-
-
-
-        function ReloadPage() {
-            if (!window.location.hash) {
-                window.location.href = window.location.href;
-            } else {
-                window.location.reload();
-            }
-        }
-
-        function ReportChatMessage(msgId,isUniverseMessage) {
-
-            var data = {
-                Id: msgId
-            };
-
-            if (isUniverseMessage != undefined && isUniverseMessage != null && isUniverseMessage === true) {
-                PostRequest('/chat/reportuniversalmessage', JSON.stringify(data),
-                function (res) {
-                    if (res.IsSuccess) {
-                        ShowSuccessMessage(`The report has been sent to the administrators for review.`);
-                    }
-                    else {
-                        ShowError(res.Message);
-                    }
-                },
-                function () {
-                    ShowError();
-                });
-            }
-            else {
-                PostRequest('/chat/reportmessage', JSON.stringify(data),
-                function (res) {
-                    if (res.IsSuccess) {
-                        ShowSuccessMessage(`The report has been sent to the administrators for review.`);
-                    }
-                    else {
-                        ShowError(res.Message);
-                    }
-                },
-                function () {
-                    ShowError();
-                });
-            }
-        }
-
-        function ShowError(contentHtml) {
-            var defaultMsg = `An unexpected error occurred.`;
-            var errorMsg = '';
-            if (contentHtml === undefined || contentHtml == null || contentHtml === '') {
-                errorMsg = defaultMsg;
-            }
-            else
-                errorMsg = contentHtml;
-
-            Swal.fire({
-                type: 'error',
-                title: `Error`,
-                html: `<div style="font-size:12px;">`+errorMsg+`</div>`,
-                footer: '',
-                onBeforeOpen: function (ele) {
-                    console.log($(ele));
-                    $(ele).addClass('swal2-modal-error');
-                }
-            });
-        }
-
-        function ShowNotEnoughDM() {
-            var message = `Not enough Dark Matter available!</br> Do you want to buy some now?`;
-
-            Swal.fire({
-                title: 'Error',
-                html: '<span style="font-size: 12px; ">' + message + '</span>',
-                type: 'error',
-                showCancelButton: true,
-                buttonStyling: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                onBeforeOpen: function (ele) {
-                    console.log($(ele));
-                    $(ele).addClass('swal2-modal-error');
-                }
-            }).then(function(result){
-                if (result.value) {
-                    window.location.href = '/darkmatter/purchase';
-                }
-            })
-        }
-
-        function ShowSuccessMessage(message, callback) {
-            Swal.fire({
-                title: `Success`,
-                html: `<span style="font-size:12px;">${message}</span>`,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Ok',
-                onBeforeOpen: function (ele) {
-                    console.log($(ele));
-                    $(ele).addClass('swal2-modal-success');
-                }
-            }).then((result) => {
-                if (result.value) {
-                    if (callback != undefined && callback != null) {
-                        callback();
-                    }
-                }
-            });
-        }
-
-        window.isConnectedChatWs = false;
-
-        function ConnectChatWS() {
-            if (window.isConnectedChatWs)
-                return;
-
-            var hub = $.connection.wSHub;
-
-            hub.client.newChatMessage = function (dataJson) {
-                var data = JSON.parse(dataJson);
-                console.log(data);
-
-                data.MessageContent = Emojify(data.MessageContent);
-
-                if (data.IsAllianceChat === true) {
-                    var allianceChatMessagesContainer = $('#alliance_chat_messages');
-                    if (allianceChatMessagesContainer.length > 0) {
-                        var msgDateObj = new Date(data.MessageDate);
-
-                        allianceChatMessagesContainer.append('<div class="message-item"><span class="msg-sender">' + data.FromPlayerName + '</span><span class="msg-date">' + FormatDate(msgDateObj) + '</span><span class="msg-arrow"></span><div class="msg-content">' + data.MessageContent + '</div></div>');
-
-                       allianceChatMessagesContainer.animate({ scrollTop: allianceChatMessagesContainer.prop("scrollHeight")}, 1000);
-                    }
-                }
-                else {
-                    var playerChatMessagesContainer = $('#player_chat_messages_' + data.FromPlayerId);
-                    if (playerChatMessagesContainer.length > 0) {
-
-                        var msgDateObj = new Date(data.MessageDate);
-
-                        playerChatMessagesContainer.append('<div class="message-item"><span class="msg-sender">' + data.FromPlayerName + '</span><span class="msg-date">' + FormatDate(msgDateObj) + '</span><span class="msg-arrow"></span><div class="msg-content">' + data.MessageContent + '</div></div>');
-
-                       playerChatMessagesContainer.animate({ scrollTop: playerChatMessagesContainer.prop("scrollHeight")}, 1000);
-
-                    }
-                }
-
-            };
-
-            $.connection.hub.start();
-            window.isConnectedChatWs = true;
-        }
-
-
-
-        function MutePlayer(playerId, successCallBack) {
-
-            var data = {
-                Id: playerId
-            };
-
-            Swal.fire({
-                title: 'Warning',
-                html: '<span style="font-size: 12px; ">'+'Are you sure you want to mute the player?'+'</span>',
-                type: 'warning',
-                showCancelButton: true,
-                buttonStyling: false,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
-            }).then(function (result) {
-                if (result.value) {
-                    PostRequest('/home/MutePlayer', JSON.stringify(data),
-                        function (res) {
-                            if (res.IsSuccess) {
-                                var idmute = "#id_playerMute_" + playerId;
-                                $('' + idmute).hide();
-                                var idUnmute = "#id_playerUnMute_" + playerId;
-                                $('' + idUnmute).show();
-
-                                ShowSuccessMessage(`This player is muted. This can be undone in the player search section.`);
-                                if (successCallBack)
-                                    successCallBack();
-                            } else {
-                                ShowError(res.Message);
-                            }
-                        });
-                }
-            });
-        }
-
-        function UnMutePlayer(playerId , successCallBack) {
-            var data = {
-                Id: playerId
-            };
-            PostRequest('/home/UnMutePlayer', JSON.stringify(data),
-                function (res) {
-                    if (res.IsSuccess) {
-                        ShowSuccessMessage(`The player is unmuted.`);
-                        $("#id_playerUnMute_" + playerId).hide();
-                        $("#id_playerMute_" + playerId).show();
-                        if (successCallBack)
-                            successCallBack();
-                    } else {
-                        ShowError(res.Message);
-
-                    }
-                });
-        }
-
-        function ShowPlayerBadgeDialog(playerId) {
-
-            if (playerId === undefined || playerId === null || playerId === '')
-                return;
-
-            $('#ajax-playerBadge-modal-content').html('<div class="modal__loader__container"><div class="modal__loader"></div></div>');
-            $('#ajax-playerBadge-modal-title').html('');
-
-            var modalSizeCss = '';
-            var modalSize = $(this).attr('data-modal-size');
-            if (modalSize !== undefined && modalSize !== null) {
-
-                if (modalSize === 'large' || modalSize === 'medium' || modalSize === 'small' || modalSize === '700')
-                    modalSizeCss = 'modal__' + modalSize;
-            }
-
-            if (modalSizeCss === '') {
-                modalSizeCss = 'modal__medium';
-            }
-
-            $('#ajax-playerBadge-modal-container').removeClass('modal__large');
-            $('#ajax-playerBadge-modal-container').removeClass('modal__medium');
-            $('#ajax-playerBadge-modal-container').removeClass('modal__small');
-            $('#ajax-playerBadge-modal-container').addClass(modalSizeCss);
-
-            MicroModal.show('ajax-playerBadge-modal');
-
-            var url = '/Home/PlayerBadge?Id=' + playerId + '';
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                cache: false,
-                success: function (data) {
-                    $('#ajax-playerBadge-modal-content').html(data);
-                    ConfigureTooltips();
-                }
-            });
-        }
-
-        function TranslateMessage(btnTranslate) {
-            var msgItem = $(btnTranslate).closest('.message-item');
-            var msgText = msgItem.find('.msg-content').find('p').html();
-
-            if (msgItem == undefined || msgText == undefined || msgItem.find('.translate_original_msg').length > 0 || msgItem.find('.x-loading').length > 0) {
-                return false;
-            }
-
-            msgItem.append('<div class="x-loading" style="position: absolute;left: 0px;top: 0px;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);text-align: center;display: flex;justify-content: center;align-items: center;"><i class="fas fa-sync-alt fa-spin" style="font-size: 26px;color:#79d5ff;"></i></div>');
-
-            $.getJSON('https://translate-pa.googleapis.com/v1/translate?params.client=gtx&query.source_language=auto&query.target_language=' + _browserLanguage + '&query.display_language=' + _browserLanguage + '&query.text=' + encodeURIComponent(msgText) + '&key=AIzaSyDLEeFI5OtFBwYBIoK_jj5m32rZK5CkCXA&data_types=TRANSLATION&data_types=SENTENCE_SPLITS&data_types=BILINGUAL_DICTIONARY_FULL', function (data) {
-                msgItem.find('.msg-content').find('p').addClass('translate_original_msg');
-                msgItem.find('.msg-content').append('<p class="translate_result_msg">' + data.translation + '</p>');
-                msgItem.find('.x-loading').remove();
-            }).fail(function () { ShowError('TRANSLATE-ERROR'); msgItem.find('.x-loading').remove(); });
-
-            return false;
-        }
-
-        
-
-
-    </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"2bf9dd8fdb5f462fab051c0ef58ac7d9","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
-    <link rel="stylesheet" href="/assets/other/fonts/fa-pro/css/pro.min.css" />
-
-    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3982">
-    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3982">
-
-    
-
-
-    <script>
-
-
-        window.localization = {};
-        window.localization.dayMark = 'd';
-        window.localization.Yes = 'Yes';
-        window.localization.No = 'No';
-        window.localization.Warning = 'Warning';
-        window.localization.BATTLE_REPORT = 'Battle Report';
-
-        window.timeoffset_cookie_name = 'timeZoneOffset';
-        window.currentPlayerName = 'The Doctor';
-        window.currentPlayerId = '4baa56a7-85dc-4d9b-9f69-7edc966613af';
-        window.currentPlanetId = '474967ec-b46e-48be-b69f-a3749c6de11b';
-        window.isVacation = false;
-        window.allianceId = '';
-
-        window.currentPlayerClass = null;
-
-        
-        window.currentPlayerClass = 'MINER';
-        
-
-
-        var resources = {
-            initialMetal:1007717448.8153414680146257120,
-            initialCrystal:286458273.47294137540310926867,
-            initialDeuterium:1171570659.7965417490894461135,
-            metal: 1007717448.8153414680146257120,
-            crystal: 286458273.47294137540310926867,
-            deuterium: 1171570659.7965417490894461135,
-            energy: 626669.84739600735391920000000,
-            energyConsumption: 68499.104088958158934156530637,
-            darkmatter: 227382,
-            metalProduction: 800607.6051138226715419039882,
-            crystalProduction: 261988.1576471251343697562225,
-            deuteriumProduction: 40298.598847249696482037830989,
-            metalStorageCapacity: 21270532803,
-            crystalStorageCapacity: 13628226513,
-            deuteriumStorageCapacity: 1482602571
-        };
-
-        var initialServerTime = 1763831673000;
-        var currentServerTime = 1763831673000;
-
-        var lang = 'pt';
-
-    </script>
-    <script src="/assets/js/default.js?v=3982"></script>
-    <script src="/assets/js/app/tooltip.js?v=3982"></script>
-    <script src="/assets/js/libs/autonumeric.min.js"></script>
-
-    
-
-    <script>
-        function configureNumberInputFormat(containerElementId) {
-            const autoNumericOptions = {
-                allowDecimalPadding: false,
-                alwaysAllowDecimalCharacter: false,
-                digitGroupSeparator: '.',
-                decimalCharacter: ',',
-                decimalCharacterAlternatif: '.',
-                currencySymbol: '',
-                // overrideMinMaxLimits: 'ignore',
-                // emptyInputBehavior: 'zero',
-                maximumValue: '99999999999999999999999999999',
-                minimumValue: '0',
-                //historySize:0,
-                selectOnFocus: false,
-                modifyValueOnWheel: false,
-                formatOnPageLoad: true,
-                watchExternalChanges: true,
-                decimalPlaces: 0
-            };
-
-            if (containerElementId == undefined || containerElementId == null || containerElementId == "") {
-                containerElementId = "";
-            }
-            else {
-                containerElementId = "#" + containerElementId;
-            }
-            new AutoNumeric.multiple(containerElementId + ' .numberFormatInput', autoNumericOptions);
-
-
-            $(containerElementId + ' .numberFormatInput').focusin(function () {
-                var val = $(this).val();
-                if (val === '0' || val === 0 || val == '0' || val == 0) {
-                    //  this.value = '';
-                    $(this).val('');
-                }
-            }).focusout(function () {
-
-                var val = $(this).val();
-                if (val === '' || val === ' ' || val == '' || val == ' ') {
-
-                    $(this).val(0);
-                }
-            }).on("input", function (e) {
-                var value = 0;
-                if (/\D/g.test(this.value)) {
-                    // Filter non-digits from input value.
-                    value = this.value.replace(/\D/g, '');
-                }
-                else {
-                    value = this.value;
-                }
-
-                var intVal = parseInt(value);
-                if (!isNaN(intVal)) {
-                    if ($(this).attr('min-value') != undefined) {
-                        var minVal = parseInt($(this).attr('min-value'));
-
-                        if (isNaN(minVal)) {
-                            minVal = 0;
-                        }
-                        else if (minVal < 0) {
-                            minVal = 0;
-                        }
-                        if (intVal < minVal) {
-                            this.value = 0;
-                        }
-                    }
-
-                    if ($(this).attr('max-value') != undefined) {
-                        var maxVal = parseInt($(this).attr('max-value'));
-
-                        if (!isNaN(maxVal) && maxVal > 0) {
-                            if (intVal > maxVal) {
-                                this.value = maxVal;
-                            }
-                        }
-                    }
-                }
-            }).keyup(function () {
-                $(this).trigger('input');
-            });
-        }
-        $(function () {
-            configureNumberInputFormat();
-        });
-
-    </script>
-
-    
-
-
-    
-
-</head>
-<body>
-    <div id="tooltip-container"></div>
-    <div id="tooltip-sticky-container"></div>
-    <div id="tooltip-static-container"></div>
-
-    <div id="game-bg">
-        <div id="game-container">
-            <div id="header" style="background:url(../assets/images/V2/header_v3.png) no-repeat center;background-position-y:40px;">
-                <div class="top-nav">
-                    <div class="left-side">
-                        <a href="/statistics" class="nav-link fa fa-signal tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Statistics</h3>"></a>
-                        <a href="/halloffame" class="nav-link fa fa-trophy tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Hall of fame</h3>"></a>
-                        <a href="/records" class="nav-link fa fa-award tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Records</h3>"></a>
-                        <a href="/chat/universal" class="nav-link fa fa-comments tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Universal Chat</h3>"></a>
-                        <a href="https://discord.gg/N4ckzJwRtJ" target="_blank" class="nav-link fab fa-discord tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Discord channel</h3>"></a>
-                        <a href="/SupportTicket/SupportTicketList" class="nav-link fa fa-headset tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Support</h3>"></a>
-                        <a href="/home/eventCalendar" class="nav-link fas fa-calendar-alt tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Event Calendar</h3>"></a>
-                    </div>
-                    <div class="center-side">
-
-                        
-
-                        <a href="/"><img class="logo" src="../../assets/images/V2/logo.png" /></a>
-
-                        
-                    </div>
-                    <div class="right-side">
-                        
-                        <a href="https://ogamex.net/home/rules" class="nav-link fas fa-book tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Rules</h3>"></a>
-                        <a href="/friendsenemies" class="nav-link fa fa-users tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Friends &amp; Enemies</h3>"></a>
-                        <a href="#" class="nav-link fa fa-search tooltip" data-ajax-modal data-modal-title="" data-modal-url="/home/search" data-modal-size="large" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Search</h3>"></a>
-                        <a href="/bannedplayers" class="nav-link fa fa-user-slash tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Banned players</h3>"></a>
-                        
-                        <a href="/settings" class="nav-link fa fa-tools tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Settings</h3>"></a>
-                        <a href="/home/logout" class="nav-link fa fa-sign-out-alt tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Log out</h3>"></a>
-                    </div>
-                </div>
-                <div class="resources-section">
-                    <div class="resources-content">
-                        <a href="/resource" class="resource-item resource-item-metal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>1.007.717.449</td></tr><tr><td>Production per hour : </td><td><span>2.882.187.378</span></td></tr><tr><td>Production per day : </td><td><span>69.172.497.082</span></td></tr><tr><td>Storage capacity : </td><td><span>21.270.532.803</span></td></tr></table></div>">
-                            <span class="resource-icon resource-icon-metal"></span>
-
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
-                                                <span id="metal-amount" style="font-size:10px;">1.007.717.449</span>
-                                                
-                                            </span>
-                                        </div>
-
-
-
-
-                        </a>
-                        <a href="/resource" class="resource-item resource-item-crystal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>286.458.273</td></tr><tr><td>Production per hour : </td><td><span>943.157.368</span></td></tr><tr><td>Production per day : </td><td><span>22.635.776.821</span></td></tr><tr><td>Storage capacity : </td><td><span>13.628.226.513</span></td></tr></table></div>">
-                            <span class="resource-icon resource-icon-crystal"></span>
-
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
-                                                <span id="crystal-amount" style="font-size:10px;">286.458.273</span>
-                                                
-                                            </span>
-                                        </div>
-
-
-
-                        </a>
-                        <a href="/resource" class="resource-item resource-item-deuterium tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>1.171.570.660</td></tr><tr><td>Production per hour : </td><td><span>145.074.956</span></td></tr><tr><td>Production per day : </td><td><span>3.481.798.940</span></td></tr><tr><td>Storage capacity : </td><td><span>1.482.602.571</span></td></tr></table></div>">
-                            <span class="resource-icon resource-icon-deuterium"></span>
-
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Deuterium</span>
-                                                <span id="deuterium-amount" style="font-size:10px;">1.171.570.660</span>
-                                                
-                                            </span>
-                                        </div>
-
-
-                        </a>
-                        <a href="/resource" class="resource-item resource-item-energy tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Energy</td></tr><tr><td>Energy production : </td><td><span>626.670</span></td></tr><tr><td>Energy consumption : </td><td><span style='color:#dc0606;'>68.499</span></td></tr></table></div>">
-                            <span class="resource-icon resource-icon-energy"></span>
-
-                                    <div style="position: absolute;top: 18px;width: 116px;left: 56px;text-align: left;">
-                                        <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -10px;left: 0px;">Energy</span>
-                                        <span class="resource-amount" style="color:#0f0 !important;font-size:10px;">558.171</span>
-                                    </div>
-
-
-                        </a>
-                        <a href="/darkmatter/purchase" class="resource-item right-item resource-item-darkmatter tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Dark matter</td></tr></table></div>">
-                            <span class="resource-icon resource-icon-darkmatter" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
-                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: 8px;right: 56px;">Dark matter</span>
-                            <span class="resource-amount" style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">227.382</span>
-                        </a>
-                        <a href="/wiki" class="resource-item right-item resource-item-wiki tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Wiki</td></tr></table></div>">
-                            <span class="resource-icon resource-icon-wiki" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
-                            <span style="position: absolute;font-size: 12px;font-weight: bold;color: #b0c0d5;top: 16px;right: 44px;">Wiki</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="messages-section">
-
-                    <a href="/messages" class="messages-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread messages (0)</div>">
-
-                    </a>
-                    <a href="/chat" class="chat-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread chat messages (0)</div>">
-
-                    </a>
-                </div>
-                <div class="fleet-info-section ">
-
-                            <div style="cursor:pointer;text-align:left;padding-left:20px;" id="fleet-movement-detail-btn">
-                                <div style="padding:4px;color:#FFF;font-size:11px;">
-                                    <span><b>1</b> Missions: </span>
-                                            <span style="color:#9C0;">1 Own</span>
-
-                                </div>
-                                <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
-                                    <span>
-
-
-
-                                        Next: <span id="NextMissionRemainingTime">01:11:18</span>
-                                    </span>
-                                </div>
-                                <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
-                                    <span>Type:</span>
-                                            <span style="color:#9C0;">Colonize</span>
-
-                                </div>
-                            </div>
-
-
-                </div>
-
-                <div id="system-clock">22.11.2025 14:14:33</div>
-                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>The Doctor</div><div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>1.833</span> / 2.868</div></div></div></div>">
-
-                            <div class="avatar-box player_class_MINER"></div>
-
-                    <div class="player-name">The Doctor</div>
-                    <div class="player-ranking"><i class="fad fa-crown"></i> 1.833</div>
-                </a>
-
-
-            </div>
-
-            <div id="game-bottom" style="float:left;width:1000px;">
-
-                <div style="float:left;width:100%;position:relative;margin-top:5px;">
-
-                    <div id="left-menu-1">
-
-
-
-                        <div class="menu-item active">
-                            <a href="/home" class="text-item">Overview</a>
-                        </div>
-
-
-
-                                <div class="menu-item ">
-                                    <a href="/building/resource" class="text-item">Resources</a>
-                                    
-                                </div>
-
-
-                        <div class="menu-item ">
-                            <a href="/building/facility" class="text-item">Facilities</a>
-                            
-                        </div>
-
-
-
-                        <div class="menu-item ">
-                            <a href="/research" class="text-item">Research</a>
-                            
-                        </div>
-                        
-                        <div class="menu-item ">
-                            <a href="/hangar" class="text-item">Shipyard</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/defense" class="text-item">Defense</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/fleet" class="text-item">Fleet</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/galaxy" class="text-item">Galaxy</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/alliance" class="text-item">Alliance</a>
-                            
-                        </div>
-                        <div class="menu-item">
-                            <a href="/empire" target="_blank" class="text-item">Empire</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/officer" class="text-item">Officers</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/academy" class="text-item">Academy</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/merchant" class="text-item premium-text">Merchant</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/premium" class="text-item premium-text">Premiums</a>
-                            
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/shop" class="text-item premium-text">Shop</a>
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/shop/inventory" class="text-item">Inventory</a>
-                        </div>
-                        <div class="menu-item ">
-                            <a href="/simulator" class="text-item">Simulators</a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="/darkmatter/promote" class="text-item" style="color:#4caf50;">Promote Server</a>
-                        </div>
-                    </div>
-
-                    <div id="content-wrapper" class="">
-                        <div id="layoutFleetMovements" class="fleet-movement-wrapper">
-                            <div class="header">
-                                <span class="title">Events</span>
-                            </div>
-                            <div class="content" id="fleet-movement-content"></div>
-                            <div class="footer"></div>
-                        </div>
-
-                        
-
-
-
-
-
-<link href="/assets/styles/app/pages/overviewV2.css?v=3982" rel="stylesheet" />
-
-<div id="overview-container">
-
-
-
-    <div id="overview" style="background:url(../../assets/images/V2/planet/16/16_overview.jpg) no-repeat;">
-        <div style="position:absolute;left:0px;height:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);"></div>
-
-
-
-                <div class="planet-name">Overview - Home planet <a href="#" style="color: #f1f1f1;margin-left: 10px;font-size: 18px;" class="tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Rename planet</p></div>" data-ajax-modal data-modal-title="Rename planet" data-modal-url="/home/renameplanet?id=474967ec-b46e-48be-b69f-a3749c6de11b" data-modal-size="medium"><i class="fas fa-cogs"></i></a></div>
+                <div class="planet-name">Overview - Moon <a href="#" style="color: #f1f1f1;margin-left: 10px;font-size: 18px;" class="tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Rename moon</p></div>" data-ajax-modal data-modal-title="Rename moon" data-modal-url="/home/renameplanet?id=144b0289-44ed-49a5-af7b-b3e54a74d28a" data-modal-size="medium"><i class="fas fa-cogs"></i></a></div>
 
 
         <a style="position: absolute;width: 240px;height:35px;background-color: rgba(0,0,0,0.8);right: 8px;top: 50px;font-size: 14px;padding: 10px 4px;border-radius: 4px;text-align: center;vertical-align: middle;border:1px solid #555;" class="tooltip" data-tooltip-position="left" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tbody><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Server properties</td></tr><tr><td>Resource production: </td><td><span>x2.000</span></td></tr><tr><td>Energy production: </td><td><span>%120</span></td></tr><tr><td>Construction speed: </td><td><span>x300</span></td></tr><tr><td>Hangar speed: </td><td><span>x300</span></td></tr><tr><td>Research speed: </td><td><span>x300</span></td></tr><tr><td>Fleet speed: </td><td><span>x2</span></td></tr><tr><td>Fleet debris: </td><td><span>%80</span></td></tr><tr><td>Defense debris: </td><td><span>%0</span></td></tr></tbody></table></div>">
@@ -2015,15 +452,6 @@
 
 
 
-                    <div style="width: 220px; height: 100px; position: absolute; left: 15px; top: 60px; background-color: rgba(0,0,0,0.8); border: 1px solid #286d08; border-radius: 5px; padding: 5px;">
-                        <div style="position:absolute;left:10px;top:5px;font-size:12px;padding-right:10px;">
-                            <div>100% Scrap event!</div>
-                            <div style="margin-top:8px;font-size:11px;color:#CCC;">During the event, you will be able to scrap all of your units at full price.</div>
-                        </div>
-                        <div style="position:absolute;width:100%;bottom:5px;left:0px;text-align:center;">
-                            <a href="/merchant/scrapmerchant" class="btn-dm-purchase-event">Go to merchant</a>
-                        </div>
-                    </div>
 
 
 
@@ -2036,17 +464,16 @@
                 </a>
 
                 <div class="planet-prop" style="margin-bottom: 5px;border-bottom: 1px solid #444;padding-bottom: 5px;">
-                    <span class="prop-title" style="line-height:20px;">Online players: <span style="color:#9C0;">895</span></span>
+                    <span class="prop-title" style="line-height:20px;">Online players: <span style="color:#9C0;">840</span></span>
                 </div>
 
                 <div class="planet-view-container">
 
-                                <a href="#" class="planetBox active" style="background:url(../../assets/images/V2/planet/16/16_small.jpg);">
-                                    
-                                </a>
-                                <a href="/home/moonformation" class="moonBox btnFormAMoon tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Create a Moon around this planet</p></div>" style="background: url(../../assets/images/V2/planet/moon/1/1_small.jpg);">
-                                    <i class="fa fa-angle-double-up"></i>
-                                </a>
+                            <a href="/home?planet=474967ec-b46e-48be-b69f-a3749c6de11b" class="planetBox tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Switch to planet</p></div>" style="background:url(../../assets/images/V2/planet/16/16_small.jpg);">
+                                
+                            </a>
+                            <a href="/home/moonformation" class="moonBox active tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Expand the moon</p></div>" style="background: url(../../assets/images/V2/planet/moon/1/1_small.jpg);">
+                            </a>
 
                 </div>
 
@@ -2055,7 +482,7 @@
                     
                     <div class="planet-prop">
                         <span style="cursor:help;" class="prop-title tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#f1f1f1;max-width:320px;line-height:16px;'><span style='font-size: 12px;font-weight: bold;line-height: 20px;'>Diameter</span></br> Diameter is used to express the size of the planet and moons. Planets with large diameters also have high usable areas, so they are more suitable for settlement. The 1st and 15th positions in the solar system usually have the lowest diameters and the highest diameter planets are in the middle areas.</p></div>"><i class="fas fa-info" style="background-color: #010101;color: #CCC;padding: 2px 5px;border-radius: 3px;"></i> Diameter</span>
-                        <span class="prop-text">11.083 km (<b style="color:#26c157;">246</b> / <b style="color:#26c157;">360</b> fields)</span>
+                        <span class="prop-text">1.000 km (<b style="color:#26c157;">65</b> / <b style="color:#26c157;">65</b> fields)</span>
                     </div>
                     <script>
                         $(function () {
@@ -2069,7 +496,7 @@
                     </script>
                     <div class="planet-prop">
                         <span style="cursor:help;" class="prop-title tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#f1f1f1;max-width:320px;line-height:16px;'><span style='font-size: 12px;font-weight: bold;line-height: 20px;'>Temperature</span></br>The temperature of the planet depends on its distance from the star in its system. Planets closer to position 1 in the solar system are warmer, planets closer to position 15 are ice planets and their temperature is very low. The energy produced by solar satellites is very high in planets with high temperatures. However, deuterium production is equally very low on these planets. On the colder planets, while the energy produced by solar satellites decreases, the amount of deuterium produced by the deuterium synthesizer increases.</p></div>"><i class="fas fa-info" style="background-color: #010101;color: #CCC;padding: 2px 5px;border-radius: 3px;"></i> Temperature</span>
-                        <span class="prop-text">Approximately 59°C to 67°C</span>
+                        <span class="prop-text">Approximately 53°C to 61°C</span>
                     </div>
                     <div class="planet-prop">
                         <span style="cursor:help;" class="prop-title tooltip" data-tooltip-position="left" data-tooltip-content="<div><p style='font-size:11px;color:#f1f1f1;max-width:320px;line-height:16px;'><span style='font-size: 12px;font-weight: bold;line-height: 20px;'>Coordinates</span></br>The coordinate information of the planets is used to express their position in the universe. The coordinate system is described by [X: Y: Z] (X: Galaxy, Y: System, Z: Planetary order).</br> Coordinates also determine the distance between the planets. While the flight time of the planets in the same system is shorter, fleets sent from different galaxies reach the target planets in much longer times.</p></div>"><i class="fas fa-info" style="background-color: #010101;color: #CCC;padding: 2px 5px;border-radius: 3px;"></i> Coordinates</span>
@@ -2080,18 +507,15 @@
 
                     <div class="planet-prop" style="margin-top: 5px;padding-top: 5px;font-weight: bold;border-top: 1px solid #444;">
 
-                                <a href="/merchant/planetrelocation" class="overview-small-planet-btn tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Relocate planet</p></div>">
-                                    <i class="fas fa-external-link"></i>
+                                <a href="/home/moonformation" class="overview-small-planet-btn tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Expand the moon</p></div>">
+                                    <i class="fas fa-space-station-moon"></i>
+                                    <i class="fas fa-chevron-double-up" style="position: absolute; color: #0F0; font-size: 12px; left: 18px; top: 18px;"></i>
                                 </a>
-                                <a href="#" class="overview-small-planet-btn tooltip" data-ajax-modal data-modal-title="Rename planet" data-modal-url="/home/renameplanet?id=474967ec-b46e-48be-b69f-a3749c6de11b" data-modal-size="medium" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Rename planet</p></div>">
+                                <a href="#" class="overview-small-planet-btn tooltip" data-ajax-modal data-modal-title="Rename moon" data-modal-url="/home/renameplanet?id=144b0289-44ed-49a5-af7b-b3e54a74d28a" data-modal-size="medium" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Rename moon</p></div>">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                    <a href="/home/moonformation" class="overview-small-planet-btn tooltip" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Create a Moon around this planet</p></div>">
-                                        <i class="fas fa-space-station-moon"></i>
-                                        <i class="fas fa-chevron-double-up" style="position: absolute; color: #0F0; font-size: 12px; left: 18px; top: 18px;"></i>
-                                    </a>
-                                <a href="#" class="overview-small-planet-btn tooltip" data-ajax-modal data-modal-title="Abandon planet" data-modal-url="/home/abandonplanet?id=474967ec-b46e-48be-b69f-a3749c6de11b" data-modal-size="medium" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Abandon planet</p></div>">
-                                    <i class="fad fa-globe-americas" style="padding-right:5px;"></i>
+                                <a href="#" class="overview-small-planet-btn tooltip" data-ajax-modal data-modal-title="Abandon moon" data-modal-url="/home/abandonplanet?id=144b0289-44ed-49a5-af7b-b3e54a74d28a" data-modal-size="medium" data-tooltip-position="top" data-tooltip-content="<div><p style='font-size:11px;color:#CCC;'>Abandon moon</p></div>">
+                                    <i class="fad fa-space-station-moon" style="padding-right:5px;"></i>
                                     <i class="far fa-times" style="position: absolute; color: #F00; font-size: 16px; left: 16px; top: 16px;"></i>
                                 </a>
 
@@ -2192,68 +616,420 @@
 
 </script>
 
-<script src="/assets/js/app/pages/overview.js?v=3982"></script>
+<script src="/assets/js/app/pages/overview.js?v=3990"></script>
 
                     </div>
 
                     <div id="planet-selection">
-                        <span class="planet-info">[5/6] Planets</span>
+                        <span class="planet-info">[24/24] Planets</span>
                         <div id="other-planets">
                                         <div class="planet-item  selected">
-                                            <a class="planet-select selected" href="?planet=474967ec-b46e-48be-b69f-a3749c6de11b">
+                                            <a class="planet-select " href="?planet=474967ec-b46e-48be-b69f-a3749c6de11b">
                                                 <img class="planet-icon" src="/assets/images/v2/planet/16/16_small.jpg?v=4" />
-                                                <span class="planet-name">Home planet</span>
+
+
+                                                
+
+                                                <span class="planet-name">Masseratti</span>
                                                 <span class="planet-coords">
                                                     [7:230:5]
 
                                                 </span>
 
                                             </a>
+
+                                            <a class="moon-select selected" href="?planet=144b0289-44ed-49a5-af7b-b3e54a74d28a" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
                                         </div>
                                         <div class="planet-item  ">
                                             <a class="planet-select " href="?planet=46fd6eb9-6d15-4826-b701-8e99c0f88421">
-                                                <img class="planet-icon" src="/assets/images/v2/planet/44/44_small.jpg?v=4" />
-                                                <span class="planet-name">Corinthians</span>
+                                                <img class="planet-icon" src="/assets/images/v2/planet/19/19_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M01</span>
                                                 <span class="planet-coords">
-                                                    [7:229:11]
+                                                    [7:154:5]
 
                                                 </span>
 
                                             </a>
+
+                                            <a class="moon-select " href="?planet=810ef543-499a-499e-85e9-dad21d5e06fb" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
                                         </div>
                                         <div class="planet-item  ">
                                             <a class="planet-select " href="?planet=0247e5d2-9495-476b-b40d-ab0aa7150fc8">
                                                 <img class="planet-icon" src="/assets/images/v2/planet/11/11_small.jpg?v=4" />
-                                                <span class="planet-name">Colony</span>
+
+
+                                                
+
+                                                <span class="planet-name">M02</span>
                                                 <span class="planet-coords">
                                                     [7:229:5]
-                                                            <i class="fas fa-industry tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Metal Mine (32)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
 
                                                 </span>
 
                                             </a>
+
+                                            <a class="moon-select " href="?planet=d1c3f1f7-1fa8-430f-a926-da5fe985e4f6" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
                                         </div>
                                         <div class="planet-item  ">
                                             <a class="planet-select " href="?planet=a2715ebf-e53d-4550-9ae4-a6f5bc3d3211">
                                                 <img class="planet-icon" src="/assets/images/v2/planet/12/12_small.jpg?v=4" />
-                                                <span class="planet-name">Colony</span>
+
+
+                                                
+
+                                                <span class="planet-name">M03</span>
                                                 <span class="planet-coords">
                                                     [7:228:5]
 
                                                 </span>
 
                                             </a>
+
+                                            <a class="moon-select " href="?planet=790ab9a7-ffc4-44a9-91b9-d73d55d90535" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
                                         </div>
                                         <div class="planet-item  ">
                                             <a class="planet-select " href="?planet=53ec857d-f8c6-41da-b856-5c7dd74f5afa">
                                                 <img class="planet-icon" src="/assets/images/v2/planet/14/14_small.jpg?v=4" />
-                                                <span class="planet-name">Colony</span>
+
+
+                                                
+
+                                                <span class="planet-name">M04</span>
                                                 <span class="planet-coords">
                                                     [7:222:5]
 
                                                 </span>
 
                                             </a>
+
+                                            <a class="moon-select " href="?planet=2971562c-aab9-40d3-8717-d2d1a2121e28" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=595d1ea4-c228-486a-892f-47cab0839f06">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/15/15_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M05</span>
+                                                <span class="planet-coords">
+                                                    [7:36:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=e1d9b556-0f2c-4151-a174-6737000dbd36" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=590dd41c-57c5-4d1a-8bca-f009279c03cf">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/15/15_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M06</span>
+                                                <span class="planet-coords">
+                                                    [7:281:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=69a1a0e5-7e56-4da6-abf2-69d9f7ac0695" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=3994af59-33ce-418c-aad1-5e66cc18e045">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/18/18_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M07</span>
+                                                <span class="planet-coords">
+                                                    [7:226:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=62c5f1ed-207f-4d6b-940e-38a6c5b89ef8" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=58b591f8-adaf-427a-af30-66981ecdf31e">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/13/13_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M08</span>
+                                                <span class="planet-coords">
+                                                    [7:285:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=6c5e794b-82fc-428c-b418-d20dd3387469" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=81d50100-b7b9-4eb7-9509-2ab490ccc4f7">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/16/16_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M09</span>
+                                                <span class="planet-coords">
+                                                    [7:41:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=2928d100-cfc9-43b9-ab4e-ae8dc6b7ac04" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=67b7831b-c91f-42e5-9928-14205de51c4d">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/16/16_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M10</span>
+                                                <span class="planet-coords">
+                                                    [7:294:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=a7819f49-6651-4133-b532-b4aef925c83f" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=4fff792e-a8a8-4ca7-9dc5-c5c4dc48afb4">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/16/16_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M11</span>
+                                                <span class="planet-coords">
+                                                    [7:317:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=c0d30d45-6dd0-4807-911e-d6ec3f442325" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=d88c902c-38bb-419d-9195-6491fd8095fa">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/11/11_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M12</span>
+                                                <span class="planet-coords">
+                                                    [7:225:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=9826e3a1-d886-4f1c-b8be-e5e17bf8694e" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=6ee08531-ca54-4aaf-ad10-05c712495072">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/13/13_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M13</span>
+                                                <span class="planet-coords">
+                                                    [7:215:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=1df4366f-587f-4d30-b4a0-7150e2f9498e" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=36eec732-c35f-4bd7-ba59-443a01c4bdcd">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/14/14_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M14</span>
+                                                <span class="planet-coords">
+                                                    [7:278:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=7012e8b7-0c70-4c94-b35b-82081d7741d8" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=31bcedb6-1fef-4034-8f5a-db5f39470794">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/13/13_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M15</span>
+                                                <span class="planet-coords">
+                                                    [7:284:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=d52964b9-6c50-4587-8aac-fd58b342dad0" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=da46d087-0758-48f2-aec6-3da7cb46e28e">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/11/11_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M16</span>
+                                                <span class="planet-coords">
+                                                    [7:187:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=ad2f45bf-e5e5-401a-b741-5caba8bdaada" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=260b1928-fde9-4089-85cb-53fdac6a2141">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/18/18_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M17</span>
+                                                <span class="planet-coords">
+                                                    [3:298:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=3fb9d71e-596c-4743-ae68-2427c884239b" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=aac46a47-5841-43a3-aa02-9856fa44787d">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/12/12_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M18</span>
+                                                <span class="planet-coords">
+                                                    [7:227:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=ca4c5e30-6252-462d-9f14-742fdbc41521" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=fd325d24-86da-46f0-9af9-8dff1bccac0b">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/17/17_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M19</span>
+                                                <span class="planet-coords">
+                                                    [7:312:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=174096a1-1aaa-4bc7-b7aa-37c4239656f3" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=4b03c9dc-ee28-4105-b182-b0a99d830520">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/17/17_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M20</span>
+                                                <span class="planet-coords">
+                                                    [7:316:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=d3fe6bd9-c073-461f-9e97-7e271cdb54bb" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=a9e7f24d-0fb0-4817-886c-c2a0ddc3aeb7">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/18/18_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M21</span>
+                                                <span class="planet-coords">
+                                                    [7:340:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=07c6caae-fc56-4278-abc5-49c813ad23ff" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=a87ed8fb-5f11-4756-a4b7-699f133e4373">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/13/13_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M22</span>
+                                                <span class="planet-coords">
+                                                    [7:359:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=aa42557a-de1a-491b-8fd9-8f46df456d6b" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=1ade3922-67bc-431a-985b-24ba27b86162">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/15/15_small.jpg?v=4" />
+
+
+                                                
+
+                                                <span class="planet-name">M23</span>
+                                                <span class="planet-coords">
+                                                    [7:362:5]
+
+                                                </span>
+
+                                            </a>
+
+                                            <a class="moon-select " href="?planet=383d306f-38d3-407b-a6f6-9b8f92897558" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
                                         </div>
 
                         </div>
@@ -2548,7 +1324,7 @@
 
             window.fleetDetailTableOpened = false;
 
-            var currentMissionRemainingSeconds = 4278;
+            var currentMissionRemainingSeconds = 2150;
 
             setInterval(function () {
                 currentMissionRemainingSeconds -= 1;

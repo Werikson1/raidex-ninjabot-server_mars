@@ -124,6 +124,8 @@ Edite o arquivo `config.json` na raiz do projeto:
 | `HEADLESS_MODE` | Executar navegador invisível | `false` |
 | `FLEET_GROUP_NAME` | Nome do grupo de frota a usar | `"300 MM"` |
 | `COOLDOWN_HOURS` | Horas de cooldown para asteroides | `1` |
+| `WEB_HOST` | Host para o servidor Flask | `"0.0.0.0"` |
+| `WEB_PORT` | Porta do servidor Flask (use 5001 para rodar junto com outro bot) | `5001` |
 | `SEARCH_DELAY_MIN` | Delay mínimo entre buscas (s) | `0.3` |
 | `SEARCH_DELAY_MAX` | Delay máximo entre buscas (s) | `1` |
 | `NO_ASTEROID_WAIT_MIN` | Espera mínima sem asteroides (min) | `45` |
@@ -161,7 +163,7 @@ python bot.py
    ```
 
 2. **Acesse a interface**:
-   - Abra seu navegador em `http://localhost:5000`
+   - Abra seu navegador em `http://localhost:5001` (padrão deste clone)
 
 3. **Use a interface**:
    - **Aba "Asteroid Miner"**: Controle o bot de mineração
@@ -278,6 +280,8 @@ graph TD
 **Soluções**:
 1. Verifique os logs para mensagens de erro
 2. Reduza o `COOLDOWN_HOURS` se muitos asteroides estão em cooldown
+| `WEB_HOST` | Host para o servidor Flask | `"0.0.0.0"` |
+| `WEB_PORT` | Porta do servidor Flask (use 5001 para rodar junto com outro bot) | `5001` |
 3. Aguarde - o bot espera automaticamente 45-60 minutos
 
 ### Bot não consegue enviar frotas
@@ -295,13 +299,13 @@ graph TD
 ### Interface web não carrega
 
 **Possíveis causas**:
-- Porta 5000 já em uso
+- Porta configurada (padrão 5001) já em uso
 - Dependências não instaladas
 
 **Soluções**:
 1. Instale as dependências: `pip install -r requirements.txt`
-2. Verifique se a porta 5000 está livre
-3. Tente acessar `http://127.0.0.1:5000` ao invés de `localhost`
+2. Verifique se a porta configurada (WEB_PORT) está livre
+3. Tente acessar `http://127.0.0.1:5001` ao invés de `localhost`
 
 ### Navegador não abre ou fecha imediatamente
 

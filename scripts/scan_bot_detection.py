@@ -1,6 +1,6 @@
 """
 Bot fingerprint probe using the new stealth context.
-Runs a quick check against cypher.ogamex.net and reports key signals.
+Runs a quick check against mars.ogamex.net and reports key signals.
 """
 
 import asyncio
@@ -32,7 +32,7 @@ async def main():
 
         page = context.pages[0] if context.pages else await context.new_page()
 
-        await page.goto("https://cypher.ogamex.net/", wait_until="networkidle")
+        await page.goto("https://mars.ogamex.net/", wait_until="networkidle")
 
         detection = await page.evaluate(
             """(() => ({

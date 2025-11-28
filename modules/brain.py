@@ -243,7 +243,7 @@ class BrainManager:
                             if not page_targets or action_taken:
                                 continue
 
-                            url = f"https://cypher.ogamex.net/building/{page_type}?planet={target_id}"
+                            url = f"https://mars.ogamex.net/building/{page_type}?planet={target_id}"
                             logger.info(f"Navigating to {url}")
                             await page.goto(url)
                             await page.wait_for_load_state("networkidle")
@@ -360,7 +360,7 @@ class BrainManager:
         try:
             page = await context.new_page()
             # Go to overview or any page where the planet list is visible
-            await page.goto("https://cypher.ogamex.net/overview")
+            await page.goto("https://mars.ogamex.net/overview")
             await page.wait_for_load_state("networkidle")
 
             planets = []

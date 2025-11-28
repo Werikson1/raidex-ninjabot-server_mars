@@ -44,13 +44,21 @@ def _normalize_time_dict(raw: dict, default: dict) -> dict:
 USE_LOCAL_FILE = _config.get("USE_LOCAL_FILE", False)
 LOCAL_FILE_PATH = os.path.abspath(_config.get("LOCAL_FILE_PATH", os.path.join("debug", "galaxy_view.html")))
 MAIN_PLANET_ID = _config.get("MAIN_PLANET_ID", "ae2da001-49d9-4c0e-b1f7-71b564ca0259")
-LIVE_URL = _config.get("LIVE_URL", f"https://cypher.ogamex.net/galaxy?planet={MAIN_PLANET_ID}")
+LIVE_URL = _config.get("LIVE_URL", f"https://mars.ogamex.net/galaxy?planet={MAIN_PLANET_ID}")
 USER_DATA_DIR = os.path.abspath(_config.get("USER_DATA_DIR", "user_data"))
 HEADLESS_MODE = _config.get("HEADLESS_MODE", False)
 TELEGRAM_BOT_TOKEN = _config.get("TELEGRAM_BOT_TOKEN", os.environ.get("TELEGRAM_BOT_TOKEN", ""))
 TELEGRAM_CHAT_ID = str(_config.get("TELEGRAM_CHAT_ID", os.environ.get("TELEGRAM_CHAT_ID", "")) or "")
 TELEGRAM_USERNAME = _config.get("TELEGRAM_USERNAME", os.environ.get("TELEGRAM_USERNAME", "@ogame_xbot"))
 TELEGRAM_ENABLED = bool(_config.get("TELEGRAM_ENABLED", bool(TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)))
+# Asteroid miner runtime toggle (persisted)
+ASTEROID_ENABLED = bool(_config.get("ASTEROID_ENABLED", True))
+# Web server binding (override via env or config)
+WEB_HOST = _config.get("WEB_HOST", os.environ.get("WEB_HOST", "0.0.0.0"))
+try:
+    WEB_PORT = int(_config.get("WEB_PORT", os.environ.get("WEB_PORT", 5001)))
+except Exception:
+    WEB_PORT = 5001
 
 # Fleet Group Configuration (IDs from fleet_page.html)
 # NOTE: The bot will automatically find the correct ID if the Name matches, 

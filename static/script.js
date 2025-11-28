@@ -4,8 +4,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
     const logContainer = document.getElementById('logContainer');
+    const fleetGroupSelect = document.getElementById('FLEET_GROUP_NAME');
+    const fleetGroupValueInput = document.getElementById('FLEET_GROUP_VALUE');
 
     let isRunning = false;
+
+    const syncFleetValueFromSelect = () => {
+        if (fleetGroupSelect && fleetGroupValueInput) {
+            fleetGroupValueInput.value = fleetGroupSelect.value || '';
+        }
+    };
+
+    async function populateFleetGroups(currentName, currentValue) {
+        if (!fleetGroupSelect) return;
+        try {
+            const res = await fetch('/api/fleet/groups');
+            const data = await res.json();
+            const groups = data.groups || [];
+            fleetGroupSelect.innerHTML = '';
+
+            if (!groups.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No fleet groups found';
+                fleetGroupSelect.appendChild(opt);
+                syncFleetValueFromSelect();
+                return;
+            }
+
+            groups.forEach((g) => {
+                const opt = document.createElement('option');
+                opt.value = g.value;
+                opt.textContent = g.name;
+                fleetGroupSelect.appendChild(opt);
+            });
+
+            let selectedValue = '';
+            if (currentValue && groups.some((g) => g.value === currentValue)) {
+                selectedValue = currentValue;
+            } else if (currentName) {
+                const match = groups.find((g) => g.name === currentName);
+                if (match) selectedValue = match.value;
+            }
+
+            if (!selectedValue && groups.length) {
+                selectedValue = groups[0].value;
+            }
+
+            if (selectedValue) {
+                fleetGroupSelect.value = selectedValue;
+            }
+
+            syncFleetValueFromSelect();
+        } catch (error) {
+            console.error('Error loading fleet groups:', error);
+        }
+    }
+
+    if (fleetGroupSelect) {
+        fleetGroupSelect.addEventListener('change', syncFleetValueFromSelect);
+    }
 
     // Load Config
     async function loadConfig() {
@@ -15,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Populate form
             for (const [key, value] of Object.entries(config)) {
+                if (key === 'FLEET_GROUP_NAME' || key === 'FLEET_GROUP_VALUE') {
+                    continue; // handled after options load
+                }
                 const input = document.getElementById(key);
                 if (input) {
                     if (input.type === 'checkbox') {
@@ -23,6 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         input.value = value;
                     }
                 }
+            }
+
+            if (fleetGroupSelect) {
+                await populateFleetGroups(config.FLEET_GROUP_NAME, config.FLEET_GROUP_VALUE);
             }
         } catch (error) {
             console.error('Error loading config:', error);

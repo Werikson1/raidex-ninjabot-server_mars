@@ -1,6 +1,9 @@
 from flask import Flask, render_template, jsonify, request
+import asyncio
 import json
 import os
+import urllib.request
+from bs4 import BeautifulSoup
 from bot import bot_instance, log_queue
 import modules.config as config_module
 from modules.expedition_runner import load_expedition_state
@@ -15,6 +18,79 @@ def _deep_merge(base: dict, updates: dict) -> dict:
         else:
             base[key] = value
     return base
+
+
+def _get_base_url():
+    """Derive base URL from LIVE_URL to support other servers."""
+    try:
+        from urllib.parse import urlparse
+
+        parsed = urlparse(config_module.LIVE_URL)
+        if parsed.scheme and parsed.netloc:
+            return f"{parsed.scheme}://{parsed.netloc}"
+    except Exception:
+        pass
+    return "https://mars.ogamex.net"
+
+
+def _fetch_fleet_groups():
+    """
+    Fetch fleet group options from the live fleet page (or local fallback).
+    Returns a list of {"name": str, "value": str}.
+    """
+    html = None
+    url = f"{_get_base_url()}/fleet"
+
+    # Prefer the logged-in Playwright context to avoid stale/unauthenticated HTML
+    if bot_instance.browser_context and bot_instance.loop:
+        try:
+            async def _scrape_with_context():
+                page = await bot_instance.browser_context.new_page()
+                try:
+                    await page.goto(url, timeout=30000)
+                    await page.wait_for_selector("#fleetGroupSelect", timeout=10000)
+                    return await page.content()
+                finally:
+                    await page.close()
+
+            future = asyncio.run_coroutine_threadsafe(_scrape_with_context(), bot_instance.loop)
+            html = future.result(timeout=40)
+        except Exception:
+            html = None
+
+    # Fallback to plain HTTP fetch if browser context not available
+    if html is None:
+        try:
+            with urllib.request.urlopen(url, timeout=15) as resp:
+                html = resp.read().decode("utf-8", errors="ignore")
+        except Exception:
+            html = None
+
+    # Fallback to local reference page if live fetch fails
+    if not html:
+        try:
+            local_path = os.path.abspath(os.path.join("pages_view", "fleet_page.html"))
+            with open(local_path, "r", encoding="utf-8") as f:
+                html = f.read()
+        except Exception:
+            return []
+
+    try:
+        soup = BeautifulSoup(html, "html.parser")
+        select = soup.find("select", id="fleetGroupSelect")
+        if not select:
+            return []
+
+        groups = []
+        for opt in select.find_all("option"):
+            value = (opt.get("value") or "").strip()
+            name = (opt.get_text() or "").strip()
+            if not value or not name or value.lower() == "select":
+                continue
+            groups.append({"name": name, "value": value})
+        return groups
+    except Exception:
+        return []
 
 app = Flask(__name__)
 
@@ -142,10 +218,13 @@ def get_expedition_planets():
 @app.route('/api/fleet/groups', methods=['GET'])
 def get_fleet_groups():
     try:
-        groups = [
-            {"name": name, "value": value}
-            for name, value in config_module.FLEET_GROUPS.items()
-        ]
+        groups = _fetch_fleet_groups()
+        if not groups:
+            # Fallback to static config if scraping fails
+            groups = [
+                {"name": name, "value": value}
+                for name, value in config_module.FLEET_GROUPS.items()
+            ]
         return jsonify({"groups": groups})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -246,17 +325,40 @@ def stop_brain():
 @app.route('/api/asteroid/start', methods=['POST'])
 def start_asteroid_miner():
     bot_instance.enable_asteroid_miner()
+    try:
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = True
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+    except Exception as e:
+        return jsonify({"status": "asteroid_miner_started", "warning": str(e)})
     return jsonify({"status": "asteroid_miner_started"})
 
 @app.route('/api/asteroid/stop', methods=['POST'])
 def stop_asteroid_miner():
     bot_instance.disable_asteroid_miner()
+    try:
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = False
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+    except Exception as e:
+        return jsonify({"status": "asteroid_miner_stopped", "warning": str(e)})
     return jsonify({"status": "asteroid_miner_stopped"})
 
 @app.route('/api/asteroid/status', methods=['GET'])
 def get_asteroid_miner_status():
+    cfg = config_module.load_config()
+    cfg_enabled = bool(cfg.get("ASTEROID_ENABLED", True))
+    runtime_enabled = bot_instance.is_asteroid_miner_enabled()
+    if cfg_enabled and not runtime_enabled:
+        bot_instance.enable_asteroid_miner()
     return jsonify({
-        "enabled": bot_instance.is_asteroid_miner_enabled(),
+        "enabled": runtime_enabled or cfg_enabled,
+        "enabled_config": cfg_enabled,
+        "enabled_runtime": runtime_enabled,
         "running": bot_instance.running
     })
 
@@ -379,4 +481,9 @@ def get_farmer_planets():
     return get_expedition_planets()
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5000)
+    app.run(
+        debug=True,
+        use_reloader=False,
+        host=config_module.WEB_HOST,
+        port=config_module.WEB_PORT,
+    )

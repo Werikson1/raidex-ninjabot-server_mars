@@ -47,19 +47,18 @@
                     <div class="card-body config-layout">
                         <div class="config-form-section">
                             <form id="configForm">
+                                <div class="form-group checkbox-group">
+                                    <label>
+                                        <input type="checkbox" id="ASTEROID_ENABLED" name="ASTEROID_ENABLED">
+                                        Enable Asteroid Miner (persist)
+                                    </label>
+                                </div>
                                 <div class="form-group">
                                     <label>Fleet Group</label>
                                     <select id="FLEET_GROUP_NAME" name="FLEET_GROUP_NAME" class="compact-input">
-                                        <option value="220 MM">220 MM</option>
-                                        <option value="200 MM">200 MM</option>
-                                        <option value="150 MM">150 MM</option>
-                                        <option value="320 MM">320 MM</option>
-                                        <option value="250 MM">250 MM</option>
-                                        <option value="300 MM">300 MM</option>
-                                        <option value="100 MM">100 MM</option>
-                                        <option value="FARM (Plunder fleet)">FARM (Plunder fleet)</option>
-                                        <option value="EXPEDITION GROUP">EXPEDITION GROUP</option>
+                                        <option value="">Carregando grupos...</option>
                                     </select>
+                                    <input type="hidden" id="FLEET_GROUP_VALUE" name="FLEET_GROUP_VALUE" value="">
                                 </div>
 
                                 <div class="form-group checkbox-group">
