@@ -1,0 +1,477 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="brain-page-wrapper">
+<div class="card brain-card">
+    <div class="card-header">
+        <h2>Brain - Auto Builder</h2>
+        <div class="header-actions">
+            <button id="brainToggleBtn" class="btn btn-start">Start Brain</button>
+            <button id="saveBrainBtn" class="btn btn-primary">Save Targets</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="brain-table" id="brainMatrix">
+                <thead>
+                    <!-- Header populated by JS -->
+                </thead>
+                <tbody>
+                    <!-- Body populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+<style>
+    .brain-page-wrapper {
+        position: relative;
+        padding-bottom: 26vh; /* leave room for fixed log */
+    }
+
+    .brain-card {
+        min-height: 600px;
+        background: rgba(10, 15, 25, 0.95);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        /* Override default card max-width */
+    }
+
+    .card-body {
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .table-responsive {
+        overflow: auto;
+        flex: 1;
+        max-height: 80vh;
+        width: 100%;
+    }
+
+    .brain-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 800px;
+    }
+
+    .brain-table th,
+    .brain-table td {
+        padding: 12px 15px;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* Sticky Header Row */
+    .brain-table thead tr th {
+        position: sticky;
+        top: 0;
+        background: #1a2635;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        color: #4fc3f7;
+        font-weight: 600;
+    }
+
+    /* Sticky First Column (Building Names) */
+    .brain-table tbody tr td:first-child,
+    .brain-table thead tr th:first-child {
+        position: sticky;
+        left: 0;
+        background: #151f2b;
+        z-index: 11;
+        border-right: 2px solid rgba(255, 255, 255, 0.1);
+        text-align: left;
+        font-weight: 600;
+        color: #fff;
+        min-width: 180px;
+    }
+
+    /* Fix z-index for top-left corner */
+    .brain-table thead tr th:first-child {
+        z-index: 12;
+    }
+
+    .planet-header-name {
+        display: block;
+        font-size: 1.1em;
+        color: #fff;
+        margin-bottom: 4px;
+    }
+
+    .planet-header-coords {
+        display: block;
+        font-size: 0.9em;
+        color: #4fc3f7;
+    }
+
+    .cell-content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .current-level {
+        font-size: 0.9em;
+        color: #ccc;
+    }
+
+    .target-container {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.85em;
+        color: #aaa;
+    }
+
+    .form-control.level-input {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid #444;
+        color: #fff;
+        padding: 4px;
+        border-radius: 4px;
+        width: 60px;
+        text-align: center;
+    }
+
+    .form-control.level-input:focus {
+        border-color: #4fc3f7;
+        outline: none;
+    }
+
+    .status-badge {
+        font-size: 0.8em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #aaa;
+    }
+
+    .status-badge.active {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4caf50;
+    }
+
+    .brain-table tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .brain-table tr:hover td:first-child {
+        background: #1a2635;
+    }
+
+    .header-actions .btn-start,
+    .header-actions .btn-stop {
+        width: auto;
+        min-width: 140px;
+    }
+
+</style>
+
+<script>
+    const BUILDINGS = {
+        "METAL_MINE": "Metal Mine",
+        "CRYSTAL_MINE": "Crystal Mine",
+        "DEUTERIUM_REFINERY": "Deuterium Synthesizer",
+        "SOLAR_POWER_PLANT": "Solar Plant",
+        "FUSION_REACTOR": "Fusion Reactor",
+        "ROBOT_FACTORY": "Robotics Factory",
+        "NANITE_FACTORY": "Nanite Factory",
+        "SHIPYARD": "Shipyard",
+        "METAL_STORAGE": "Metal Storage",
+        "CRYSTAL_STORAGE": "Crystal Storage",
+        "DEUTERIUM_TANK": "Deuterium Tank",
+        "RESEARCH_LAB": "Research Lab",
+        "TERRAFORMER": "Terraformer",
+        "ALLIANCE_DEPOT": "Alliance Depot",
+        "MISSILE_SILO": "Missile Silo"
+    };
+
+    let empirePlanets = [];
+    let brainRunning = false;
+
+    function setBrainToggleState(isRunning) {
+        const btn = document.getElementById('brainToggleBtn');
+        if (!btn) return;
+
+        brainRunning = isRunning;
+
+        if (isRunning) {
+            btn.textContent = "Stop Brain";
+            btn.classList.remove('btn-start');
+            btn.classList.add('btn-stop');
+        } else {
+            btn.textContent = "Start Brain";
+            btn.classList.add('btn-start');
+            btn.classList.remove('btn-stop');
+        }
+        btn.disabled = false;
+    }
+
+    async function refreshBrainStatus() {
+        try {
+            const response = await fetch('/api/brain/status');
+            const data = await response.json();
+            setBrainToggleState(!!data.running);
+        } catch (error) {
+            console.error('Error fetching brain status:', error);
+            setBrainToggleState(false);
+        }
+    }
+
+    function collectTargetsFromInputs() {
+        const planetTargets = {};
+
+        document.querySelectorAll('.level-input').forEach(input => {
+            const val = parseInt(input.value);
+            if (!isNaN(val) && val > 0) {
+                const pId = input.dataset.planetId;
+                const bId = input.dataset.buildId;
+
+                if (!planetTargets[pId]) {
+                    planetTargets[pId] = {};
+                }
+                planetTargets[pId][bId] = val;
+            }
+        });
+
+        return planetTargets;
+    }
+
+    async function loadSavedTargets() {
+        try {
+            const response = await fetch('/api/brain/targets');
+            const data = await response.json();
+            const saved = data.targets || {};
+
+            document.querySelectorAll('.level-input').forEach(input => {
+                const planetId = input.dataset.planetId;
+                const buildId = input.dataset.buildId;
+                const level = saved?.[planetId]?.[buildId];
+
+                if (level !== undefined) {
+                    input.value = level;
+                }
+            });
+        } catch (error) {
+            console.error('Error loading saved targets:', error);
+        }
+    }
+
+    async function loadData() {
+        try {
+            const response = await fetch('/api/empire/data');
+            const data = await response.json();
+            empirePlanets = data.planets || [];
+            renderMatrix();
+            await loadSavedTargets();
+            await refreshBrainStatus();
+        } catch (error) {
+            console.error('Error loading data:', error);
+        }
+    }
+
+    function renderMatrix() {
+        const table = document.getElementById('brainMatrix');
+        const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+
+        if (empirePlanets.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="100%">No planets found. Run Empire Crawler first.</td></tr>';
+            return;
+        }
+
+        // 1. Render Header
+        let headerHtml = '<tr><th>Building</th>';
+        empirePlanets.forEach(planet => {
+            headerHtml += `
+                <th>
+                    <span class="planet-header-name">${planet.name}</span>
+                    <span class="planet-header-coords">${planet.coords}</span>
+                </th>
+            `;
+        });
+        headerHtml += '</tr>';
+        thead.innerHTML = headerHtml;
+
+        // 2. Render Rows (Buildings)
+        let bodyHtml = '';
+        for (const [buildId, buildName] of Object.entries(BUILDINGS)) {
+            bodyHtml += `<tr>`;
+            // First col: Building Name
+            bodyHtml += `<td>${buildName}</td>`;
+
+            // Planet cols
+            empirePlanets.forEach(planet => {
+                const planetId = planet.id || planet.coords;
+                const facilities = planet.facilities || {};
+                const key = buildId.toLowerCase();
+                const currentLevel = facilities[key] !== undefined ? facilities[key] : '-';
+
+                bodyHtml += `
+                    <td>
+                        <div class="cell-content">
+                            <div class="current-level">Current Level: <b>${currentLevel}</b></div>
+                            <div class="target-container">
+                                Level Target: 
+                                <input type="number" class="form-control level-input" 
+                                       data-planet-id="${planetId}" 
+                                       data-build-id="${buildId}"
+                                       min="0" value="0">
+                            </div>
+                            <div class="status-badge" id="status-${planetId}-${buildId}">Idle</div>
+                        </div>
+                    </td>
+                `;
+            });
+
+            bodyHtml += `</tr>`;
+        }
+        tbody.innerHTML = bodyHtml;
+    }
+
+    document.getElementById('brainToggleBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('brainToggleBtn');
+
+        if (brainRunning) {
+            btn.disabled = true;
+            btn.textContent = "Stopping...";
+            try {
+                await fetch('/api/brain/stop', { method: 'POST' });
+                setBrainToggleState(false);
+            } catch (error) {
+                console.error('Error stopping brain:', error);
+                setBrainToggleState(true);
+            }
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = "Starting...";
+
+        const planetTargets = collectTargetsFromInputs();
+
+        if (Object.keys(planetTargets).length === 0) {
+            alert('Please set at least one target level.');
+            setBrainToggleState(false);
+            return;
+        }
+
+        console.log("Starting brains for:", planetTargets);
+
+        let successCount = 0;
+        for (const [pId, targets] of Object.entries(planetTargets)) {
+            try {
+                const response = await fetch('/api/brain/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        planet_id: pId,
+                        targets: targets
+                    })
+                });
+                const res = await response.json();
+                if (res.status === 'started') {
+                    successCount++;
+                    for (const bId of Object.keys(targets)) {
+                        const badge = document.getElementById(`status-${pId}-${bId}`);
+                        if (badge) {
+                            badge.textContent = "Queued";
+                            badge.classList.add('active');
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error(`Error starting brain for ${pId}:`, e);
+            }
+        }
+
+        if (successCount > 0) {
+            setBrainToggleState(true);
+            alert(`Started Brain tasks for ${successCount} planets.`);
+        } else {
+            setBrainToggleState(false);
+            alert('No Brain tasks were started. Check targets and try again.');
+        }
+    });
+
+    document.getElementById('saveBrainBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('saveBrainBtn');
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+
+        const planetTargets = collectTargetsFromInputs();
+
+        if (Object.keys(planetTargets).length === 0) {
+            alert('Set at least one target level before saving.');
+            btn.disabled = false;
+            btn.textContent = "Save Targets";
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/brain/targets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(planetTargets)
+            });
+            const res = await response.json();
+
+            if (response.ok) {
+                alert('Targets saved.');
+            } else {
+                alert(res.error || 'Error saving targets.');
+            }
+        } catch (error) {
+            console.error('Error saving targets:', error);
+            alert('Error saving targets.');
+        }
+
+        btn.disabled = false;
+        btn.textContent = "Save Targets";
+    });
+
+    // Initialize
+    loadData();
+
+    // Log polling
+    async function updateLogs() {
+        try {
+            const response = await fetch('/api/status');
+            const data = await response.json();
+
+            const logContainer = document.getElementById('logContainer');
+            if (logContainer && data.logs) {
+                logContainer.innerHTML = data.logs.map(log =>
+                    `<div class="log-entry">${log}</div>`
+                ).join('');
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+        } catch (error) {
+            console.error('Error fetching logs:', error);
+        }
+    }
+
+    setInterval(updateLogs, 2000);
+    updateLogs();
+</script>
+
+<!-- Footer Logs -->
+<footer class="log-footer">
+    <div class="log-header">Execution Log</div>
+    <div id="logContainer" class="log-container">
+        <!-- Logs will be injected here -->
+    </div>
+</footer>
+{% endblock %}

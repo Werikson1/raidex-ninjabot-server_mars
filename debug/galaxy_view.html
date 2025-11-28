@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+
+<html x-ms-format-detection="none" lang="pt">
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=none" />
+    <meta name="format-detection" content="address=no">
+    <meta http-equiv="content-language" content="pt">
+
+
+    <title>Mars | OgameX</title>
+
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/other/fonts/fa-pro/css/pro.min.css" />
+
+    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3979">
+    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3979">
+
+
+
+
+    <script>
+
+
+        window.localization = {};
+        window.localization.dayMark = 'd';
+        window.localization.Yes = 'Yes';
+        window.localization.No = 'No';
+        window.localization.Warning = 'Warning';
+        window.localization.BATTLE_REPORT = 'Battle Report';
+
+        window.timeoffset_cookie_name = 'timeZoneOffset';
+        window.currentPlayerName = 'Sub Zero';
+        window.currentPlayerId = '8750bf6e-e636-431f-9f51-df48d2e6e73d';
+        window.currentPlanetId = '6e3d63fb-afb6-44d4-8440-4768b52cbc3f';
+        window.isVacation = false;
+        window.allianceId = '2d092f59-4327-46cc-bf71-24193bd8959f';
+
+        window.currentPlayerClass = null;
+
+
+        window.currentPlayerClass = 'MINER';
+
+
+
+        var resources = {
+            initialMetal: 5833985935029,
+            initialCrystal: 7577725847888,
+            initialDeuterium: 5352020892069,
+            metal: 5833985935029,
+            crystal: 7577725847888,
+            deuterium: 5352020892069,
+            energy: 0,
+            energyConsumption: 0,
+            darkmatter: 222402,
+            metalProduction: 0,
+            crystalProduction: 0,
+            deuteriumProduction: 0,
+            metalStorageCapacity: 10000000.000000,
+            crystalStorageCapacity: 10000000.000000,
+            deuteriumStorageCapacity: 10000000.000000
+        };
+
+        var initialServerTime = 1763597431000;
+        var currentServerTime = 1763597431000;
+
+        var lang = 'pt';
+
+    </script>
+    <script src="/assets/js/default.js?v=3979"></script>
+    <script src="/assets/js/app/tooltip.js?v=3979"></script>
+    <script src="/assets/js/libs/autonumeric.min.js"></script>
+
+
+
+    <script>
+        function configureNumberInputFormat(containerElementId) {
+            const autoNumericOptions = {
+                allowDecimalPadding: false,
+                alwaysAllowDecimalCharacter: false,
+                digitGroupSeparator: '.',
+                decimalCharacter: ',',
+                decimalCharacterAlternatif: '.',
+                currencySymbol: '',
+                // overrideMinMaxLimits: 'ignore',
+                // emptyInputBehavior: 'zero',
+                maximumValue: '99999999999999999999999999999',
+                minimumValue: '0',
+                //historySize:0,
+                selectOnFocus: false,
+                modifyValueOnWheel: false,
+                formatOnPageLoad: true,
+                watchExternalChanges: true,
+                decimalPlaces: 0
+            };
+
+            if (containerElementId == undefined || containerElementId == null || containerElementId == "") {
+                containerElementId = "";
+            }
+            else {
+                containerElementId = "#" + containerElementId;
+            }
+            new AutoNumeric.multiple(containerElementId + ' .numberFormatInput', autoNumericOptions);
+
+
+            $(containerElementId + ' .numberFormatInput').focusin(function () {
+                var val = $(this).val();
+                if (val === '0' || val === 0 || val == '0' || val == 0) {
+                    //  this.value = '';
+                    $(this).val('');
+                }
+            }).focusout(function () {
+
+                var val = $(this).val();
+                if (val === '' || val === ' ' || val == '' || val == ' ') {
+
+                    $(this).val(0);
+                }
+            }).on("input", function (e) {
+                var value = 0;
+                if (/\D/g.test(this.value)) {
+                    // Filter non-digits from input value.
+                    value = this.value.replace(/\D/g, '');
+                }
+                else {
+                    value = this.value;
+                }
+
+                var intVal = parseInt(value);
+                if (!isNaN(intVal)) {
+                    if ($(this).attr('min-value') != undefined) {
+                        var minVal = parseInt($(this).attr('min-value'));
+
+                        if (isNaN(minVal)) {
+                            minVal = 0;
+                        }
+                        else if (minVal < 0) {
+                            minVal = 0;
+                        }
+                        if (intVal < minVal) {
+                            this.value = 0;
+                        }
+                    }
+
+                    if ($(this).attr('max-value') != undefined) {
+                        var maxVal = parseInt($(this).attr('max-value'));
+
+                        if (!isNaN(maxVal) && maxVal > 0) {
+                            if (intVal > maxVal) {
+                                this.value = maxVal;
+                            }
+                        }
+                    }
+                }
+            }).keyup(function () {
+                $(this).trigger('input');
+            });
+        }
+        $(function () {
+            configureNumberInputFormat();
+        });
+
+    </script>
+
+
+
+
+
+
+</head>
+
+<body>
+    <div id="tooltip-container"></div>
+    <div id="tooltip-sticky-container"></div>
+    <div id="tooltip-static-container"></div>
+
+    <div id="game-bg">
+        <div id="game-container">
+            <div id="header"
+                style="background:url(../assets/images/V2/header_v3.png) no-repeat center;background-position-y:40px;">
+                <div class="top-nav">
+                    <div class="left-side">
+                        <a href="/statistics" class="nav-link fa fa-signal tooltip" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Statistics</h3>"></a>
+                        <a href="/halloffame" class="nav-link fa fa-trophy tooltip" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Hall of fame</h3>"></a>
+                        <a href="/records" class="nav-link fa fa-award tooltip" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Records</h3>"></a>
+                        <a href="/chat/universal" class="nav-link fa fa-comments tooltip" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Universal Chat</h3>"></a>
+                        <a href="https://discord.gg/N4ckzJwRtJ" target="_blank" class="nav-link fab fa-discord tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Discord channel</h3>"></a>
+                        <a href="/SupportTicket/SupportTicketList" class="nav-link fa fa-headset tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Support</h3>"></a>
+                        <a href="/home/eventCalendar" class="nav-link fas fa-calendar-alt tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Event Calendar</h3>"></a>
+                    </div>
+                    <div class="center-side">
+
+
+
+                        <a href="/"><img class="logo" src="../../assets/images/V2/logo.png" /></a>
+
+
+                    </div>
+                    <div class="right-side">
+
+                        <a href="https://ogamex.net/home/rules" class="nav-link fas fa-book tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Rules</h3>"></a>
+                        <a href="/friendsenemies" class="nav-link fa fa-users tooltip" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Friends &amp; Enemies</h3>"></a>
+                        <a href="#" class="nav-link fa fa-search tooltip" data-ajax-modal data-modal-title=""
+                            data-modal-url="/home/search" data-modal-size="large" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Search</h3>"></a>
+                        <a href="/bannedplayers" class="nav-link fa fa-user-slash tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Banned players</h3>"></a>
+
+                        <a href="/settings" class="nav-link fa fa-tools tooltip" data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Settings</h3>"></a>
+                        <a href="/home/logout" class="nav-link fa fa-sign-out-alt tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Log out</h3>"></a>
+                    </div>
+                </div>
+                <div class="resources-section">
+                    <div class="resources-content">
+                        <a href="/resource" class="resource-item resource-item-metal tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>5.833.985.935.029</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-metal"></span>
+
+                            <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                <span class="resource-amount">
+                                    <span
+                                        style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
+                                    <span id="metal-amount" style="color:#F00;font-size:10px;">5.833.985.935.029</span>
+
+                                </span>
+                            </div>
+
+
+
+
+                        </a>
+                        <a href="/resource" class="resource-item resource-item-crystal tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>7.577.725.847.888</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-crystal"></span>
+
+                            <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                <span class="resource-amount">
+                                    <span
+                                        style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
+                                    <span id="crystal-amount"
+                                        style="color:#F00;font-size:10px;">7.577.725.847.888</span>
+
+                                </span>
+                            </div>
+
+
+
+                        </a>
+                        <a href="/resource" class="resource-item resource-item-deuterium tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>5.352.020.892.069</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-deuterium"></span>
+
+                            <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                <span class="resource-amount">
+                                    <span
+                                        style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Deuterium</span>
+                                    <span id="deuterium-amount"
+                                        style="color:#F00;font-size:10px;">5.352.020.892.069</span>
+
+                                </span>
+                            </div>
+
+
+                        </a>
+                        <a href="/resource" class="resource-item resource-item-energy tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Energy</td></tr><tr><td>Energy production : </td><td><span>0</span></td></tr><tr><td>Energy consumption : </td><td><span style='color:#dc0606;'>0</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-energy"></span>
+
+                            <div style="position: absolute;top: 18px;width: 116px;left: 56px;text-align: left;">
+                                <span
+                                    style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -10px;left: 0px;">Energy</span>
+                                <span class="resource-amount" style="color:#0f0 !important;font-size:10px;">0</span>
+                            </div>
+
+
+                        </a>
+                        <a href="/darkmatter/purchase" class="resource-item right-item resource-item-darkmatter tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Dark matter</td></tr></table></div>">
+                            <span class="resource-icon resource-icon-darkmatter"
+                                style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
+                            <span
+                                style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: 8px;right: 56px;">Dark
+                                matter</span>
+                            <span class="resource-amount"
+                                style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">222.402</span>
+                        </a>
+                        <a href="/wiki" class="resource-item right-item resource-item-wiki tooltip"
+                            data-tooltip-position="bottom"
+                            data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Wiki</td></tr></table></div>">
+                            <span class="resource-icon resource-icon-wiki"
+                                style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
+                            <span
+                                style="position: absolute;font-size: 12px;font-weight: bold;color: #b0c0d5;top: 16px;right: 44px;">Wiki</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="messages-section">
+
+                    <a href="/messages" class="messages-button tooltip" data-tooltip-position="bottom"
+                        data-tooltip-content="<div style='font-size:11px;'>Unread messages (4)</div>">
+                        <span class="new-msg-count">
+                            4
+                        </span>
+
+                    </a>
+                    <a href="/chat" class="chat-button tooltip" data-tooltip-position="bottom"
+                        data-tooltip-content="<div style='font-size:11px;'>Unread chat messages (0)</div>">
+
+                    </a>
+                </div>
+                <div class="fleet-info-section ">
+
+                    <div style="cursor:pointer;text-align:left;padding-left:20px;" id="fleet-movement-detail-btn">
+                        <div style="padding:4px;color:#FFF;font-size:11px;">
+                            <span><b>16</b> Missions: </span>
+                            <span style="color:#9C0;">16 Own</span>
+
+                        </div>
+                        <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
+                            <span>
+
+
+
+                                Next: <span id="NextMissionRemainingTime">01:06</span>
+                            </span>
+                        </div>
+                        <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
+                            <span>Type:</span>
+                            <span style="color:#9C0;">Asteroid Mining</span>
+                            <span>
+                                (R)
+                            </span>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id="system-clock">19.11.2025 21:10:31</div>
+                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom"
+                    data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>Sub Zero</div> <div style='float:left;width:100%;color:#6f9fc8;line-height:18px;max-width: 170px;max-height: 17px;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;'><span style='font-weight:bold;'>[GMC]</span> Galactic Mining Corp</div> <div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>87</span> / 2.800</div></div></div></div>">
+
+                    <div class="avatar-box player_class_MINER"></div>
+
+                    <div class="player-name">Sub Zero</div>
+                    <div class="player-ranking"><i class="fad fa-crown"></i> 87</div>
+                </a>
+
+
+            </div>
+
+            <div id="game-bottom" style="float:left;width:1000px;">
+
+                <div style="float:left;width:100%;position:relative;margin-top:5px;">
+
+                    <div id="left-menu-1">
+
+                        <div class="menu-item btn-online-bonus">
+                            <a href="/home/onlinebonus" id="btn-online-bonus" class="text-item">
+                                <span class="btn-online-bonus-anim">Online bonus</span>
+                            </a>
+                        </div>
+
+
+                        <div class="menu-item ">
+                            <a href="/home" class="text-item">Overview</a>
+                        </div>
+
+
+
+
+
+                        <div class="menu-item ">
+                            <a href="/building/facility" class="text-item">Facilities</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/building/jumpgate" class="text-item">Jump Gate</a>
+                        </div>
+
+
+
+                        <div class="menu-item ">
+                            <a href="/research" class="text-item">Research</a>
+
+                        </div>
+
+                        <div class="menu-item ">
+                            <a href="/hangar" class="text-item">Shipyard</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/defense" class="text-item">Defense</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/fleet" class="text-item">Fleet</a>
+
+                        </div>
+                        <div class="menu-item active">
+                            <a href="/galaxy" class="text-item">Galaxy</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/alliance" class="text-item">Alliance</a>
+
+                        </div>
+                        <div class="menu-item">
+                            <a href="/empire" target="_blank" class="text-item">Empire</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/officer" class="text-item">Officers</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/academy" class="text-item">Academy</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/merchant" class="text-item premium-text">Merchant</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/premium" class="text-item premium-text">Premiums</a>
+
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/shop" class="text-item premium-text">Shop</a>
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/shop/inventory" class="text-item">Inventory</a>
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/simulator" class="text-item">Simulators</a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/darkmatter/promote" class="text-item" style="color:#4caf50;">Promote Server</a>
+                        </div>
+                    </div>
+
+                    <div id="content-wrapper" class="playerHasMoons">
+                        <div id="layoutFleetMovements" class="fleet-movement-wrapper">
+                            <div class="header">
+                                <span class="title">Events</span>
+                            </div>
+                            <div class="content" id="fleet-movement-content"></div>
+                            <div class="footer"></div>
+                        </div>
+
+
+
+
+
+                        <script>
+
+                            window.localization.addEnemySuccess = `The player has been added to the enemy list.`;
+                            window.localization.missileSentSuccess = `Missiles have been sent.`;
+
+                        </script>
+
+                        <link href="/assets/styles/app/pages/galaxy.css?v=3979" rel="stylesheet" />
+
+                        <div id="galaxy-container">
+                            <div class="galaxy">
+                                <div class="galaxy-route">
+                                    <div id="galaxyRoute" class="route-item">
+                                        <span class="route-title">Galaxy : </span>
+                                        <a id="btnGalaxyLeft" href="#" class="fas fa-caret-left left-arrow"></a>
+                                        <input type="text" id="galaxyInput" class="route-input numberFormatInput"
+                                            value="3" autocomplete="off" tabindex="101" max-value="8" />
+                                        <a id="btnGalaxyRight" href="#" class="fas fa-caret-right right-arrow"></a>
+                                    </div>
+                                    <div id="systemRoute" class="route-item">
+                                        <span class="route-title">System : </span>
+                                        <a id="btnSystemLeft" href="#" class="fas fa-caret-left left-arrow"></a>
+                                        <input type="text" id="systemInput" class="route-input numberFormatInput"
+                                            value="247" autocomplete="off" tabindex="102" max-value="499" />
+                                        <a id="btnSystemRight" href="#" class="fas fa-caret-right right-arrow"></a>
+                                    </div>
+                                    <div
+                                        style="float:left;padding:2px;border:1px solid rgb(43,63,90);border-right: 2px solid rgb(43,63,90);">
+                                        <a href="#" class="btn-route x-btn-go">Go</a>
+                                    </div>
+
+                                    <div
+                                        style="float:right;padding:2px;border:1px solid rgb(43,63,90);border-left:2px solid rgb(43,63,90);">
+                                        <a href="/galaxy/savedplanets" class="btn-route"
+                                            style="padding:0px 10px;border-radius:0px;color: #0A0;font-weight: bold;">Saved
+                                            planets</a>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="galaxy-content filterEmpty    " id="galaxyContent">
+
+                                </div>
+                                <div class="msg-box">
+                                </div>
+                                <div class="bottom-info"></div>
+                            </div>
+
+                            <!-- ASTEROID-DETAIL-MODAL -->
+                            <div class="modal micromodal-slide" id="ajax-asteroid-modal" aria-hidden="true">
+                                <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+                                    <div class="modal__container modal__small" id="ajax-asteroid-modal-container"
+                                        role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title"
+                                        style="padding: 5px 5px;">
+                                        <header class="modal__header" style="justify-content:end;">
+                                            <button class="modal__close" aria-label="Close modal"
+                                                data-micromodal-close></button>
+                                        </header>
+                                        <main class="modal__content" id="ajax-asteroid-modal-content"
+                                            style="padding-top:0px;">
+
+                                        </main>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ASTEROID-DETAIL-MODAL -->
+
+                        </div>
+
+
+                        <script>
+                            window.localization.PLANET_SAVED_SUCCESS = `The planet has been saved.`;
+                            window.localization.SENSOR_REPORT = `Sensor report`;
+
+                            window.galaxy_Count = 8;
+                            window.system_Count = 499;
+
+                        </script>
+                        <script src="/assets/js/app/pages/galaxy.js?v=3979"></script>
+                    </div>
+
+                    <div id="planet-selection">
+                        <span class="planet-info">[26/26] Planets</span>
+                        <div id="other-planets">
+                            <div class="planet-item  selected">
+                                <a class="planet-select " href="?planet=dc766adf-c3ce-4cc7-bfd0-4de756aa36af">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/32/32_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">0 - AWS</span>
+                                    <span class="planet-coords">
+                                        [3:247:9]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select selected" href="?planet=6e3d63fb-afb6-44d4-8440-4768b52cbc3f"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=e5678a84-0e83-42de-a4c4-e69ed73584be">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/34/34_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">001-G1</span>
+                                    <span class="planet-coords">
+                                        [1:417:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=7ce3b9e0-3770-461a-9b42-4d4ae4cb896a"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=b7cfcbb2-d069-492b-af69-15c9ed61dea0">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/22/22_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">002-G1</span>
+                                    <span class="planet-coords">
+                                        [1:413:7]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=2aa818d3-fc2b-48aa-9942-b36fbc50eb40"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=aa25d128-df14-407a-a4a8-11b5d0aa9a15">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/5/5_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">003-G2</span>
+                                    <span class="planet-coords">
+                                        [2:19:1]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=db53f331-8602-4905-be4a-4bec0123a969"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=fe14ab24-6eeb-45eb-a8e4-a8d49369635a">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/34/34_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">004-G3</span>
+                                    <span class="planet-coords">
+                                        [3:414:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=2ceffce0-2117-4af1-8968-3b9d314d73a2"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=2808940c-28d1-49b0-95a7-44c8aa18a770">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/5/5_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">005-G3</span>
+                                    <span class="planet-coords">
+                                        [3:413:1]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=f8222861-4868-46fe-bd43-231f292d937c"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=6b80c650-810a-4f91-accc-49338a034399">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/29/29_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">006-G3</span>
+                                    <span class="planet-coords">
+                                        [3:421:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=7730ec00-36d4-4d05-932c-0b07112d8b61"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=56e2e2a4-ee91-4fd9-b14f-553b48630df0">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/24/24_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">007-G3</span>
+                                    <span class="planet-coords">
+                                        [3:431:7]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=9857f1ef-8a72-4a71-b9f4-037d72b5d3d6"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=ae53141c-efba-4748-90e6-177ce535da0d">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/8/8_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">008-G4</span>
+                                    <span class="planet-coords">
+                                        [4:411:1]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=3738ab42-f787-454d-a748-71fc6b8c502b"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=6f83e72c-c4c9-4341-be48-1c7dc78c76cc">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/23/23_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">009-G4</span>
+                                    <span class="planet-coords">
+                                        [4:157:7]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=464b32ea-beb4-4640-b514-5c529218fd20"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=9034d32e-cc96-4e37-bbf1-6d9f0f8f3d4b">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/4/4_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">010-G3</span>
+                                    <span class="planet-coords">
+                                        [3:96:1]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=41cc9808-2f87-41ad-a2c2-101810a05f19"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=c00d1ac3-d6cf-4292-bf31-b5306b68e9c8">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/25/25_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">011-G3</span>
+                                    <span class="planet-coords">
+                                        [3:254:6]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=dc4f3bb1-1b24-4d00-b6d2-51777adec498"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=92b2ea04-b7a4-482c-b6e7-ca2c91f3ca5c">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/35/35_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">012-G4</span>
+                                    <span class="planet-coords">
+                                        [4:281:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=7503b728-4591-40de-9cb6-94e30d08bc39"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=11aff195-f7f2-475d-8c5f-c8acc1a4915a">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/23/23_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">013-G4</span>
+                                    <span class="planet-coords">
+                                        [4:270:6]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=11fa9d60-0415-42f0-b42a-2fb40290643f"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=b3700791-1eb5-4760-a6c5-6415adb5fc21">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/20/20_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">014-G2</span>
+                                    <span class="planet-coords">
+                                        [2:380:6]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=009ffc42-c6a3-481c-afa0-36fbce17e76c"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=7d7fb444-9252-41a5-8899-6bb3a2b41b66">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/24/24_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">015-G3</span>
+                                    <span class="planet-coords">
+                                        [3:30:6]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=4d8f72ce-307e-4903-ac0d-494e5b48538b"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=9b563a61-9817-47c5-95d8-0d34ec40ce8c">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/6/6_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">016-G2</span>
+                                    <span class="planet-coords">
+                                        [2:180:1]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=091ecc63-ee49-48d3-97aa-561cf9c25359"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=77fbec53-e870-4580-8343-b725c9acc4d6">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/25/25_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">017-G4</span>
+                                    <span class="planet-coords">
+                                        [4:121:6]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=f45979c5-79c6-4484-b6f0-b5c3c4680f3d"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=08a3343f-a3b5-47d2-bc0f-6740717128ff">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/21/21_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">018-G4</span>
+                                    <span class="planet-coords">
+                                        [4:145:6]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=f3b74ed8-ba35-4304-8812-411e117a8570"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=8b1c8f6b-a972-4a75-9177-53d0307e4760">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/12/12_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">019-G3</span>
+                                    <span class="planet-coords">
+                                        [3:151:5]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=4a1bce9a-eb8c-4089-90be-1a76174b9d36"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=14a751da-1b01-49a3-ac8c-495511d1f116">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/28/28_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">020-G3</span>
+                                    <span class="planet-coords">
+                                        [3:96:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=efbbf3da-2c68-4b66-970b-816741887376"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=220a830e-5ad2-4ed0-89ba-49263587f94e">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/27/27_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">021-G2</span>
+                                    <span class="planet-coords">
+                                        [2:19:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=ec86e8fb-22ba-49b6-9392-bec731631470"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=3c7e73c4-922a-47b3-99e8-6e452843d414">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/11/11_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">022-G3</span>
+                                    <span class="planet-coords">
+                                        [3:320:5]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=142c0046-2f3b-4850-a575-f35f331d9f0d"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=35ab550f-5a66-4839-964f-41bf13fe6da0">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/11/11_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">023-G3</span>
+                                    <span class="planet-coords">
+                                        [3:208:5]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=a0778f0e-c668-42ba-9970-886838f4173a"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=e91207fb-63a6-43df-af3e-71a543bf0d89">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/28/28_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">024-G4</span>
+                                    <span class="planet-coords">
+                                        [4:411:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=885cfe2c-d814-4c8b-8a99-6afcea26a390"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+                            <div class="planet-item  ">
+                                <a class="planet-select " href="?planet=221af442-7877-4a5a-9287-a2de596eded3">
+                                    <img class="planet-icon" src="/assets/images/v2/planet/29/29_small.jpg?v=4" />
+
+
+
+
+                                    <span class="planet-name">025-G3</span>
+                                    <span class="planet-coords">
+                                        [3:413:8]
+
+                                    </span>
+
+                                </a>
+
+                                <a class="moon-select " href="?planet=7431119c-6ee6-41d1-9b12-d8f33b921cc8"
+                                    style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <!-- AJAX-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__medium" id="ajax-modal-container" role="dialog" aria-modal="true"
+                aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-modal-content">
+
+                </main>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- AJAX-MODAL-END -->
+    <!-- COMBAT-REPORT-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-combatreport-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__chat" id="ajax-combatreport-modal-container" role="dialog"
+                aria-modal="true" aria-labelledby="ajax-modal-title" style="padding: 5px 5px;">
+                <header class="modal__header">
+                    <div class="navigation">
+                        <a href="#" class="nav-item modal__title" id="ajax-combatreport-modal-title"
+                            data-target="combatReport-tab" data-ajax-loaded="true">Battle Report</a>
+                        <a href="#" class="nav-item" data-target="comments-tab">Comments</a>
+                    </div>
+                    <button class="modal__close" style="border: 1px solid #0b9eb7;" aria-label="Close modal"
+                        data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-combatreport-modal-content">
+                    <div class="content">
+                        <div class="tab-item" id="combatReport-tab" style="min-height:200px;">
+                        </div>
+                        <div class="tab-item" id="comments-tab" style="min-height:200px;">
+
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <!--  COMBAT-REPORT-MODAL -->
+    <!-- PLAYER-BADGE-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-playerBadge-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container " id="ajax-playerBadge-modal-container"
+                style="background:linear-gradient( 180deg,rgb(29,42,59) 0%, rgb(0,0,0) 100%);" role="dialog"
+                aria-modal="true" aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-playerBadge-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-playerBadge-modal-content" style="margin-top:0px !important;">
+
+                </main>
+
+            </div>
+        </div>
+    </div>
+    <!--  PLAYER-BADGE-MODAL -->
+    <!-- CHAT-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-chat-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__chat" id="ajax-chat-modal-container" role="dialog" aria-modal="true"
+                aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-chat-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-chat-modal-content">
+
+                </main>
+
+            </div>
+        </div>
+    </div>
+    <!-- CHAT-MODAL-END -->
+    <!-- IFRAME-MODAL -->
+    <div class="modal micromodal-slide" id="iframe-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__medium" id="iframe-modal-container" role="dialog" aria-modal="true"
+                aria-labelledby="iframe-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="iframe-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="iframe-modal-content">
+
+                </main>
+
+            </div>
+        </div>
+    </div>
+    <!-- IFRAME-MODAL-END -->
+    <!-- PLAYER FRIEDNS ADD-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-playerfriendcreate-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__chat" id="ajax-playerfriendcreate-modal-container" role="dialog"
+                aria-modal="true" aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-playerfriendcreate-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-playerfriendcreate-modal-content">
+
+                </main>
+
+            </div>
+        </div>
+    </div>
+    <!--  PLAYER FRIEDNS ADD-MODAL -->
+
+
+
+    <div id="BackGroundFreezerPreloader" class="BackGroundFreezer" align="center">
+        <div class="loader">
+        </div>
+    </div>
+
+    <script>
+
+        var _browserLanguage = (window.navigator.userLanguage || window.navigator.language).substring(0, 2).toLowerCase();
+        var _fleetReturnCounterInterval = null;
+
+
+
+
+        function ReloadPage() {
+            if (!window.location.hash) {
+                window.location.href = window.location.href;
+            } else {
+                window.location.reload();
+            }
+        }
+
+        function ReportChatMessage(msgId, isUniverseMessage) {
+
+            var data = {
+                Id: msgId
+            };
+
+            if (isUniverseMessage != undefined && isUniverseMessage != null && isUniverseMessage === true) {
+                PostRequest('/chat/reportuniversalmessage', JSON.stringify(data),
+                    function (res) {
+                        if (res.IsSuccess) {
+                            ShowSuccessMessage(`The report has been sent to the administrators for review.`);
+                        }
+                        else {
+                            ShowError(res.Message);
+                        }
+                    },
+                    function () {
+                        ShowError();
+                    });
+            }
+            else {
+                PostRequest('/chat/reportmessage', JSON.stringify(data),
+                    function (res) {
+                        if (res.IsSuccess) {
+                            ShowSuccessMessage(`The report has been sent to the administrators for review.`);
+                        }
+                        else {
+                            ShowError(res.Message);
+                        }
+                    },
+                    function () {
+                        ShowError();
+                    });
+            }
+        }
+
+        function ShowError(contentHtml) {
+            var defaultMsg = `An unexpected error occurred.`;
+            var errorMsg = '';
+            if (contentHtml === undefined || contentHtml == null || contentHtml === '') {
+                errorMsg = defaultMsg;
+            }
+            else
+                errorMsg = contentHtml;
+
+            Swal.fire({
+                type: 'error',
+                title: `Error`,
+                html: `<div style="font-size:12px;">` + errorMsg + `</div>`,
+                footer: '',
+                onBeforeOpen: function (ele) {
+                    console.log($(ele));
+                    $(ele).addClass('swal2-modal-error');
+                }
+            });
+        }
+
+        function ShowNotEnoughDM() {
+            var message = `Not enough Dark Matter available!</br> Do you want to buy some now?`;
+
+            Swal.fire({
+                title: 'Error',
+                html: '<span style="font-size: 12px; ">' + message + '</span>',
+                type: 'error',
+                showCancelButton: true,
+                buttonStyling: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                onBeforeOpen: function (ele) {
+                    console.log($(ele));
+                    $(ele).addClass('swal2-modal-error');
+                }
+            }).then(function (result) {
+                if (result.value) {
+                    window.location.href = '/darkmatter/purchase';
+                }
+            })
+        }
+
+        function ShowSuccessMessage(message, callback) {
+            Swal.fire({
+                title: `Success`,
+                html: `<span style="font-size:12px;">${message}</span>`,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok',
+                onBeforeOpen: function (ele) {
+                    console.log($(ele));
+                    $(ele).addClass('swal2-modal-success');
+                }
+            }).then((result) => {
+                if (result.value) {
+                    if (callback != undefined && callback != null) {
+                        callback();
+                    }
+                }
+            });
+        }
+
+        window.isConnectedChatWs = false;
+
+        function ConnectChatWS() {
+            if (window.isConnectedChatWs)
+                return;
+
+            var hub = $.connection.wSHub;
+
+            hub.client.newChatMessage = function (dataJson) {
+                var data = JSON.parse(dataJson);
+                console.log(data);
+
+                data.MessageContent = Emojify(data.MessageContent);
+
+                if (data.IsAllianceChat === true) {
+                    var allianceChatMessagesContainer = $('#alliance_chat_messages');
+                    if (allianceChatMessagesContainer.length > 0) {
+                        var msgDateObj = new Date(data.MessageDate);
+
+                        allianceChatMessagesContainer.append('<div class="message-item"><span class="msg-sender">' + data.FromPlayerName + '</span><span class="msg-date">' + FormatDate(msgDateObj) + '</span><span class="msg-arrow"></span><div class="msg-content">' + data.MessageContent + '</div></div>');
+
+                        allianceChatMessagesContainer.animate({ scrollTop: allianceChatMessagesContainer.prop("scrollHeight") }, 1000);
+                    }
+                }
+                else {
+                    var playerChatMessagesContainer = $('#player_chat_messages_' + data.FromPlayerId);
+                    if (playerChatMessagesContainer.length > 0) {
+
+                        var msgDateObj = new Date(data.MessageDate);
+
+                        playerChatMessagesContainer.append('<div class="message-item"><span class="msg-sender">' + data.FromPlayerName + '</span><span class="msg-date">' + FormatDate(msgDateObj) + '</span><span class="msg-arrow"></span><div class="msg-content">' + data.MessageContent + '</div></div>');
+
+                        playerChatMessagesContainer.animate({ scrollTop: playerChatMessagesContainer.prop("scrollHeight") }, 1000);
+
+                    }
+                }
+
+            };
+
+            $.connection.hub.start();
+            window.isConnectedChatWs = true;
+        }
+
+
+
+        $(function () {
+
+            window.fleetDetailTableOpened = false;
+
+            var currentMissionRemainingSeconds = 66;
+
+            setInterval(function () {
+                currentMissionRemainingSeconds -= 1;
+                $('#NextMissionRemainingTime').html(ConvertToTimeString(currentMissionRemainingSeconds));
+            }, 1000);
+
+
+            $('#fleet-movement-detail-btn').click(function () {
+
+                if (window.fleetDetailTableOpened === true) {
+                    $('#layoutFleetMovements').toggleClass('opened');
+                }
+                else {
+
+                    $('#header .fleet-info-section').loading(true);
+
+                    $.ajax({
+                        url: '/home/fleetmovementlist',
+                        type: 'GET',
+                        cache: false,
+                        success: function (data) {
+                            window.fleetDetailTableOpened = true;
+
+                            $('#fleet-movement-content').html(data);
+
+                            ConfigureModals();
+                            ConfigureTooltips();
+
+                            $('#layoutFleetMovements').toggleClass('opened');
+
+                            $('#header .fleet-info-section').loading(false);
+                        }
+                    });
+                }
+
+                return false;
+            })
+
+        });
+
+
+
+
+
+        function MutePlayer(playerId, successCallBack) {
+
+            var data = {
+                Id: playerId
+            };
+
+            Swal.fire({
+                title: 'Warning',
+                html: '<span style="font-size: 12px; ">' + 'Are you sure you want to mute the player?' + '</span>',
+                type: 'warning',
+                showCancelButton: true,
+                buttonStyling: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then(function (result) {
+                if (result.value) {
+                    PostRequest('/home/MutePlayer', JSON.stringify(data),
+                        function (res) {
+                            if (res.IsSuccess) {
+                                var idmute = "#id_playerMute_" + playerId;
+                                $('' + idmute).hide();
+                                var idUnmute = "#id_playerUnMute_" + playerId;
+                                $('' + idUnmute).show();
+
+                                ShowSuccessMessage(`This player is muted. This can be undone in the player search section.`);
+                                if (successCallBack)
+                                    successCallBack();
+                            } else {
+                                ShowError(res.Message);
+                            }
+                        });
+                }
+            });
+        }
+
+        function UnMutePlayer(playerId, successCallBack) {
+            var data = {
+                Id: playerId
+            };
+            PostRequest('/home/UnMutePlayer', JSON.stringify(data),
+                function (res) {
+                    if (res.IsSuccess) {
+                        ShowSuccessMessage(`The player is unmuted.`);
+                        $("#id_playerUnMute_" + playerId).hide();
+                        $("#id_playerMute_" + playerId).show();
+                        if (successCallBack)
+                            successCallBack();
+                    } else {
+                        ShowError(res.Message);
+
+                    }
+                });
+        }
+
+        function ShowPlayerBadgeDialog(playerId) {
+
+            if (playerId === undefined || playerId === null || playerId === '')
+                return;
+
+            $('#ajax-playerBadge-modal-content').html('<div class="modal__loader__container"><div class="modal__loader"></div></div>');
+            $('#ajax-playerBadge-modal-title').html('');
+
+            var modalSizeCss = '';
+            var modalSize = $(this).attr('data-modal-size');
+            if (modalSize !== undefined && modalSize !== null) {
+
+                if (modalSize === 'large' || modalSize === 'medium' || modalSize === 'small' || modalSize === '700')
+                    modalSizeCss = 'modal__' + modalSize;
+            }
+
+            if (modalSizeCss === '') {
+                modalSizeCss = 'modal__medium';
+            }
+
+            $('#ajax-playerBadge-modal-container').removeClass('modal__large');
+            $('#ajax-playerBadge-modal-container').removeClass('modal__medium');
+            $('#ajax-playerBadge-modal-container').removeClass('modal__small');
+            $('#ajax-playerBadge-modal-container').addClass(modalSizeCss);
+
+            MicroModal.show('ajax-playerBadge-modal');
+
+            var url = '/Home/PlayerBadge?Id=' + playerId + '';
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    $('#ajax-playerBadge-modal-content').html(data);
+                    ConfigureTooltips();
+                }
+            });
+        }
+
+        function TranslateMessage(btnTranslate) {
+            var msgItem = $(btnTranslate).closest('.message-item');
+            var msgText = msgItem.find('.msg-content').find('p').html();
+
+            if (msgItem == undefined || msgText == undefined || msgItem.find('.translate_original_msg').length > 0 || msgItem.find('.x-loading').length > 0) {
+                return false;
+            }
+
+            msgItem.append('<div class="x-loading" style="position: absolute;left: 0px;top: 0px;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);text-align: center;display: flex;justify-content: center;align-items: center;"><i class="fas fa-sync-alt fa-spin" style="font-size: 26px;color:#79d5ff;"></i></div>');
+
+            $.getJSON('https://translate-pa.googleapis.com/v1/translate?params.client=gtx&query.source_language=auto&query.target_language=' + _browserLanguage + '&query.display_language=' + _browserLanguage + '&query.text=' + encodeURIComponent(msgText) + '&key=AIzaSyDLEeFI5OtFBwYBIoK_jj5m32rZK5CkCXA&data_types=TRANSLATION&data_types=SENTENCE_SPLITS&data_types=BILINGUAL_DICTIONARY_FULL', function (data) {
+                msgItem.find('.msg-content').find('p').addClass('translate_original_msg');
+                msgItem.find('.msg-content').append('<p class="translate_result_msg">' + data.translation + '</p>');
+                msgItem.find('.x-loading').remove();
+            }).fail(function () { ShowError('TRANSLATE-ERROR'); msgItem.find('.x-loading').remove(); });
+
+            return false;
+        }
+
+
+
+
+    </script>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+        data-cf-beacon='{"version":"2024.11.0","token":"2bf9dd8fdb5f462fab051c0ef58ac7d9","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+        crossorigin="anonymous"></script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9a13b98a799af254',t:'MTc2MzU5NzQzMQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

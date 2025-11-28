@@ -1,0 +1,2064 @@
+
+
+
+
+<!DOCTYPE html>
+
+<html x-ms-format-detection="none" lang="pt">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=none" />
+    <meta name="format-detection" content="address=no">
+    <meta http-equiv="content-language" content="pt">
+    
+
+    <title>Mars | OgameX</title>
+
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/other/fonts/fa-pro/css/pro.min.css" />
+
+    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3981">
+    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3981">
+
+    
+
+
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=JNn22gsmwCmy5MBXSw5qWq83dZlv9Zmf_YaZrKU79S_ffJ6wq7kWzJVPzAWzySJ3ztDbhf9jnp8wXCi43MjLnw" charset="UTF-8"></script><script>
+
+
+        window.localization = {};
+        window.localization.dayMark = 'd';
+        window.localization.Yes = 'Yes';
+        window.localization.No = 'No';
+        window.localization.Warning = 'Warning';
+        window.localization.BATTLE_REPORT = 'Battle Report';
+
+        window.timeoffset_cookie_name = 'timeZoneOffset';
+        window.currentPlayerName = 'The Doctor';
+        window.currentPlayerId = '4baa56a7-85dc-4d9b-9f69-7edc966613af';
+        window.currentPlanetId = '474967ec-b46e-48be-b69f-a3749c6de11b';
+        window.isVacation = false;
+        window.allianceId = '';
+
+        window.currentPlayerClass = null;
+
+        
+        window.currentPlayerClass = 'MINER';
+        
+
+
+        var resources = {
+            initialMetal:1027236431.5285892208807348820,
+            initialCrystal:849561390.7431561995993299582,
+            initialDeuterium:127795458.34790875759752227825,
+            metal: 1027236431.5285892208807348820,
+            crystal: 849561390.7431561995993299582,
+            deuterium: 127795458.34790875759752227825,
+            energy: 64318.16739600735391920000000,
+            energyConsumption: 24890.350878407637991411834438,
+            darkmatter: 170299,
+            metalProduction: 159777.77310504704530987184718,
+            crystalProduction: 93898.4272610010183639283583,
+            deuteriumProduction: 29982.43544851406937511366455,
+            metalStorageCapacity: 8233405340,
+            crystalStorageCapacity: 2169995979,
+            deuteriumStorageCapacity: 1398681671
+        };
+
+        var initialServerTime = 1763786844000;
+        var currentServerTime = 1763786844000;
+
+        var lang = 'pt';
+
+    </script>
+    <script src="/assets/js/default.js?v=3981"></script>
+    <script src="/assets/js/app/tooltip.js?v=3981"></script>
+    <script src="/assets/js/libs/autonumeric.min.js"></script>
+
+    
+
+    <script>
+        function configureNumberInputFormat(containerElementId) {
+            const autoNumericOptions = {
+                allowDecimalPadding: false,
+                alwaysAllowDecimalCharacter: false,
+                digitGroupSeparator: '.',
+                decimalCharacter: ',',
+                decimalCharacterAlternatif: '.',
+                currencySymbol: '',
+                // overrideMinMaxLimits: 'ignore',
+                // emptyInputBehavior: 'zero',
+                maximumValue: '99999999999999999999999999999',
+                minimumValue: '0',
+                //historySize:0,
+                selectOnFocus: false,
+                modifyValueOnWheel: false,
+                formatOnPageLoad: true,
+                watchExternalChanges: true,
+                decimalPlaces: 0
+            };
+
+            if (containerElementId == undefined || containerElementId == null || containerElementId == "") {
+                containerElementId = "";
+            }
+            else {
+                containerElementId = "#" + containerElementId;
+            }
+            new AutoNumeric.multiple(containerElementId + ' .numberFormatInput', autoNumericOptions);
+
+
+            $(containerElementId + ' .numberFormatInput').focusin(function () {
+                var val = $(this).val();
+                if (val === '0' || val === 0 || val == '0' || val == 0) {
+                    //  this.value = '';
+                    $(this).val('');
+                }
+            }).focusout(function () {
+
+                var val = $(this).val();
+                if (val === '' || val === ' ' || val == '' || val == ' ') {
+
+                    $(this).val(0);
+                }
+            }).on("input", function (e) {
+                var value = 0;
+                if (/\D/g.test(this.value)) {
+                    // Filter non-digits from input value.
+                    value = this.value.replace(/\D/g, '');
+                }
+                else {
+                    value = this.value;
+                }
+
+                var intVal = parseInt(value);
+                if (!isNaN(intVal)) {
+                    if ($(this).attr('min-value') != undefined) {
+                        var minVal = parseInt($(this).attr('min-value'));
+
+                        if (isNaN(minVal)) {
+                            minVal = 0;
+                        }
+                        else if (minVal < 0) {
+                            minVal = 0;
+                        }
+                        if (intVal < minVal) {
+                            this.value = 0;
+                        }
+                    }
+
+                    if ($(this).attr('max-value') != undefined) {
+                        var maxVal = parseInt($(this).attr('max-value'));
+
+                        if (!isNaN(maxVal) && maxVal > 0) {
+                            if (intVal > maxVal) {
+                                this.value = maxVal;
+                            }
+                        }
+                    }
+                }
+            }).keyup(function () {
+                $(this).trigger('input');
+            });
+        }
+        $(function () {
+            configureNumberInputFormat();
+        });
+
+    </script>
+
+    
+
+
+    
+
+</head>
+<body>
+    <div id="tooltip-container"></div>
+    <div id="tooltip-sticky-container"></div>
+    <div id="tooltip-static-container"></div>
+
+    <div id="game-bg">
+        <div id="game-container">
+            <div id="header" style="background:url(../assets/images/V2/header_v3.png) no-repeat center;background-position-y:40px;">
+                <div class="top-nav">
+                    <div class="left-side">
+                        <a href="/statistics" class="nav-link fa fa-signal tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Statistics</h3>"></a>
+                        <a href="/halloffame" class="nav-link fa fa-trophy tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Hall of fame</h3>"></a>
+                        <a href="/records" class="nav-link fa fa-award tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Records</h3>"></a>
+                        <a href="/chat/universal" class="nav-link fa fa-comments tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Universal Chat</h3>"></a>
+                        <a href="https://discord.gg/N4ckzJwRtJ" target="_blank" class="nav-link fab fa-discord tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Discord channel</h3>"></a>
+                        <a href="/SupportTicket/SupportTicketList" class="nav-link fa fa-headset tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Support</h3>"></a>
+                        <a href="/home/eventCalendar" class="nav-link fas fa-calendar-alt tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Event Calendar</h3>"></a>
+                    </div>
+                    <div class="center-side">
+
+                        
+
+                        <a href="/"><img class="logo" src="../../assets/images/V2/logo.png" /></a>
+
+                        
+                    </div>
+                    <div class="right-side">
+                        
+                        <a href="https://ogamex.net/home/rules" class="nav-link fas fa-book tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Rules</h3>"></a>
+                        <a href="/friendsenemies" class="nav-link fa fa-users tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Friends &amp; Enemies</h3>"></a>
+                        <a href="#" class="nav-link fa fa-search tooltip" data-ajax-modal data-modal-title="" data-modal-url="/home/search" data-modal-size="large" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Search</h3>"></a>
+                        <a href="/bannedplayers" class="nav-link fa fa-user-slash tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Banned players</h3>"></a>
+                        
+                        <a href="/settings" class="nav-link fa fa-tools tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Settings</h3>"></a>
+                        <a href="/home/logout" class="nav-link fa fa-sign-out-alt tooltip" data-tooltip-position="bottom" data-tooltip-content="<h3 style='font-size:11px;padding:3px 10px;'>Log out</h3>"></a>
+                    </div>
+                </div>
+                <div class="resources-section">
+                    <div class="resources-content">
+                        <a href="/resource" class="resource-item resource-item-metal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>1.027.236.432</td></tr><tr><td>Production per hour : </td><td><span>575.199.983</span></td></tr><tr><td>Production per day : </td><td><span>13.804.799.596</span></td></tr><tr><td>Storage capacity : </td><td><span>8.233.405.340</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-metal"></span>
+
+                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                            <span class="resource-amount">
+                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
+                                                <span id="metal-amount" style="font-size:10px;">1.027.236.432</span>
+                                                
+                                            </span>
+                                        </div>
+
+
+
+
+                        </a>
+                        <a href="/resource" class="resource-item resource-item-crystal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>849.561.391</td></tr><tr><td>Production per hour : </td><td><span>338.034.338</span></td></tr><tr><td>Production per day : </td><td><span>8.112.824.115</span></td></tr><tr><td>Storage capacity : </td><td><span>2.169.995.979</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-crystal"></span>
+
+                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                            <span class="resource-amount">
+                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
+                                                <span id="crystal-amount" style="font-size:10px;">849.561.391</span>
+                                                
+                                            </span>
+                                        </div>
+
+
+
+                        </a>
+                        <a href="/resource" class="resource-item resource-item-deuterium tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>127.795.458</td></tr><tr><td>Production per hour : </td><td><span>107.936.768</span></td></tr><tr><td>Production per day : </td><td><span>2.590.482.423</span></td></tr><tr><td>Storage capacity : </td><td><span>1.398.681.671</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-deuterium"></span>
+
+                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                            <span class="resource-amount">
+                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Deuterium</span>
+                                                <span id="deuterium-amount" style="font-size:10px;">127.795.458</span>
+                                                
+                                            </span>
+                                        </div>
+
+
+                        </a>
+                        <a href="/resource" class="resource-item resource-item-energy tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Energy</td></tr><tr><td>Energy production : </td><td><span>64.318</span></td></tr><tr><td>Energy consumption : </td><td><span style='color:#dc0606;'>24.890</span></td></tr></table></div>">
+                            <span class="resource-icon resource-icon-energy"></span>
+
+                                    <div style="position: absolute;top: 18px;width: 116px;left: 56px;text-align: left;">
+                                        <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -10px;left: 0px;">Energy</span>
+                                        <span class="resource-amount" style="color:#0f0 !important;font-size:10px;">39.428</span>
+                                    </div>
+
+
+                        </a>
+                        <a href="/darkmatter/purchase" class="resource-item right-item resource-item-darkmatter tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Dark matter</td></tr></table></div>">
+                            <span class="resource-icon resource-icon-darkmatter" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
+                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: 8px;right: 56px;">Dark matter</span>
+                            <span class="resource-amount" style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">170.299</span>
+                        </a>
+                        <a href="/wiki" class="resource-item right-item resource-item-wiki tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Wiki</td></tr></table></div>">
+                            <span class="resource-icon resource-icon-wiki" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
+                            <span style="position: absolute;font-size: 12px;font-weight: bold;color: #b0c0d5;top: 16px;right: 44px;">Wiki</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="messages-section">
+
+                    <a href="/messages" class="messages-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread messages (1)</div>">
+                                <span class="new-msg-count">
+                                    1
+                                </span>
+
+                    </a>
+                    <a href="/chat" class="chat-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread chat messages (0)</div>">
+
+                    </a>
+                </div>
+                <div class="fleet-info-section ">
+
+                            <div style="cursor:pointer;text-align:left;padding-left:20px;" id="fleet-movement-detail-btn">
+                                <div style="padding:4px;color:#FFF;font-size:11px;">
+                                    <span><b>4</b> Missions: </span>
+                                            <span style="color:#9C0;">4 Own</span>
+
+                                </div>
+                                <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
+                                    <span>
+
+
+
+                                        Next: <span id="NextMissionRemainingTime">12:17</span>
+                                    </span>
+                                </div>
+                                <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
+                                    <span>Type:</span>
+                                            <span style="color:#9C0;">Colonize</span>
+
+                                </div>
+                            </div>
+
+
+                </div>
+
+                <div id="system-clock">22.11.2025 01:47:24</div>
+                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>The Doctor</div><div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>1.956</span> / 2.860</div></div></div></div>">
+
+                            <div class="avatar-box player_class_MINER"></div>
+
+                    <div class="player-name">The Doctor</div>
+                    <div class="player-ranking"><i class="fad fa-crown"></i> 1.956</div>
+                </a>
+
+
+            </div>
+
+            <div id="game-bottom" style="float:left;width:1000px;">
+
+                <div style="float:left;width:100%;position:relative;margin-top:5px;">
+
+                    <div id="left-menu-1">
+
+
+
+                        <div class="menu-item ">
+                            <a href="/home" class="text-item">Overview</a>
+                        </div>
+
+
+
+                                <div class="menu-item ">
+                                    <a href="/building/resource" class="text-item">Resources</a>
+                                    
+                                </div>
+
+
+                        <div class="menu-item ">
+                            <a href="/building/facility" class="text-item">Facilities</a>
+                            
+                        </div>
+
+
+
+                        <div class="menu-item ">
+                            <a href="/research" class="text-item">Research</a>
+                            
+                        </div>
+                        
+                        <div class="menu-item ">
+                            <a href="/hangar" class="text-item">Shipyard</a>
+                            
+                        </div>
+                        <div class="menu-item active">
+                            <a href="/defense" class="text-item">Defense</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/fleet" class="text-item">Fleet</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/galaxy" class="text-item">Galaxy</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/alliance" class="text-item">Alliance</a>
+                            
+                        </div>
+                        <div class="menu-item">
+                            <a href="/empire" target="_blank" class="text-item">Empire</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/officer" class="text-item">Officers</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/academy" class="text-item">Academy</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/merchant" class="text-item premium-text">Merchant</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/premium" class="text-item premium-text">Premiums</a>
+                            
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/shop" class="text-item premium-text">Shop</a>
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/shop/inventory" class="text-item">Inventory</a>
+                        </div>
+                        <div class="menu-item ">
+                            <a href="/simulator" class="text-item">Simulators</a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/darkmatter/promote" class="text-item" style="color:#4caf50;">Promote Server</a>
+                        </div>
+                    </div>
+
+                    <div id="content-wrapper" class="">
+                        <div id="layoutFleetMovements" class="fleet-movement-wrapper">
+                            <div class="header">
+                                <span class="title">Events</span>
+                            </div>
+                            <div class="content" id="fleet-movement-content"></div>
+                            <div class="footer"></div>
+                        </div>
+
+                        
+
+<link href="/assets/styles/app/pages/defense.css?v=3981" rel="stylesheet" />
+
+<script>
+
+    var ships = {};
+
+ships['SOLAR_SATELLITE'] = 1000;
+ships['CRAWLER'] = 0;
+ships['SPY_PROBE'] = 0;
+ships['LIGHT_CARGO'] = 0;
+ships['HEAVY_CARGO'] = 0;
+ships['RECYCLER'] = 0;
+ships['COLONY_SHIP'] = 1;
+ships['ASTEROID_MINER'] = 0;
+ships['LIGHT_FIGHTER'] = 0;
+ships['HEAVY_FIGHTER'] = 0;
+ships['CRUISER'] = 0;
+ships['BATTLESHIP'] = 0;
+ships['BATTLE_CRUISER'] = 0;
+ships['PLANET_BOMBER'] = 0;
+ships['DESTROYER'] = 0;
+ships['REAPER'] = 0;
+ships['GALLEON'] = 0;
+ships['DEATH_STAR'] = 0;
+ships['FALCON'] = 0;
+ships['AVATAR'] = 0;
+
+
+    var defenses = {};
+
+defenses['MISSILE_LAUNCHER'] = 0;
+defenses['LIGHT_LASER_TURRET'] = 0;
+defenses['HEAVY_LASER_TURRET'] = 0;
+defenses['ION_CANNON'] = 0;
+defenses['GAUSS_CANNON'] = 0;
+defenses['PLASMA_CANNON'] = 0;
+defenses['DORA_GUN'] = 0;
+defenses['PHOTON_CANNON'] = 0;
+defenses['LEPTON_GUN'] = 0;
+defenses['GRAVITONS_CANNON'] = 0;
+defenses['QUANTUM_GUN'] = 0;
+defenses['SMALL_SHIELD_DOME'] = 0;
+defenses['LARGE_SHIELD_DOME'] = 0;
+defenses['ATMOSPHERIC_SHIELD'] = 0;
+defenses['FORTRESS'] = 0;
+defenses['DOOM_CANNON'] = 0;
+defenses['ORBITAL_DEFENSE_PLATFORM'] = 0;
+defenses['INTERCEPTOR'] = 0;
+defenses['INTERPLANETARY_MISSILE'] = 0;
+
+
+
+    window.hangarQueueItemType_SHIP = 'SHIP';
+
+    window.currentPlanet_Id = '474967ec-b46e-48be-b69f-a3749c6de11b';
+
+</script>
+
+<div class="content-section">
+    <div class="header"></div>
+    <div class="content">
+        <div id="hangar-container">
+            <div class="header" style="background:url(../../assets/images/V2/page-header/defense.png)no-repeat;">
+                <span class="main-title">Defense - Home planet</span>
+
+                        <div class="hangar-detail" id="detail-MISSILE_LAUNCHER" data-defense-type="MISSILE_LAUNCHER">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/MISSILE_LAUNCHER.gif) no-repeat;" data-ajax-modal data-modal-title="Missile Launcher - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=MISSILE_LAUNCHER" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Missile Launcher - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=MISSILE_LAUNCHER" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Missile Launcher</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">54 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required resources <span class="x-required-res-factor"></span></span>
+                                                </div>
+                                                    <div class="required-resource-item">
+                                                        <span class="resource-icon" style="background:url(../../assets/images/resource/metal.png?v=2) no-repeat center;"></span>
+
+                                                                <span class="resource-amount x-resource-metal" data-amount="2000">2.000</span>
+
+
+                                                    </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <div class="upgrade-input-container">
+                                                        <span class="upgrade-input-desc">
+                                                            Quantity
+                                                            <br />
+                                                            <a href="#" data-required-metal="2000" data-required-crystal="0" data-required-deuterium="0" class="upgrade-max-btn">Max</a>
+                                                        </span>
+                                                        <div class="upgrade-input-arrow"></div>
+                                                        <input type="text" class="upgrade-input numberFormatInput" value="0" max-value="999999999999999"/>
+                                                    </div>
+                                                    <a href="#" class="upgrade-btn">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                Rocket launchers are a relic of the past, yet prove that in large numbers they are a cheap and effective defense mechanism.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-LIGHT_LASER_TURRET" data-defense-type="LIGHT_LASER_TURRET">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/LIGHT_LASER_TURRET.gif) no-repeat;" data-ajax-modal data-modal-title="Light Laser Turret - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=LIGHT_LASER_TURRET" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Light Laser Turret - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=LIGHT_LASER_TURRET" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Light Laser Turret</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">54 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/LASER_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Laser Technology (0/3)</div>">
+                                                                    <div class="required-technology-info">0/3</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                These underdeveloped turrets prove that simple technology can be devastating when multiple lasers combine their power. Due to their very low overall cost, many empires' defenses consist primarily of these turrets.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-HEAVY_LASER_TURRET" data-defense-type="HEAVY_LASER_TURRET">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/HEAVY_LASER_TURRET.gif) no-repeat;" data-ajax-modal data-modal-title="Heavy Laser Turret - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=HEAVY_LASER_TURRET" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Heavy Laser Turret - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=HEAVY_LASER_TURRET" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Heavy Laser Turret</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">13 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/LASER_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Laser Technology (0/6)</div>">
+                                                                    <div class="required-technology-info">0/6</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                Through further research into laser technology, much larger guns with higher penetrating power could soon be built.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-ION_CANNON" data-defense-type="ION_CANNON">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/ION_CANNON.gif) no-repeat;" data-ajax-modal data-modal-title="Ion Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=ION_CANNON" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Ion Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=ION_CANNON" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Ion Cannon</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">13 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/2)</div>">
+                                                                    <div class="required-technology-info">0/2</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ION_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Ion Technology (0/4)</div>">
+                                                                    <div class="required-technology-info">0/4</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                Ion cannons accelerate small particles to such high speeds that they damage the attacking fleet's electronics and navigational equipment.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-GAUSS_CANNON" data-defense-type="GAUSS_CANNON">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/GAUSS_CANNON.gif) no-repeat;" data-ajax-modal data-modal-title="Gauss Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=GAUSS_CANNON" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Gauss Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=GAUSS_CANNON" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Gauss Cannon</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">3 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ENERGY_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Energy Technology (5/6)</div>">
+                                                                    <div class="required-technology-info">5/6</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/3)</div>">
+                                                                    <div class="required-technology-info">0/3</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ARMOUR_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Armour Technology (0/3)</div>">
+                                                                    <div class="required-technology-info">0/3</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                The penetrating power of the huge projectiles in this gun can be further increased by ferromagnetic acceleration.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-PLASMA_CANNON" data-defense-type="PLASMA_CANNON">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/PLASMA_CANNON.gif) no-repeat;" data-ajax-modal data-modal-title="Plasma Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=PLASMA_CANNON" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Plasma Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=PLASMA_CANNON" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Plasma Cannon</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">1 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/PLASMA_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Plasma Technology (0/7)</div>">
+                                                                    <div class="required-technology-info">0/7</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                When it hits enemy weapons and navigation systems, the electrical conductivity of plasma will bypass circuits for truly devastating damage regarding maneuverability.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-DORA_GUN" data-defense-type="DORA_GUN">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/DORA_GUN.gif) no-repeat;" data-ajax-modal data-modal-title="Dora Gun - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=DORA_GUN" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Dora Gun - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=DORA_GUN" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Dora Gun</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">00:03</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ION_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Ion Technology (0/10)</div>">
+                                                                    <div class="required-technology-info">0/10</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/PLASMA_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Plasma Technology (0/10)</div>">
+                                                                    <div class="required-technology-info">0/10</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                The engineers succeeded in making the Dora-class guns mobile for the first time, despite their gigantic proportions. The defenses could always be maneuvered to the side of the planet, where the highest enemy firepower was expected.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-PHOTON_CANNON" data-defense-type="PHOTON_CANNON">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/PHOTON_CANNON.gif) no-repeat;" data-ajax-modal data-modal-title="Photon Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=PHOTON_CANNON" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Photon Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=PHOTON_CANNON" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Photon Cannon</h3>
+
+                                            <h3 class="hangar-level">Available: 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">00:08</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/SHIPYARD.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shipyard (10/12)</div>">
+                                                                    <div class="required-technology-info">10/12</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/WEAPONS_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Weapons Technology (0/12)</div>">
+                                                                    <div class="required-technology-info">0/12</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/12)</div>">
+                                                                    <div class="required-technology-info">0/12</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ARMOUR_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Armour Technology (0/12)</div>">
+                                                                    <div class="required-technology-info">0/12</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ION_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Ion Technology (0/12)</div>">
+                                                                    <div class="required-technology-info">0/12</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/PLASMA_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Plasma Technology (0/12)</div>">
+                                                                    <div class="required-technology-info">0/12</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                Each of the powerful shots of the photon cannon generates an electromagnetic shock in the attacked ship, which, similar to an EMP, can lead to a total failure of the ship's electrical systems.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-SMALL_SHIELD_DOME" data-defense-type="SMALL_SHIELD_DOME">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/SMALL_SHIELD_DOME.gif) no-repeat;" data-ajax-modal data-modal-title="Small Shield Dome - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=SMALL_SHIELD_DOME" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Small Shield Dome - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=SMALL_SHIELD_DOME" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Small Shield Dome</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: 0 / 198</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">1 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/2)</div>">
+                                                                    <div class="required-technology-info">0/2</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                The small shield dome covers the defense units and ships with a protective energy shield using a generator. This can absorb additional energy from the outside and is still permeable enough to let your own defenses fire.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-LARGE_SHIELD_DOME" data-defense-type="LARGE_SHIELD_DOME">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/LARGE_SHIELD_DOME.gif) no-repeat;" data-ajax-modal data-modal-title="Large Shield Dome - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=LARGE_SHIELD_DOME" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Large Shield Dome - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=LARGE_SHIELD_DOME" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Large Shield Dome</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: 0 / 21</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">00:04</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/8)</div>">
+                                                                    <div class="required-technology-info">0/8</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ENERGY_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Energy Technology (5/6)</div>">
+                                                                    <div class="required-technology-info">5/6</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                Further research into shield technologies has significantly improved the resilience of small shield domes. Large shield domes thus cover a much larger area of the planet, which means that its facilities and units can be protected much more efficiently.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-ATMOSPHERIC_SHIELD" data-defense-type="ATMOSPHERIC_SHIELD">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/ATMOSPHERIC_SHIELD.gif) no-repeat;" data-ajax-modal data-modal-title="Atmospheric Shield - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=ATMOSPHERIC_SHIELD" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Atmospheric Shield - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=ATMOSPHERIC_SHIELD" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Atmospheric Shield</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: 0 / 3</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">15:28</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/SHIPYARD.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shipyard (10/18)</div>">
+                                                                    <div class="required-technology-info">10/18</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/16)</div>">
+                                                                    <div class="required-technology-info">0/16</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ENERGY_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Energy Technology (5/12)</div>">
+                                                                    <div class="required-technology-info">5/12</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                These vast energy shields reinforce a planet's natural atmosphere. They span the entire planet and, in conjunction with other defense systems, make it possible to withstand even major attacks without damage.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-FORTRESS" data-defense-type="FORTRESS">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/FORTRESS.gif) no-repeat;" data-ajax-modal data-modal-title="Fortress - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=FORTRESS" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Fortress - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=FORTRESS" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Fortress</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: 0 / 90</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">00:48</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/SHIPYARD.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shipyard (10/18)</div>">
+                                                                    <div class="required-technology-info">10/18</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/LASER_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Laser Technology (0/20)</div>">
+                                                                    <div class="required-technology-info">0/20</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ION_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Ion Technology (0/18)</div>">
+                                                                    <div class="required-technology-info">0/18</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/PLASMA_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Plasma Technology (0/16)</div>">
+                                                                    <div class="required-technology-info">0/16</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/18)</div>">
+                                                                    <div class="required-technology-info">0/18</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ARMOUR_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Armour Technology (0/18)</div>">
+                                                                    <div class="required-technology-info">0/18</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                These massive defense rings are built around the planet's buildings and facilities. Due to their high durability, they drastically reduce the effectiveness of enemy attacks.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-DOOM_CANNON" data-defense-type="DOOM_CANNON">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/DOOM_CANNON.gif) no-repeat;" data-ajax-modal data-modal-title="Doom Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=DOOM_CANNON" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Doom Cannon - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=DOOM_CANNON" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Doom Cannon</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: 0 / 16</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">05:53</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/SHIPYARD.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shipyard (10/20)</div>">
+                                                                    <div class="required-technology-info">10/20</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ENERGY_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Energy Technology (5/20)</div>">
+                                                                    <div class="required-technology-info">5/20</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/PLASMA_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Plasma Technology (0/18)</div>">
+                                                                    <div class="required-technology-info">0/18</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/20)</div>">
+                                                                    <div class="required-technology-info">0/20</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/GRAVITON_RESEARCH.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Graviton Research (0/8)</div>">
+                                                                    <div class="required-technology-info">0/8</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                The doom cannon's massive blasts of energy can even hit multiple Death Stars and Avatars at once with their unimaginable level of destructive power.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-ORBITAL_DEFENSE_PLATFORM" data-defense-type="ORBITAL_DEFENSE_PLATFORM">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/ORBITAL_DEFENSE_PLATFORM.gif) no-repeat;" data-ajax-modal data-modal-title="Orbital Defense Platform - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=ORBITAL_DEFENSE_PLATFORM" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Orbital Defense Platform - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=ORBITAL_DEFENSE_PLATFORM" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Orbital Defense Platform</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: 0 / 3</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">01:16:45</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/SHIPYARD.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shipyard (10/22)</div>">
+                                                                    <div class="required-technology-info">10/22</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/LASER_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Laser Technology (0/24)</div>">
+                                                                    <div class="required-technology-info">0/24</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/PLASMA_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Plasma Technology (0/20)</div>">
+                                                                    <div class="required-technology-info">0/20</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ION_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Ion Technology (0/22)</div>">
+                                                                    <div class="required-technology-info">0/22</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/WEAPONS_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Weapons Technology (0/22)</div>">
+                                                                    <div class="required-technology-info">0/22</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/ARMOUR_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Armour Technology (0/22)</div>">
+                                                                    <div class="required-technology-info">0/22</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Shield Technology (0/22)</div>">
+                                                                    <div class="required-technology-info">0/22</div>
+                                                                </div>
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/research/GRAVITON_RESEARCH.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Graviton Research (0/10)</div>">
+                                                                    <div class="required-technology-info">0/10</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>First, the required technologies must be researched.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                This massive defense system is integrated into the planet's orbit. Simultaneously firing at devastating proportions, she can destroy entire enemy fleets in one salvo.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-INTERCEPTOR" data-defense-type="INTERCEPTOR">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/INTERCEPTOR.gif) no-repeat;" data-ajax-modal data-modal-title="Interceptor - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=INTERCEPTOR" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Interceptor - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=INTERCEPTOR" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Interceptor</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: <span style="color:#F00;">0</span> / 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">2 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/MISSILE_SILO.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Missile Silo (0/2)</div>">
+                                                                    <div class="required-technology-info">0/2</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>The maximum limit has been reached for this unit.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                With this anti-ballistic missile defense system, incoming interplanetary missiles can be successfully shot down in the stratosphere.
+                            </div>
+                        </div>
+                        <div class="hangar-detail" id="detail-INTERPLANETARY_MISSILE" data-defense-type="INTERPLANETARY_MISSILE">
+                            <a href="#" class="hangar-detail-close"></a>
+                            <div class="top-section">
+                                <a href="#" class="hangar-img" style="background:url(../../assets/images/V2/defense/INTERPLANETARY_MISSILE.gif) no-repeat;" data-ajax-modal data-modal-title="Interplanetary Missiles - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=INTERPLANETARY_MISSILE" data-modal-size="700"></a>
+                                <a href="#" class="btn-help" data-ajax-modal data-modal-title="Interplanetary Missiles - Technical details" data-modal-url="/defense/defenseinfo?DefenseType=INTERPLANETARY_MISSILE" data-modal-size="700"><i class="fas fa-info-circle" style="font-size: 11px;"></i> More info</a>
+
+                                <div class="right-section">
+                                    <h3 class="hangar-title">Interplanetary Missiles</h3>
+
+                                                <h3 class="hangar-level" style="font-size:11px;">Available: <span style="color:#F00;">0</span> / 0</h3>
+
+
+
+
+
+                                            <div class="production-info">
+                                                <div class="info-item">Production duration : <span style="font-weight:bold;color:#FFF;">1 units per second</span></div>
+                                            </div>
+
+
+                                    <div class="required-section">
+
+
+                                                <div style="width: calc(100% - 240px);float: left;border-top: 2px solid #151f29;margin-top: 5px;">
+                                                    <span style="font-size:10px;color:#AAA;">Required technologies</span>
+                                                </div>
+                                                <div class="required-technologies-container">
+
+                                                                <div class="required-technology-item tooltip" style="background:url(../../assets/images/V2/building/MISSILE_SILO.gif) no-repeat;background-size:contain;" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#F00;'>Missile Silo (0/4)</div>">
+                                                                    <div class="required-technology-info">0/4</div>
+                                                                </div>
+
+
+
+                                                </div>
+
+
+
+                                        <div class="upgrade-btn-container">
+
+                                                    <a href="#" class="upgrade-btn tooltip disabled" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;color:#d43635;'>The maximum limit has been reached for this unit.</div>">Produce</a>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                The plasma warheads used by the interplanetary missiles cause devastating damage to enemy defense systems - if they are not protected by interceptor missiles. Defenses destroyed by missiles are not restored.
+                            </div>
+                        </div>
+
+
+            </div>
+            <div class="hangar-items" style="width: 374px;">
+                <div class="header">Defense units</div>
+                <div class="content" style="border-right: 10px solid rgb(18 24 34);">
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Missile Launcher</div><div style='border-top:1px solid #333;'>0</div></div>" style="background:url(../../assets/images/V2/defense/MISSILE_LAUNCHER.gif)">
+                                    <a href="#" class="hangar-btn " data-defense-type="MISSILE_LAUNCHER">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Light Laser Turret</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/LIGHT_LASER_TURRET.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="LIGHT_LASER_TURRET">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Heavy Laser Turret</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/HEAVY_LASER_TURRET.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="HEAVY_LASER_TURRET">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Ion Cannon</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/ION_CANNON.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="ION_CANNON">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Gauss Cannon</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/GAUSS_CANNON.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="GAUSS_CANNON">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Plasma Cannon</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/PLASMA_CANNON.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="PLASMA_CANNON">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Dora Gun</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/DORA_GUN.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="DORA_GUN">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Photon Cannon</div><div style='border-top:1px solid #333;'>0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/PHOTON_CANNON.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="PHOTON_CANNON">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Interceptor</div><div style='border-top:1px solid #333;'>0 / 0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>The maximum limit has been reached for this unit.</div>" style="background:url(../../assets/images/V2/defense/INTERCEPTOR.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="INTERCEPTOR">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Interplanetary Missiles</div><div style='border-top:1px solid #333;'>0 / 0</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>The maximum limit has been reached for this unit.</div>" style="background:url(../../assets/images/V2/defense/INTERPLANETARY_MISSILE.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="INTERPLANETARY_MISSILE">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+
+
+                </div>
+            </div>
+
+            <div class="hangar-items" style="width: 276px;">
+                <div class="header">Defensive platforms</div>
+                <div class="content" style="padding-bottom: 18px; padding-top: 18px;">
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Fortress</div><div style='border-top:1px solid #333;'>0 / 90</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/FORTRESS.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="FORTRESS">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Doom Cannon</div><div style='border-top:1px solid #333;'>0 / 16</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/DOOM_CANNON.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="DOOM_CANNON">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Orbital Defense Platform</div><div style='border-top:1px solid #333;'>0 / 3</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/ORBITAL_DEFENSE_PLATFORM.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="ORBITAL_DEFENSE_PLATFORM">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+
+
+                </div>
+
+                <div class="header" style="border-top: 1px solid rgb(32, 49, 62);">Shield domes</div>
+                <div class="content" style="padding-bottom: 18px; padding-top: 18px;">
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Small Shield Dome</div><div style='border-top:1px solid #333;'>0 / 198</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/SMALL_SHIELD_DOME.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="SMALL_SHIELD_DOME">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Large Shield Dome</div><div style='border-top:1px solid #333;'>0 / 21</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/LARGE_SHIELD_DOME.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="LARGE_SHIELD_DOME">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+                                <div class="hangar-item tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;color:#AAA;text-align:center;'><div style='font-size:11px;color:#FFF;'>Atmospheric Shield</div><div style='border-top:1px solid #333;'>0 / 3</div></div><div style='font-size:9px;color:#d43635;border-top:1px solid #333;'>First, the required technologies must be researched.</div>" style="background:url(../../assets/images/V2/defense/ATMOSPHERIC_SHIELD.gif)">
+                                    <a href="#" class="hangar-btn disabled" data-defense-type="ATMOSPHERIC_SHIELD">
+                                        <span class="hangar-level">0</span>
+                                    </a>
+                                </div>
+
+
+                </div>
+            </div>
+
+            <div class="bottom-side">
+                <div class="largebox">
+                    <div class="header">
+                        <h3>Production</h3>
+                    </div>
+                    <div class="content">
+
+                                <div class="container">
+                                    <a href="#" class="empty-text">
+                                        No ships/defense in production.
+                                    </a>
+                                </div>
+
+
+                    </div>
+                    <div class="footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer"></div>
+</div>
+
+
+<script src="/assets/js/app/pages/defense.js?v=3981"></script>
+                    </div>
+
+                    <div id="planet-selection">
+                        <span class="planet-info">[3/5] Planets</span>
+                        <div id="other-planets">
+                                        <div class="planet-item  selected">
+                                            <a class="planet-select selected" href="?planet=474967ec-b46e-48be-b69f-a3749c6de11b">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/16/16_small.jpg?v=4" />
+                                                <span class="planet-name">Home planet</span>
+                                                <span class="planet-coords">
+                                                    [7:230:5]
+
+                                                </span>
+
+                                            </a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=46fd6eb9-6d15-4826-b701-8e99c0f88421">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/44/44_small.jpg?v=4" />
+                                                <span class="planet-name">Colony</span>
+                                                <span class="planet-coords">
+                                                    [7:229:11]
+
+                                                </span>
+
+                                            </a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=582a3127-8371-49eb-98f2-557d77f57c58">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/43/43_small.jpg?v=4" />
+                                                <span class="planet-name">Colony</span>
+                                                <span class="planet-coords">
+                                                    [7:230:11]
+
+                                                </span>
+
+                                            </a>
+                                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <!-- AJAX-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__medium" id="ajax-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-modal-content">
+
+                </main>
+                
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <!-- AJAX-MODAL-END -->
+    <!-- COMBAT-REPORT-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-combatreport-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__chat" id="ajax-combatreport-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title" style="padding: 5px 5px;">
+                <header class="modal__header">
+                    <div class="navigation">
+                        <a href="#" class="nav-item modal__title" id="ajax-combatreport-modal-title" data-target="combatReport-tab" data-ajax-loaded="true">Battle Report</a>
+                        <a href="#" class="nav-item" data-target="comments-tab">Comments</a>
+                    </div>
+                    <button class="modal__close" style="border: 1px solid #0b9eb7;" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-combatreport-modal-content">
+                    <div class="content">
+                        <div class="tab-item" id="combatReport-tab" style="min-height:200px;">
+                        </div>
+                        <div class="tab-item" id="comments-tab" style="min-height:200px;">
+
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <!--  COMBAT-REPORT-MODAL -->
+    <!-- PLAYER-BADGE-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-playerBadge-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container " id="ajax-playerBadge-modal-container" style="background:linear-gradient( 180deg,rgb(29,42,59) 0%, rgb(0,0,0) 100%);" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-playerBadge-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-playerBadge-modal-content" style="margin-top:0px !important;">
+
+                </main>
+                
+            </div>
+        </div>
+    </div>
+    <!--  PLAYER-BADGE-MODAL -->
+    <!-- CHAT-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-chat-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__chat" id="ajax-chat-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-chat-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-chat-modal-content">
+
+                </main>
+                
+            </div>
+        </div>
+    </div>
+    <!-- CHAT-MODAL-END -->
+    <!-- IFRAME-MODAL -->
+    <div class="modal micromodal-slide" id="iframe-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__medium" id="iframe-modal-container" role="dialog" aria-modal="true" aria-labelledby="iframe-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="iframe-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="iframe-modal-content">
+
+                </main>
+                
+            </div>
+        </div>
+    </div>
+    <!-- IFRAME-MODAL-END -->
+    <!-- PLAYER FRIEDNS ADD-MODAL -->
+    <div class="modal micromodal-slide" id="ajax-playerfriendcreate-modal" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container modal__chat" id="ajax-playerfriendcreate-modal-container" role="dialog" aria-modal="true" aria-labelledby="ajax-modal-title">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="ajax-playerfriendcreate-modal-title"></h2>
+                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="ajax-playerfriendcreate-modal-content">
+
+                </main>
+                
+            </div>
+        </div>
+    </div>
+    <!--  PLAYER FRIEDNS ADD-MODAL -->
+
+
+
+    <div id="BackGroundFreezerPreloader" class="BackGroundFreezer" align="center">
+        <div class="loader">
+        </div>
+    </div>
+
+    <script>
+
+        var _browserLanguage = (window.navigator.userLanguage || window.navigator.language).substring(0, 2).toLowerCase();
+        var _fleetReturnCounterInterval = null;
+
+
+
+
+        function ReloadPage() {
+            if (!window.location.hash) {
+                window.location.href = window.location.href;
+            } else {
+                window.location.reload();
+            }
+        }
+
+        function ReportChatMessage(msgId,isUniverseMessage) {
+
+            var data = {
+                Id: msgId
+            };
+
+            if (isUniverseMessage != undefined && isUniverseMessage != null && isUniverseMessage === true) {
+                PostRequest('/chat/reportuniversalmessage', JSON.stringify(data),
+                function (res) {
+                    if (res.IsSuccess) {
+                        ShowSuccessMessage(`The report has been sent to the administrators for review.`);
+                    }
+                    else {
+                        ShowError(res.Message);
+                    }
+                },
+                function () {
+                    ShowError();
+                });
+            }
+            else {
+                PostRequest('/chat/reportmessage', JSON.stringify(data),
+                function (res) {
+                    if (res.IsSuccess) {
+                        ShowSuccessMessage(`The report has been sent to the administrators for review.`);
+                    }
+                    else {
+                        ShowError(res.Message);
+                    }
+                },
+                function () {
+                    ShowError();
+                });
+            }
+        }
+
+        function ShowError(contentHtml) {
+            var defaultMsg = `An unexpected error occurred.`;
+            var errorMsg = '';
+            if (contentHtml === undefined || contentHtml == null || contentHtml === '') {
+                errorMsg = defaultMsg;
+            }
+            else
+                errorMsg = contentHtml;
+
+            Swal.fire({
+                type: 'error',
+                title: `Error`,
+                html: `<div style="font-size:12px;">`+errorMsg+`</div>`,
+                footer: '',
+                onBeforeOpen: function (ele) {
+                    console.log($(ele));
+                    $(ele).addClass('swal2-modal-error');
+                }
+            });
+        }
+
+        function ShowNotEnoughDM() {
+            var message = `Not enough Dark Matter available!</br> Do you want to buy some now?`;
+
+            Swal.fire({
+                title: 'Error',
+                html: '<span style="font-size: 12px; ">' + message + '</span>',
+                type: 'error',
+                showCancelButton: true,
+                buttonStyling: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                onBeforeOpen: function (ele) {
+                    console.log($(ele));
+                    $(ele).addClass('swal2-modal-error');
+                }
+            }).then(function(result){
+                if (result.value) {
+                    window.location.href = '/darkmatter/purchase';
+                }
+            })
+        }
+
+        function ShowSuccessMessage(message, callback) {
+            Swal.fire({
+                title: `Success`,
+                html: `<span style="font-size:12px;">${message}</span>`,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok',
+                onBeforeOpen: function (ele) {
+                    console.log($(ele));
+                    $(ele).addClass('swal2-modal-success');
+                }
+            }).then((result) => {
+                if (result.value) {
+                    if (callback != undefined && callback != null) {
+                        callback();
+                    }
+                }
+            });
+        }
+
+        window.isConnectedChatWs = false;
+
+        function ConnectChatWS() {
+            if (window.isConnectedChatWs)
+                return;
+
+            var hub = $.connection.wSHub;
+
+            hub.client.newChatMessage = function (dataJson) {
+                var data = JSON.parse(dataJson);
+                console.log(data);
+
+                data.MessageContent = Emojify(data.MessageContent);
+
+                if (data.IsAllianceChat === true) {
+                    var allianceChatMessagesContainer = $('#alliance_chat_messages');
+                    if (allianceChatMessagesContainer.length > 0) {
+                        var msgDateObj = new Date(data.MessageDate);
+
+                        allianceChatMessagesContainer.append('<div class="message-item"><span class="msg-sender">' + data.FromPlayerName + '</span><span class="msg-date">' + FormatDate(msgDateObj) + '</span><span class="msg-arrow"></span><div class="msg-content">' + data.MessageContent + '</div></div>');
+
+                       allianceChatMessagesContainer.animate({ scrollTop: allianceChatMessagesContainer.prop("scrollHeight")}, 1000);
+                    }
+                }
+                else {
+                    var playerChatMessagesContainer = $('#player_chat_messages_' + data.FromPlayerId);
+                    if (playerChatMessagesContainer.length > 0) {
+
+                        var msgDateObj = new Date(data.MessageDate);
+
+                        playerChatMessagesContainer.append('<div class="message-item"><span class="msg-sender">' + data.FromPlayerName + '</span><span class="msg-date">' + FormatDate(msgDateObj) + '</span><span class="msg-arrow"></span><div class="msg-content">' + data.MessageContent + '</div></div>');
+
+                       playerChatMessagesContainer.animate({ scrollTop: playerChatMessagesContainer.prop("scrollHeight")}, 1000);
+
+                    }
+                }
+
+            };
+
+            $.connection.hub.start();
+            window.isConnectedChatWs = true;
+        }
+
+        
+
+        $(function () {
+
+            window.fleetDetailTableOpened = false;
+
+            var currentMissionRemainingSeconds = 737;
+
+            setInterval(function () {
+                currentMissionRemainingSeconds -= 1;
+                $('#NextMissionRemainingTime').html(ConvertToTimeString(currentMissionRemainingSeconds));
+            }, 1000);
+
+
+            $('#fleet-movement-detail-btn').click(function () {
+
+                if (window.fleetDetailTableOpened === true) {
+                    $('#layoutFleetMovements').toggleClass('opened');
+                }
+                else {
+
+                    $('#header .fleet-info-section').loading(true);
+
+                    $.ajax({
+                        url: '/home/fleetmovementlist',
+                        type: 'GET',
+                        cache:false,
+                        success: function (data) {
+                            window.fleetDetailTableOpened = true;
+
+                            $('#fleet-movement-content').html(data);
+
+                            ConfigureModals();
+                            ConfigureTooltips();
+
+                            $('#layoutFleetMovements').toggleClass('opened');
+
+                            $('#header .fleet-info-section').loading(false);
+                        }
+                    });
+                }
+
+                return false;
+            })
+
+        });
+
+
+        
+
+
+        function MutePlayer(playerId, successCallBack) {
+
+            var data = {
+                Id: playerId
+            };
+
+            Swal.fire({
+                title: 'Warning',
+                html: '<span style="font-size: 12px; ">'+'Are you sure you want to mute the player?'+'</span>',
+                type: 'warning',
+                showCancelButton: true,
+                buttonStyling: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then(function (result) {
+                if (result.value) {
+                    PostRequest('/home/MutePlayer', JSON.stringify(data),
+                        function (res) {
+                            if (res.IsSuccess) {
+                                var idmute = "#id_playerMute_" + playerId;
+                                $('' + idmute).hide();
+                                var idUnmute = "#id_playerUnMute_" + playerId;
+                                $('' + idUnmute).show();
+
+                                ShowSuccessMessage(`This player is muted. This can be undone in the player search section.`);
+                                if (successCallBack)
+                                    successCallBack();
+                            } else {
+                                ShowError(res.Message);
+                            }
+                        });
+                }
+            });
+        }
+
+        function UnMutePlayer(playerId , successCallBack) {
+            var data = {
+                Id: playerId
+            };
+            PostRequest('/home/UnMutePlayer', JSON.stringify(data),
+                function (res) {
+                    if (res.IsSuccess) {
+                        ShowSuccessMessage(`The player is unmuted.`);
+                        $("#id_playerUnMute_" + playerId).hide();
+                        $("#id_playerMute_" + playerId).show();
+                        if (successCallBack)
+                            successCallBack();
+                    } else {
+                        ShowError(res.Message);
+
+                    }
+                });
+        }
+
+        function ShowPlayerBadgeDialog(playerId) {
+
+            if (playerId === undefined || playerId === null || playerId === '')
+                return;
+
+            $('#ajax-playerBadge-modal-content').html('<div class="modal__loader__container"><div class="modal__loader"></div></div>');
+            $('#ajax-playerBadge-modal-title').html('');
+
+            var modalSizeCss = '';
+            var modalSize = $(this).attr('data-modal-size');
+            if (modalSize !== undefined && modalSize !== null) {
+
+                if (modalSize === 'large' || modalSize === 'medium' || modalSize === 'small' || modalSize === '700')
+                    modalSizeCss = 'modal__' + modalSize;
+            }
+
+            if (modalSizeCss === '') {
+                modalSizeCss = 'modal__medium';
+            }
+
+            $('#ajax-playerBadge-modal-container').removeClass('modal__large');
+            $('#ajax-playerBadge-modal-container').removeClass('modal__medium');
+            $('#ajax-playerBadge-modal-container').removeClass('modal__small');
+            $('#ajax-playerBadge-modal-container').addClass(modalSizeCss);
+
+            MicroModal.show('ajax-playerBadge-modal');
+
+            var url = '/Home/PlayerBadge?Id=' + playerId + '';
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    $('#ajax-playerBadge-modal-content').html(data);
+                    ConfigureTooltips();
+                }
+            });
+        }
+
+        function TranslateMessage(btnTranslate) {
+            var msgItem = $(btnTranslate).closest('.message-item');
+            var msgText = msgItem.find('.msg-content').find('p').html();
+
+            if (msgItem == undefined || msgText == undefined || msgItem.find('.translate_original_msg').length > 0 || msgItem.find('.x-loading').length > 0) {
+                return false;
+            }
+
+            msgItem.append('<div class="x-loading" style="position: absolute;left: 0px;top: 0px;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);text-align: center;display: flex;justify-content: center;align-items: center;"><i class="fas fa-sync-alt fa-spin" style="font-size: 26px;color:#79d5ff;"></i></div>');
+
+            $.getJSON('https://translate-pa.googleapis.com/v1/translate?params.client=gtx&query.source_language=auto&query.target_language=' + _browserLanguage + '&query.display_language=' + _browserLanguage + '&query.text=' + encodeURIComponent(msgText) + '&key=AIzaSyDLEeFI5OtFBwYBIoK_jj5m32rZK5CkCXA&data_types=TRANSLATION&data_types=SENTENCE_SPLITS&data_types=BILINGUAL_DICTIONARY_FULL', function (data) {
+                msgItem.find('.msg-content').find('p').addClass('translate_original_msg');
+                msgItem.find('.msg-content').append('<p class="translate_result_msg">' + data.translation + '</p>');
+                msgItem.find('.x-loading').remove();
+            }).fail(function () { ShowError('TRANSLATE-ERROR'); msgItem.find('.x-loading').remove(); });
+
+            return false;
+        }
+
+        
+
+
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"2bf9dd8fdb5f462fab051c0ef58ac7d9","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+

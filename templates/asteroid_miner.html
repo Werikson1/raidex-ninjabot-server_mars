@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card config-card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Asteroid Miner Config</h2>
+        <label class="toggle-switch">
+            <input type="checkbox" id="botToggle">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+    <div class="card-body config-layout">
+        <div class="config-form-section">
+            <form id="configForm">
+                <div class="form-group">
+                    <label>Fleet Group</label>
+                    <select id="FLEET_GROUP_NAME" name="FLEET_GROUP_NAME" class="compact-input">
+                        <option value="100 MM">100 MM</option>
+                        <option value="200 MM">200 MM</option>
+                        <option value="FARM (Plunder fleet)">FARM (Plunder fleet)</option>
+                        <option value="EXPEDITION GROUP">EXPEDITION GROUP</option>
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="HEADLESS_MODE" name="HEADLESS_MODE">
+                        Headless Mode (Invisible Browser)
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Cooldown (Hours)</label>
+                    <input type="number" id="COOLDOWN_HOURS" name="COOLDOWN_HOURS" step="0.1" class="compact-input">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Search Delay Min (s)</label>
+                        <input type="number" id="SEARCH_DELAY_MIN" name="SEARCH_DELAY_MIN" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Search Delay Max (s)</label>
+                        <input type="number" id="SEARCH_DELAY_MAX" name="SEARCH_DELAY_MAX" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No Asteroid Wait Min (m)</label>
+                        <input type="number" id="NO_ASTEROID_WAIT_MIN" name="NO_ASTEROID_WAIT_MIN">
+                    </div>
+                    <div class="form-group">
+                        <label>No Asteroid Wait Max (m)</label>
+                        <input type="number" id="NO_ASTEROID_WAIT_MAX" name="NO_ASTEROID_WAIT_MAX">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Fleet Fail Wait (m)</label>
+                    <input type="number" id="FLEET_FAIL_WAIT_MINUTES" name="FLEET_FAIL_WAIT_MINUTES">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Configuration</button>
+            </form>
+        </div>
+
+        <div class="cooldown-monitor-section">
+            <div class="monitor-header">Active Cooldowns</div>
+            <div id="cooldownList" class="cooldown-list">
+                <!-- Cooldown items injected here -->
+                <div class="cooldown-empty">No active cooldowns</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Logs -->
+<footer class="log-footer">
+    <div class="log-header">Execution Log</div>
+    <div id="logContainer" class="log-container">
+        <!-- Logs will be injected here -->
+    </div>
+</footer>
+
+<style>
+    /* Toggle Switch Styles */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        margin: 0;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+    .toggle-switch input:checked+.toggle-slider {
+        background-color: #4caf50;
+    }
+
+    .toggle-switch input:checked+.toggle-slider:before {
+        transform: translateX(26px);
+    }
+
+    .toggle-switch input:disabled+.toggle-slider {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+</style>
+
+<script>
+    // Toggle asteroid miner on/off
+    const botToggle = document.getElementById('botToggle');
+    let isUpdatingToggle = false;
+
+    // Function to update toggle state based on asteroid miner status
+    async function updateToggleState() {
+        if (isUpdatingToggle) return;
+
+        try {
+            const response = await fetch('/api/asteroid/status');
+            const data = await response.json();
+            botToggle.checked = data.enabled || false;
+        } catch (error) {
+            console.error('Error fetching asteroid miner status:', error);
+        }
+    }
+
+    // Handle toggle click
+    botToggle.addEventListener('change', async () => {
+        isUpdatingToggle = true;
+        botToggle.disabled = true;
+
+        try {
+            const endpoint = botToggle.checked ? '/api/asteroid/start' : '/api/asteroid/stop';
+            const response = await fetch(endpoint, { method: 'POST' });
+            const data = await response.json();
+
+            console.log('Asteroid miner toggle response:', data);
+
+            // Update state after a short delay
+            setTimeout(async () => {
+                await updateToggleState();
+                botToggle.disabled = false;
+                isUpdatingToggle = false;
+            }, 500);
+        } catch (error) {
+            console.error('Error toggling asteroid miner:', error);
+            // Revert toggle on error
+            botToggle.checked = !botToggle.checked;
+            botToggle.disabled = false;
+            isUpdatingToggle = false;
+        }
+    });
+
+    // Poll asteroid miner status periodically
+    setInterval(updateToggleState, 2000);
+
+    // Initial state update
+    updateToggleState();
+</script>
+{% endblock %}

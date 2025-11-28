@@ -1,0 +1,39 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="60" fill="url(#grad1)"/>
+  
+  <!-- Stars -->
+  <circle cx="50" cy="50" r="2" fill="white" opacity="0.5"/>
+  <circle cx="400" cy="80" r="1.5" fill="white" opacity="0.3"/>
+  <circle cx="100" cy="400" r="2" fill="white" opacity="0.4"/>
+  <circle cx="450" cy="450" r="2.5" fill="white" opacity="0.6"/>
+  <circle cx="200" cy="100" r="1" fill="white" opacity="0.5"/>
+  
+  <!-- Central Planet/Moon -->
+  <circle cx="256" cy="220" r="120" fill="#334155" stroke="#475569" stroke-width="4"/>
+  <path d="M 160 220 Q 256 280 352 220" fill="none" stroke="#0ea5e9" stroke-width="6" opacity="0.8"/>
+  
+  <!-- The "X" Symbol (XBOT) -->
+  <path d="M 206 170 L 306 270" stroke="#ef4444" stroke-width="16" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M 306 170 L 206 270" stroke="#ef4444" stroke-width="16" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- Text -->
+  <!-- Using a font stack that might include handwriting style if available, otherwise cursive/fantasy -->
+  <text x="256" y="380" font-family="'Nana Banana', 'Comic Sans MS', 'Chalkboard SE', sans-serif" font-size="64" font-weight="bold" fill="#f8fafc" text-anchor="middle" style="text-shadow: 3px 3px 0px #000;">OGAME</text>
+  
+  <text x="256" y="450" font-family="'Nana Banana', 'Comic Sans MS', 'Chalkboard SE', sans-serif" font-size="56" font-weight="bold" fill="#ef4444" text-anchor="middle" style="text-shadow: 3px 3px 0px #000;">XBOT</text>
+</svg>

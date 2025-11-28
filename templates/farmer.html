@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card config-card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Farmer Config</h2>
+        <label class="toggle-switch">
+            <input type="checkbox" id="farmerToggle">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+    <div class="card-body">
+        <form id="farmerConfigForm" class="expedition-grid">
+            <div class="expedition-column">
+                <div class="form-group">
+                    <label>Select Planet</label>
+                    <select id="farmerPlanet" class="compact-input"></select>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="farmerHeadless">
+                        Headless Mode (Invisible Browser)
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="farmerSleepMode">
+                        Sleep Mode
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="farmerRandomSleepMode">
+                        Random Sleep Mode
+                    </label>
+                </div>
+            </div>
+            <div class="expedition-column">
+                <div class="form-group">
+                    <label>Sleep Start Time (HH:MM)</label>
+                    <div class="time-grid">
+                        <select id="farmerSleepStartHour" class="time-select"></select>
+                        <select id="farmerSleepStartMinute" class="time-select"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Wake Up Time (HH:MM)</label>
+                    <div class="time-grid">
+                        <select id="farmerWakeHour" class="time-select"></select>
+                        <select id="farmerWakeMinute" class="time-select"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Attack Cooldown (Minutes)</label>
+                    <div class="time-grid">
+                        <select id="farmerCooldownMin" class="time-select"></select>
+                        <select id="farmerCooldownMax" class="time-select"></select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="expedition-status">
+            <div class="status-title">Active Farmer</div>
+            <div id="farmerStatusText" class="status-body">No active farmer cycle</div>
+        </div>
+        <div class="form-actions">
+            <button type="button" id="farmerSaveBtn" class="btn btn-primary">Save Configuration</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Logs -->
+<footer class="log-footer">
+    <div class="log-header">Execution Log</div>
+    <div id="logContainer" class="log-container">
+        <!-- Logs will be injected here -->
+    </div>
+</footer>
+
+<style>
+    /* Toggle Switch Styles */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        margin: 0;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+    .toggle-switch input:checked+.toggle-slider {
+        background-color: #4caf50;
+    }
+
+    .toggle-switch input:checked+.toggle-slider:before {
+        transform: translateX(26px);
+    }
+
+    .toggle-switch input:disabled+.toggle-slider {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .expedition-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .expedition-column {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .time-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .time-select {
+        width: 100%;
+    }
+
+    .form-actions {
+        margin-top: 10px;
+        text-align: right;
+    }
+
+    .expedition-status {
+        margin-top: 16px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        min-height: 70px;
+    }
+
+    .status-title {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #cbd5e1;
+    }
+
+    .status-body {
+        font-family: 'Courier New', monospace;
+        color: #8ae0ff;
+        font-size: 0.95rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const planetSelect = document.getElementById('farmerPlanet');
+        const headlessCheckbox = document.getElementById('farmerHeadless');
+        const sleepModeCheckbox = document.getElementById('farmerSleepMode');
+        const randomSleepCheckbox = document.getElementById('farmerRandomSleepMode');
+        const sleepStartHour = document.getElementById('farmerSleepStartHour');
+        const sleepStartMinute = document.getElementById('farmerSleepStartMinute');
+        const wakeHour = document.getElementById('farmerWakeHour');
+        const wakeMinute = document.getElementById('farmerWakeMinute');
+        const cooldownMin = document.getElementById('farmerCooldownMin');
+        const cooldownMax = document.getElementById('farmerCooldownMax');
+        const saveBtn = document.getElementById('farmerSaveBtn');
+        const toggle = document.getElementById('farmerToggle');
+        const statusText = document.getElementById('farmerStatusText');
+
+        const addNumberOptions = (select, max, pad = 2) => {
+            select.innerHTML = '';
+            for (let i = 0; i <= max; i++) {
+                const opt = document.createElement('option');
+                opt.value = i.toString();
+                opt.textContent = `[${i.toString().padStart(pad, '0')}]`;
+                select.appendChild(opt);
+            }
+        };
+
+        const setSelectValue = (select, value) => {
+            const valStr = (value ?? 0).toString();
+            const option = Array.from(select.options).find(o => o.value === valStr);
+            if (option) {
+                select.value = valStr;
+            }
+        };
+
+        const fetchJson = async (url, options = {}) => {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || `Request failed: ${response.status}`);
+            }
+            return response.json();
+        };
+
+        const formatRemaining = (seconds) => {
+            const s = Math.max(0, Math.floor(seconds));
+            const h = Math.floor(s / 3600).toString().padStart(2, '0');
+            const m = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+            const sec = Math.floor(s % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${sec}`;
+        };
+
+        const populatePlanets = async (currentPlanetId) => {
+            const data = await fetchJson('/api/farmer/planets');
+            const planets = data.planets || [];
+            planetSelect.innerHTML = '';
+            if (!planets.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No planets found';
+                planetSelect.appendChild(opt);
+                return;
+            }
+            planets.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.coords ? `${p.name} ${p.coords}` : p.name;
+                planetSelect.appendChild(opt);
+            });
+            if (currentPlanetId) {
+                setSelectValue(planetSelect, currentPlanetId);
+            }
+        };
+
+        const applyConfig = (cfg) => {
+            if (!cfg) return;
+            headlessCheckbox.checked = !!cfg.headless;
+            sleepModeCheckbox.checked = !!cfg.sleep_mode;
+            randomSleepCheckbox.checked = !!cfg.random_sleep_mode;
+            setSelectValue(sleepStartHour, cfg.sleep_start?.hour ?? 0);
+            setSelectValue(sleepStartMinute, cfg.sleep_start?.minute ?? 0);
+            setSelectValue(wakeHour, cfg.wake_up?.hour ?? 0);
+            setSelectValue(wakeMinute, cfg.wake_up?.minute ?? 0);
+            setSelectValue(cooldownMin, cfg.attack_cooldown_min ?? 0);
+            setSelectValue(cooldownMax, cfg.attack_cooldown_max ?? 0);
+        };
+
+        const loadConfig = async () => {
+            try {
+                const status = await fetchJson('/api/farmer/status');
+                const cfg = status.config || {};
+
+                toggle.checked = !!(status.enabled_config ?? cfg.enabled ?? status.enabled);
+
+                await populatePlanets(cfg.planet_id);
+                applyConfig(cfg);
+                updateStatusText(status.state || {});
+            } catch (error) {
+                console.error('Error loading farmer config:', error);
+                alert('Failed to load farmer configuration');
+            }
+        };
+
+        const updateStatusText = (state) => {
+            const counter = state.counter || 0;
+            const activeUntil = state.active_until || 0;
+            const nowSec = Math.floor(Date.now() / 1000);
+            const remaining = activeUntil > nowSec ? activeUntil - nowSec : 0;
+
+            if (remaining > 0) {
+                statusText.textContent = `Farmer cycle #${counter || 1} cooling down - ${formatRemaining(remaining)} remaining`;
+                statusText.style.color = '#8ae0ff';
+            } else {
+                statusText.textContent = 'No active farmer cycle';
+                statusText.style.color = '#8ae0ff';
+            }
+        };
+
+        const refreshStatus = async () => {
+            try {
+                const status = await fetchJson('/api/farmer/status');
+                const cfg = status.config || {};
+                const enabledFlag = !!(status.enabled_config ?? cfg.enabled ?? status.enabled);
+                if (toggle.checked !== enabledFlag) {
+                    toggle.checked = enabledFlag;
+                }
+                updateStatusText(status.state || {});
+            } catch (err) {
+                console.error('Error refreshing farmer status:', err);
+            }
+        };
+
+        const buildPayload = () => {
+            const minCooldown = parseInt(cooldownMin.value, 10) || 0;
+            const maxCooldown = parseInt(cooldownMax.value, 10) || 0;
+            return {
+                enabled: toggle.checked,
+                planet_id: planetSelect.value,
+                headless: headlessCheckbox.checked,
+                sleep_start: {
+                    hour: parseInt(sleepStartHour.value, 10) || 0,
+                    minute: parseInt(sleepStartMinute.value, 10) || 0
+                },
+                wake_up: {
+                    hour: parseInt(wakeHour.value, 10) || 0,
+                    minute: parseInt(wakeMinute.value, 10) || 0
+                },
+                sleep_mode: sleepModeCheckbox.checked,
+                random_sleep_mode: randomSleepCheckbox.checked,
+                attack_cooldown_min: minCooldown,
+                attack_cooldown_max: Math.max(minCooldown, maxCooldown)
+            };
+        };
+
+        const saveFarmerConfig = async (payload, showAlert = true) => {
+            const data = await fetchJson('/api/farmer/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (showAlert) {
+                alert('Configuration saved!');
+            }
+            return data;
+        };
+
+        saveBtn.addEventListener('click', async () => {
+            saveBtn.disabled = true;
+            try {
+                await saveFarmerConfig(buildPayload(), true);
+            } catch (error) {
+                console.error('Error saving farmer config:', error);
+                alert('Failed to save configuration');
+            } finally {
+                saveBtn.disabled = false;
+            }
+        });
+
+        toggle.addEventListener('change', async () => {
+            toggle.disabled = true;
+            try {
+                const endpoint = toggle.checked ? '/api/farmer/start' : '/api/farmer/stop';
+                await fetchJson(endpoint, { method: 'POST' });
+                await saveFarmerConfig(buildPayload(), false);
+            } catch (error) {
+                console.error('Error toggling farmer mode:', error);
+                alert('Failed to update farmer toggle');
+                toggle.checked = !toggle.checked;
+            } finally {
+                toggle.disabled = false;
+            }
+        });
+
+        // Initialize selectors and config
+        addNumberOptions(sleepStartHour, 23);
+        addNumberOptions(wakeHour, 23);
+        addNumberOptions(sleepStartMinute, 59);
+        addNumberOptions(wakeMinute, 59);
+        addNumberOptions(cooldownMin, 180, 2);
+        addNumberOptions(cooldownMax, 180, 2);
+
+        loadConfig();
+        refreshStatus();
+        setInterval(refreshStatus, 2000);
+    });
+</script>
+{% endblock %}

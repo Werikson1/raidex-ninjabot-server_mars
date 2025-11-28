@@ -1,0 +1,109 @@
+{
+    "474967ec-b46e-48be-b69f-a3749c6de11b": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "46fd6eb9-6d15-4826-b701-8e99c0f88421": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "0247e5d2-9495-476b-b40d-ab0aa7150fc8": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "a2715ebf-e53d-4550-9ae4-a6f5bc3d3211": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "53ec857d-f8c6-41da-b856-5c7dd74f5afa": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "595d1ea4-c228-486a-892f-47cab0839f06": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "590dd41c-57c5-4d1a-8bca-f009279c03cf": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "3994af59-33ce-418c-aad1-5e66cc18e045": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "58b591f8-adaf-427a-af30-66981ecdf31e": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20,
+        "METAL_STORAGE": 17,
+        "CRYSTAL_STORAGE": 17,
+        "DEUTERIUM_TANK": 17
+    },
+    "81d50100-b7b9-4eb7-9509-2ab490ccc4f7": {
+        "METAL_MINE": 50,
+        "CRYSTAL_MINE": 50,
+        "DEUTERIUM_REFINERY": 45,
+        "ROBOT_FACTORY": 20,
+        "NANITE_FACTORY": 10,
+        "SHIPYARD": 20
+    }
+}

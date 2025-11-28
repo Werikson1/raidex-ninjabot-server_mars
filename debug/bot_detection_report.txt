@@ -1,0 +1,46 @@
+======================================================================
+RELATÓRIO DE DETECÇÃO DE BOT - OGAMEX
+======================================================================
+
+🔍 INDICADORES DE AUTOMAÇÃO:
+   Navigator.webdriver: True ❌ DETECTÁVEL!
+   Plugins instalados: 0 ⚠️  Suspeito (bots têm 0)
+   Platform: Win32
+   User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)...
+
+📜 SCRIPTS CARREGADOS (12 total):
+
+   🎮 Scripts do Jogo: 3
+      - https://www.gstatic.com/recaptcha/releases/TkacYOdEJbdB_JjX802TMer9/recaptcha__en.js
+      - https://ogamex.net/assets/js/all.js?v=1
+      - https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015
+
+   📊 Scripts de Tracking: 5
+      - https://www.googletagmanager.com/gtag/js?id=AW-16748890902&cx=c&gtm=4e5bi1
+      - https://www.googletagmanager.com/gtag/js?id=G-65PNDYM0LK&cx=c&gtm=4e5bi1
+      - https://www.google.com/recaptcha/api.js
+      - https://www.googletagmanager.com/gtag/js?id=UA-129483287-3
+      - https://googleads.g.doubleclick.net/pagead/viewthroughconversion/16748890902/?random=1763689642085&cv=11&fst=1763689642085&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45je5bi1v9134449990za200xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115583767~115938465~115938469~116184927~116184929~116217636~116217638~116251938~116251940&u_w=1280&u_h=720&url=https%3A%2F%2Fogamex.net%2F&frm=0&tiba=OgameX%20%7C%20Space%20MMO%20%7C%20Play%20for%20free&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1817588480.1763689642&data=event%3Dgtag.config&rfmt=3&fmt=4
+
+   📝 Scripts Inline: 4
+
+🛡️  VERIFICANDO BIBLIOTECAS ANTI-BOT:
+   Google reCAPTCHA: ❌ DETECTADO!
+   Cloudflare: ❌ DETECTADO!
+   FingerprintJS: ✅ Não encontrado
+   DataDome: ✅ Não encontrado
+
+======================================================================
+CONCLUSÃO:
+======================================================================
+⚠️  O site PODE detectar que você está usando automação!
+    navigator.webdriver = True expõe que é um bot.
+⚠️  Navegadores reais geralmente têm plugins. 0 plugins é suspeito.
+⚠️  5 script(s) de tracking encontrados (Google Analytics).
+    Eles podem coletar dados de comportamento.
+
+💡 RECOMENDAÇÕES:
+   1. Use delays aleatórios (você já faz isso ✅)
+   2. Evite padrões repetitivos muito rígidos
+   3. Considere modo não-headless quando possível
+   4. Mantenha sessão persistente (cookies)

@@ -1,0 +1,2069 @@
+
+
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-language" content="pt">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, user-scalable=0">
+    <meta name="description" content="Build your galactic empire. Colonize planets. Forge alliances. Prepare your spaceships and explore deep space.">
+    <meta name="keywords" content="online space game, space mmo, space mmorts, galactic empire, colonization game, space strategy game, ogame, planet resource management game, planet development, galaxy wars" />
+    <meta name="author" content="TEKNOLIA LTD" />
+    <title>OgameX | Space MMO | Play for free</title>
+
+    <link rel="shortcut icon" href="/assets/images/favicon.ico?v=2" />
+
+    
+    
+    <link rel="stylesheet" href="/assets/styles/app.css?v=3">
+    
+
+    
+    
+    <script src="/assets/js/all.js?v=1"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129483287-3"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'AW-16748890902');
+            </script>
+
+
+    <style>
+
+        #tooltip-container {
+            display: none;
+            position: absolute;
+            max-width: 500px;
+            min-height: 30px;
+            line-height: 20px;
+            z-index: 9999;
+            border: 1px solid #42edf8;
+            border-radius: 3px;
+            padding: 5px;
+            background-color: rgb(3,11,14);
+            color: #FFF;
+            -webkit-box-shadow: 0px 0px 20px 0px rgb(69, 136, 153);
+            -moz-box-shadow: 0px 0px 20px 0px rgb(69, 136, 153);
+            box-shadow: 0px 0px 20px 0px rgb(69, 136, 153);
+        }
+
+            /* this CS forms the triangles */
+            #tooltip-container:after,
+            #tooltip-container:before {
+                content: '';
+                display: block;
+                position: absolute;
+                width: 0;
+                height: 0;
+                border-style: solid;
+            }
+
+            #tooltip-container.position_top:after {
+                border-width: 10px 10px 0px 10px;
+                border-color: rgb(3,11,14) transparent transparent transparent;
+                top: 100%;
+                left: calc(50% - 10px);
+            }
+
+            #tooltip-container.position_top:before {
+                border-width: 11px 11px 0px 11px;
+                border-color: #42edf8 transparent transparent transparent;
+                top: 100%;
+                left: calc(50% - 11px);
+            }
+
+            #tooltip-container.position_bottom:after {
+                border-width: 0px 10px 10px 10px;
+                border-color: transparent transparent rgb(3,11,14) transparent;
+                top: -10px;
+                left: calc(50% - 10px);
+            }
+
+            #tooltip-container.position_bottom:before {
+                border-width: 0px 11px 11px 11px;
+                border-color: transparent transparent #42edf8 transparent;
+                top: -11px;
+                left: calc(50% - 11px);
+            }
+
+            #tooltip-container.position_left:after {
+                border-width: 10px 0px 10px 10px;
+                border-color: transparent transparent transparent rgb(3,11,14);
+                top: calc(50% - 10px);
+                left: 100%;
+            }
+
+            #tooltip-container.position_left:before {
+                border-width: 11px 0px 11px 11px;
+                border-color: transparent transparent transparent #42edf8;
+                top: calc(50% - 11px);
+                left: 100%;
+            }
+
+            #tooltip-container.position_right:after {
+                border-width: 10px 10px 10px 0px;
+                border-color: transparent rgb(3,11,14) transparent transparent;
+                top: calc(50% - 10px);
+                left: -10px;
+            }
+
+            #tooltip-container.position_right:before {
+                border-width: 11px 11px 11px 0px;
+                border-color: transparent #42edf8 transparent transparent;
+                top: calc(50% - 11px);
+                left: -11px;
+            }
+    </style>
+
+</head>
+<body>
+    
+    <div id="tooltip-container"></div>
+    <div id="bodyWrapper">
+        <div id="loginFrame">
+            <div class="loginRegisterContainer loginForm">
+                <a href="#" class="closeModal" id="loginFrameClose">&#10006;</a>
+                <div class="form-area" id="loginForm">
+                    <fieldset>
+                        <span style="color: #53A7C5;letter-spacing: 2px;">
+                            Login
+                        </span>
+                    </fieldset>
+                    <fieldset class="form-error"></fieldset>
+                    <fieldset>
+                        <label class="error-label"></label>
+                        <input type="email" name="Email" value="" placeholder="Email" />
+                    </fieldset>
+                    <fieldset>
+                        <label class="error-label"></label>
+                        <input type="password" name="Password" value="" placeholder="Password" />
+                    </fieldset>
+                    <fieldset>
+                        <label class="checkbox-container">
+                            Remember me
+                            <input type="checkbox" name="RememberMe">
+                            <span class="checkmark"></span>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <div style="float:left;width:100%;text-align:center;margin-top:10px;">
+                            <a href="#" class="btnSubmit" id="btnLogin">Login</a>
+                        </div>
+                    </fieldset>
+                    <fieldset style="position:absolute;bottom:10px;left:0px;padding:5px 20px;">
+                        <div style="float:left;text-align:left;">
+                            <a href="#" onclick="SwitchToPasswordRecovery();" class="btnBottom">Forgot password ?</a>
+                        </div>
+                        <div style="float:right;text-align:right;">
+                            <a href="#" onclick="SwitchToRegister();" class="btnBottom">Register</a>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-area" id="registerForm">
+                    <fieldset>
+                        <span style="color: #53A7C5;letter-spacing: 2px;">
+                            Register
+                        </span>
+                    </fieldset>
+                    <fieldset class="form-error"></fieldset>
+                    <fieldset>
+                        <label class="error-label"></label>
+                        <input type="email" name="Email" value="" placeholder="Email" />
+                    </fieldset>
+                    <fieldset>
+                        <label class="error-label"></label>
+                        <input type="password" name="Password" value="" placeholder="Password" />
+                    </fieldset>
+                    <fieldset>
+                        <label class="error-label"></label>
+                        <input type="hidden" name="RecaptchaResponse" />
+                        <div class="g-recaptcha" data-sitekey="6LfRueIUAAAAAIGtp7Ts6cmKPE4bS0PuvI0crhl3" style="float:right !important;"></div>
+                    </fieldset>
+                    <fieldset>
+                        <div style="float:left;width:100%;text-align:center;font-size:11px;color:#AAA;margin-top:10px;">
+                            The game is covered by our <a href="/home/termsofconditions" style="color:#53A7C5">Terms of use</a> and <a href="/home/privacypolicy" style="color:#53A7C5">Privacy policy</a>.
+                        </div>
+                        <div style="float:left;width:100%;text-align:center;margin-top:10px;">
+                            <a href="#" class="btnSubmit" id="btnRegister">Register</a>
+                        </div>
+                    </fieldset>
+                    <fieldset style="position:absolute;bottom:10px;left:0px;padding:5px 20px;">
+                        <div style="float:left;width:100%;text-align:right;">
+                            <span style="color:#AAA;font-size:12px;">Do you have an account ?</span>
+                            <a href="#" onclick="SwitchToLogin();" class="btnBottom">Login</a>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-area" id="forgotPasswordForm">
+                    <fieldset>
+                        <span style="color: #53A7C5;letter-spacing: 2px;">
+                            Password recovery
+                        </span>
+                    </fieldset>
+                    <fieldset class="form-error"></fieldset>
+                    <fieldset class="form-success" id="forgotPasswordInfoMessage" style="display:none;">
+                        <i class="far fa-envelope" style="margin-right:5px;"></i>
+                        We've sent a recovery email to your email address.
+                        Click the link within to reset your password.
+                    </fieldset>
+                    <fieldset>
+                        <label class="error-label"></label>
+                        <input type="email" name="Email" value="" placeholder="Email" />
+                    </fieldset>
+                    <fieldset>
+                        <div style="float:left;width:100%;text-align:center;">
+                            <a href="#" class="btnSubmit" id="btnForgotPassword">Send email</a>
+                        </div>
+                    </fieldset>
+                    <fieldset style="position:absolute;bottom:10px;left:0px;padding:5px 20px;">
+                        <div style="float:left;text-align:left;">
+                            <a href="#" onclick="SwitchToLogin();" class="btnBottom">Login</a>
+                        </div>
+                        <div style="float:right;text-align:right;">
+                            <a href="#" onclick="SwitchToRegister();" class="btnBottom">Register</a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="mobileMenu" id="mobileLeftMenu">
+            <div class="mobileMenuNavigation">
+                <a href="/" class="nav-item">Home <i class="fas fa-chevron-right"></i></a>
+                
+                <a href="/home/gallery" class="nav-item">Gallery <i class="fas fa-chevron-right"></i></a>
+                
+                <a href="/home/contact" class="nav-item">Contact us <i class="fas fa-chevron-right"></i></a>
+
+
+
+                <a href="#" class="nav-item" id="btnMobileLangMenu"><span class="flag_sm flag-half flag-pt" style="vertical-align: middle;margin-top: -3px;margin-right: 5px;"></span> Language <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="mobileMenuLangSelection" id="mobileMenuLangList">
+                        <a href="#" onclick="SelectLanguage('en');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-gb"></span> English</a>
+                        <a href="#" onclick="SelectLanguage('de');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-de"></span> Deutsch</a>
+                        <a href="#" onclick="SelectLanguage('fr');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-fr"></span> Fran&#231;ais</a>
+                        <a href="#" onclick="SelectLanguage('ru');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-ru"></span> Русский</a>
+                        <a href="#" onclick="SelectLanguage('es');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-es"></span> Espa&#241;ol</a>
+                        <a href="#" onclick="SelectLanguage('it');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-it"></span> Italiano</a>
+                        <a href="#" onclick="SelectLanguage('tr');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-tr"></span> T&#252;rk&#231;e</a>
+                        <a href="#" onclick="SelectLanguage('nl');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-nl"></span> Nederlands</a>
+                        <a href="#" onclick="SelectLanguage('el');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-el"></span> Ελληνικά</a>
+                        <a href="#" onclick="SelectLanguage('sk');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-sk"></span> Slovensk&#253;</a>
+                        <a href="#" onclick="SelectLanguage('cs');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-cs"></span> Čeština</a>
+                        <a href="#" onclick="SelectLanguage('pt');" class="mobile-lang-select-item active"><span class="flag_sm flag-half flag-pt"></span> Portugu&#234;s</a>
+                        <a href="#" onclick="SelectLanguage('ro');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-ro"></span> Rom&#226;nă</a>
+                        <a href="#" onclick="SelectLanguage('pl');" class="mobile-lang-select-item "><span class="flag_sm flag-half flag-pl"></span> Polski</a>
+
+
+            </div>
+        </div>
+
+                <div class="mobileMenu" id="mobileRightMenu">
+                    <div class="mobileMenuNavigation">
+                        <div style="font-size: 13px;" class="nav-item nav-account-verified">
+                            <div style="font-style: italic;color: #ffd700;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="610415150e0f0450575721060c00080d4f020e0c">[email&#160;protected]</a></div>
+                                    <div style="color:#48AD23;font-weight:bold;margin-top:5px;"><span class="fas fa-check" style="margin-right:5px;"></span>Account verified.</div>
+
+                        </div>
+
+
+                        <a href="/home/confirm?ConfirmationType=ChangePassword" class="nav-item">Change password <i class="fas fa-chevron-right"></i></a>
+                        <a href="/home/confirm?ConfirmationType=ChangeEmail" class="nav-item">Change email <i class="fas fa-chevron-right"></i></a>
+                        <a href="#" onclick="LogOut();" class="nav-item mobile-nav-logout">Log out <i class="fas fa-sign-out-alt"></i></a>
+                    </div>
+                </div>
+
+
+
+        <header class="main-header">
+            <div class="header-wrapper">
+                <div class="header-container">
+                    <a href="/" class="logo">
+                        <img alt="OgameX Logo" src="/assets/images/logo.png" />
+                    </a>
+                    <div class="navigation nav-left">
+                        <a class="nav-item active" href="/">Home</a>
+                        
+                        <a class="nav-item " href="/home/gallery">Gallery</a>
+                        
+                        <a class="nav-item " href="/home/contact">Contact us</a>
+                                <div id="langSelector" class="nav-item lang-select">
+                                    <span class="flag_sm flag-half flag-pt"></span>
+                                </div>
+                                <div class="lang-select-list" id="langSelectList">
+
+                                            <a href="#" onclick="SelectLanguage('en');" class="lang-select-list-item"><span class="flag_sm flag-half flag-gb"></span> English</a>
+                                            <a href="#" onclick="SelectLanguage('de');" class="lang-select-list-item"><span class="flag_sm flag-half flag-de"></span> Deutsch</a>
+                                            <a href="#" onclick="SelectLanguage('fr');" class="lang-select-list-item"><span class="flag_sm flag-half flag-fr"></span> Fran&#231;ais</a>
+                                            <a href="#" onclick="SelectLanguage('ru');" class="lang-select-list-item"><span class="flag_sm flag-half flag-ru"></span> Русский</a>
+                                            <a href="#" onclick="SelectLanguage('es');" class="lang-select-list-item"><span class="flag_sm flag-half flag-es"></span> Espa&#241;ol</a>
+                                            <a href="#" onclick="SelectLanguage('it');" class="lang-select-list-item"><span class="flag_sm flag-half flag-it"></span> Italiano</a>
+                                            <a href="#" onclick="SelectLanguage('tr');" class="lang-select-list-item"><span class="flag_sm flag-half flag-tr"></span> T&#252;rk&#231;e</a>
+                                            <a href="#" onclick="SelectLanguage('nl');" class="lang-select-list-item"><span class="flag_sm flag-half flag-nl"></span> Nederlands</a>
+                                            <a href="#" onclick="SelectLanguage('el');" class="lang-select-list-item"><span class="flag_sm flag-half flag-el"></span> Ελληνικά</a>
+                                            <a href="#" onclick="SelectLanguage('sk');" class="lang-select-list-item"><span class="flag_sm flag-half flag-sk"></span> Slovensk&#253;</a>
+                                            <a href="#" onclick="SelectLanguage('cs');" class="lang-select-list-item"><span class="flag_sm flag-half flag-cs"></span> Čeština</a>
+                                            <a href="#" onclick="SelectLanguage('pt');" class="lang-select-list-item"><span class="flag_sm flag-half flag-pt"></span> Portugu&#234;s</a>
+                                            <a href="#" onclick="SelectLanguage('ro');" class="lang-select-list-item"><span class="flag_sm flag-half flag-ro"></span> Rom&#226;nă</a>
+                                            <a href="#" onclick="SelectLanguage('pl');" class="lang-select-list-item"><span class="flag_sm flag-half flag-pl"></span> Polski</a>
+
+                                </div>
+
+
+                        <div class="nav-item nav-item-mobile-menu" id="btnMobileMenu">
+                            <span class="nav-mobile"></span>
+                        </div>
+                    </div>
+                    <div class="navigation nav-right">
+                                <a href="#" class="nav-item  nav-profile" id="btnAccountOptions">
+                                    <i class="fas fa-user"></i><br />
+                                    <span style="font-size:16px;">Account</span>
+                                </a>
+                                <div class="account-options" id="accountOptions">
+                                    <div style="font-size: 13px;padding:10px;border-bottom: 1px solid rgba(10, 86, 136, 0.25);margin-bottom:5px;background-color: rgba(0, 0, 0, 0.5);width: max-content;min-width:100%;">
+                                        <div style="font-style: italic;color: #ffd700;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3752434358595206010177505a565e5b1954585a">[email&#160;protected]</a></div>
+                                                <div style="color:#48AD23;font-weight:bold;margin-top:5px;"><i class="fas fa-check" style="margin-right:5px;"></i>Account verified.</div>
+
+                                    </div>
+
+                                    <a href="/home/confirm?ConfirmationType=ChangePassword" class="account-option-item">Change password</a>
+                                    <a href="/home/confirm?ConfirmationType=ChangeEmail" class="account-option-item">Change email</a>
+                                    <a href="#" onclick="LogOut();" class="account-option-item account-option-logout"><i class="fas fa-sign-out-alt"></i> Log out</a>
+                                </div>
+
+                                <div class="nav-item nav-item-mobile-profile" id="btnMobileProfile">
+                                    <i class="fas fa-user"></i>
+                                </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            <div id="mainBackground"></div>
+            <div class="content-wrapper">
+                
+
+
+
+<style>
+
+    .main-promo {
+        float: left;
+        width: 100%;
+        position: relative;
+        background-size: cover !important;
+        background-position: center !important;
+        height: 456px;
+    }
+
+        .main-promo.promo-1 {
+            background: url(../../assets/images/promo/landing1.jpg?v=2)no-repeat;
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        .main-promo.promo-2 {
+            background: url(../../assets/images/promo/landing2.jpg?v=2)no-repeat;
+        }
+
+        .main-promo.promo-3 {
+            background: url(../../assets/images/promo/landing3.jpg?v=2)no-repeat;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+    .promo-text {
+        position: absolute;
+        border: 1px solid rgb(22, 129, 165);
+        padding: 10px;
+        background: url(../../assets/images/lines-blue.png) repeat,rgba(0,0,0,0.9);
+        color: #00e7ff;
+        right: 40px;
+        bottom: 30px;
+        text-shadow: 0px 0px 15px #006cff, 0px 0px 15px #006cff;
+        letter-spacing: 1px;
+        font-size: 16px;
+        line-height: 20px;
+        border-radius: 5px;
+        max-width: 400px;
+    }
+
+    .main-description {
+        float: left;
+        width: 100%;
+        margin: 40px auto;
+    }
+
+        .main-description h1 {
+            color: #93d7f7;
+            text-shadow: 0px 0px 15px #006cff, 0px 0px 15px #006cff;
+            font-size: 24px;
+            margin: 10px 0px;
+        }
+
+        .main-description h2 {
+            color: #93d7f7;
+            text-shadow: 0px 0px 15px #006cff, 0px 0px 15px #006cff;
+            font-size: 24px;
+            margin: 10px 0px;
+        }
+
+        .main-description h3 {
+            font-size: 16px;
+            color: #b4eefc;
+            margin: 3px 0px;
+        }
+
+    .main-description-1 .btn-play-container {
+        position: absolute;
+        top: 40px;
+        right: 10px;
+    }
+
+    .main-description-2 {
+        float: left;
+        width: 100%;
+        margin: 40px auto;
+        text-align: center;
+        margin-bottom: 0px;
+        margin-top: 80px;
+    }
+
+        .main-description-2 .devices-img-container {
+            float: left;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+    .main-description-3 {
+        text-align: center;
+    }
+
+        .main-description-3 .btnPlay {
+            margin-top: 20px;
+        }
+
+    .promo-text ul {
+        list-style: square;
+        padding-left: 20px;
+    }
+
+        .promo-text ul li {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+    .btnPlay {
+        text-decoration: none;
+        position: relative;
+        color: #93d7f7;
+        text-shadow: 1px 1px 10px #006cff, 0px 0px 5px #006cff;
+        font-size: 24px;
+        background: url(../../assets/images/lines-blue.png) repeat;
+        display: inline-block;
+        padding: 20px 40px;
+        border: 1px solid rgb(22, 129, 165);
+        border-radius: 5px;
+        overflow: hidden;
+        -webkit-animation: btnPlay_Animation .8s infinite alternate;
+        -moz-animation: btnPlay_Animation .8s infinite alternate;
+        -ms-animation: btnPlay_Animation .8s infinite alternate;
+        animation: btnPlay_Animation .8s infinite alternate;
+    }
+
+        .btnPlay:after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 3px;
+            background: none;
+        }
+
+        .btnPlay:hover {
+            color: #FFF;
+        }
+
+            .btnPlay:hover:after {
+                background: #42EDF8;
+                box-shadow: 0 0 15px 3px rgba(0, 112, 202, 0.6), 0 3px 28px 25px rgba(11, 183, 226, 0.65);
+            }
+
+    .btnConnect {
+        text-decoration: none;
+        position: relative;
+        color: #93d7f7;
+        text-shadow: 1px 1px 10px #006cff, 0px 0px 5px #006cff;
+        font-size: 16px;
+        background: url(../../assets/images/lines-blue.png) repeat;
+        display: inline-block;
+        padding: 10px 12px;
+        border: 1px solid rgb(22, 129, 165);
+        border-radius: 5px;
+        overflow: hidden;
+        min-width: 120px;
+        text-align: center;
+        float: right;
+    }
+
+        .btnConnect.btnConnectGreen {
+            text-shadow: 0px 0px 15px rgba(48, 119, 48, 1), 0px 0px 15px #145014;
+            background: url(../../assets/images/block-content-green-line.png) repeat, rgba(0,0,0,0.8);
+            color: #08b309;
+            border: 1px solid #24a032;
+        }
+
+        .btnConnect:after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 3px;
+            background: none;
+        }
+
+        .btnConnect:hover {
+            color: #FFF;
+        }
+
+            .btnConnect:hover:after {
+                background: #42EDF8;
+                box-shadow: 0 0 15px 3px rgba(0, 112, 202, 0.6), 0 3px 28px 25px rgba(11, 183, 226, 0.65);
+            }
+
+        .btnConnect.btnConnectGreen:hover:after {
+            background: #0aec0c;
+            box-shadow: 0 0 15px 3px rgba(48, 119, 48, 1), 0 -15px 50px 12px rgba(36, 218, 36, 1);
+        }
+
+
+    .btnServerInfo {
+        min-width: 10px !important;
+        /*border: 1px solid #ff9800;*/
+        /*background-color: rgb(255 152 0 / 20%);*/
+        padding: 5px 6px;
+        text-align: center;
+        /*color: #ff9800;*/
+        /*text-shadow: 1px 1px 10px #ff9800, 0px 0px 5px #ff9800;*/
+        text-shadow: none;
+        margin-right: 5px;
+        font-size: 14px;
+        margin-top: 6px;
+        cursor: help;
+    }
+
+        .btnServerInfo:hover:after {
+            /*background: #ff9800;*/
+            /*box-shadow: 0 0 15px 3px rgba(255,152,0,0.2), 0 3px 28px 25px rgba(255,152,0,0.2);*/
+        }
+
+    .server-informations {
+        background: url(../../assets/images/lines-blue.png) repeat;
+        border-radius: 5px;
+        float: left;
+        width: 100%;
+        border: 1px solid #0A456D;
+        background-color: rgba(0,0,0,0.8);
+        overflow: hidden;
+        margin-top: 40px;
+    }
+
+        .server-informations h3 {
+            color: #93d7f7;
+            text-shadow: 0px 0px 15px #006cff, 0px 0px 15px #006cff;
+            font-size: 18px;
+            border-bottom: 2px solid #42EDF8;
+            padding: 10px 20px;
+            box-shadow: 0 0 15px 3px rgba(0, 112, 202, 0.6), 0 -15px 40px 5px rgba(11, 183, 226, 0.65);
+        }
+
+        .server-informations .server-list-container {
+            float: left;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #b4eefc;
+            position: relative;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+            .server-informations .server-list-container .server-list-head {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                padding: 0px 30px;
+            }
+
+                .server-informations .server-list-container .server-list-head .head-col {
+                    float: left;
+                }
+
+            .server-informations .server-list-container .server-list-content {
+                float: left;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+                .server-informations .server-list-container .server-list-content .server-item {
+                    float: left;
+                    width: 100%;
+                    background: -moz-linear-gradient(top, rgba(125,190,222,0.1) 0%, rgba(125,190,222,0.1) 1%, rgba(125,190,222,0) 50%, rgba(125,190,222,0.1) 100%);
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(125,190,222,0.1)), color-stop(1%,rgba(125,190,222,0.1)), color-stop(50%,rgba(125,190,222,0)), color-stop(100%,rgba(125,190,222,0.1)));
+                    background: -webkit-linear-gradient(top, rgba(125,190,222,0.1) 0%,rgba(125,190,222,0.1) 1%,rgba(125,190,222,0) 50%,rgba(125,190,222,0.1) 100%);
+                    background: -o-linear-gradient(top, rgba(125,190,222,0.1) 0%,rgba(125,190,222,0.1) 1%,rgba(125,190,222,0) 50%,rgba(125,190,222,0.1) 100%);
+                    background: -ms-linear-gradient(top, rgba(125,190,222,0.1) 0%,rgba(125,190,222,0.1) 1%,rgba(125,190,222,0) 50%,rgba(125,190,222,0.1) 100%);
+                    background: linear-gradient(to bottom, rgba(125,190,222,0.1) 0%,rgba(125,190,222,0.1) 1%,rgba(125,190,222,0) 50%,rgba(125,190,222,0.1) 100%);
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a7dbede', endColorstr='#1a7dbede',GradientType=0 );
+                    margin-bottom: 15px;
+                    padding: 5px;
+                    position: relative;
+                    border: solid 1px #1D3D52;
+                    border-radius: 5px;
+                    display: block;
+                    -webkit-transition-duration: 0.3s;
+                    -moz-transition-duration: 0.3s;
+                    -o-transition-duration: 0.3s;
+                    transition-duration: 0.3s;
+                    overflow: hidden;
+                    margin-top: 1px;
+                }
+
+                    .server-informations .server-list-container .server-list-content .server-item:hover {
+                        background-color: rgba(50, 157, 255, 0.08);
+                        border-color: #1F81A7;
+                    }
+
+                    .server-informations .server-list-container .server-list-content .server-item .server-col {
+                        float: left;
+                        vertical-align: middle;
+                        min-height: 1px;
+                    }
+
+        .server-informations .head-col, .server-informations .server-col {
+            width: 16.666%;
+        }
+
+        .server-informations .server-item .col-universe, .server-informations .server-item .col-online-players, .server-informations .server-item .col-server-age, .server-informations .server-item .col-player-name, .server-informations .server-item .col-player-rank {
+            line-height: 38px;
+        }
+
+        .server-informations .server-item .col-player-name, .server-informations .server-item .col-player-rank {
+            color: #48AD23;
+            font-weight: bold;
+        }
+
+        .server-informations .server-list-container.serverListDesktop {
+            display: block;
+        }
+
+        .server-informations .server-list-container.serverListMobile {
+            display: none;
+        }
+
+    .main-news {
+        float: left;
+        width: 735px;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+        .main-news .news-head {
+            min-height: 40px;
+            float: left;
+            width: 100%;
+            background: url(../../assets/images/main-news-head.png) right top no-repeat;
+            position: relative;
+        }
+
+            .main-news .news-head h3 { /*color: #00e7ff;*/
+                color: #ffd700;
+                font-size: 18px;
+                margin-top: -10px;
+            }
+
+            .main-news .news-head a {
+                text-decoration: none;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                font-size: 14px;
+                color: #0788b9;
+                -webkit-transition-duration: 0.3s;
+                -moz-transition-duration: 0.3s;
+                -o-transition-duration: 0.3s;
+                transition-duration: 0.3s;
+                padding: 10px 20px;
+                width: 220px;
+                text-align: right;
+            }
+
+                .main-news .news-head a:hover {
+                    color: #43edf8;
+                }
+
+                .main-news .news-head a:before {
+                    width: 6px;
+                    height: 16px;
+                    content: '';
+                    background: #43edf8;
+                    box-shadow: 14px 2px 50px 4px rgba(0, 112, 202, 0.79), 2px 2px 12px 1px rgba(0, 112, 202, 0.5);
+                    top: 0px;
+                    left: -15px;
+                    position: absolute;
+                    -webkit-transform: skew(-45deg);
+                    -ms-transform: skew(-45deg);
+                    transform: skew(-45deg);
+                }
+
+                .main-news .news-head a:after {
+                    content: '';
+                    position: absolute;
+                    background: #43edf8;
+                    -webkit-transform: skew(-45deg);
+                    -ms-transform: skew(-45deg);
+                    transform: skew(-45deg);
+                    height: 4px;
+                    width: 0;
+                    top: -3px;
+                    left: -6px;
+                    -webkit-transition-duration: 0.2s;
+                    -moz-transition-duration: 0.2s;
+                    -o-transition-duration: 0.2s;
+                    transition-duration: 0.2s;
+                }
+
+                .main-news .news-head a:hover:after {
+                    width: calc(100% + 7px);
+                    box-shadow: 14px 12px 50px 7px rgba(0, 112, 202, 0.79), 0 0 12px 1px rgba(0, 112, 202, 0.6);
+                }
+
+        .main-news .news-content {
+            float: left;
+            width: 100%;
+        }
+
+            .main-news .news-content .news-item {
+                width: 100%;
+                position: relative;
+                margin-bottom: 15px;
+                padding: 20px;
+                padding-right: 30px;
+                padding-left: 200px;
+                background: rgba(0, 44, 65, 0.5);
+                -webkit-transition-duration: 0.2s;
+                -moz-transition-duration: 0.2s;
+                -o-transition-duration: 0.2s;
+                transition-duration: 0.2s;
+                max-height: 200px;
+                box-sizing: border-box;
+                min-height: 160px;
+                overflow: hidden;
+            }
+
+                .main-news .news-content .news-item:hover {
+                    background: rgba(22, 104, 159, 0.4);
+                }
+
+                .main-news .news-content .news-item .post-media {
+                    position: absolute;
+                    left: 20px;
+                    top: 20px;
+                    width: 150px;
+                    height: 90px;
+                    margin-right: 20px;
+                }
+
+                    .main-news .news-content .news-item .post-media a {
+                    }
+
+                        .main-news .news-content .news-item .post-media a img {
+                        }
+
+                    .main-news .news-content .news-item .post-media .top-corners {
+                        position: absolute;
+                        width: 100%;
+                        top: 0px;
+                    }
+
+                        .main-news .news-content .news-item .post-media .top-corners:after {
+                            content: '';
+                            position: absolute;
+                            width: 8px;
+                            height: 8px;
+                            border-color: #00edff;
+                            border-style: solid;
+                            -webkit-transition-duration: 0.3s;
+                            -moz-transition-duration: 0.3s;
+                            -o-transition-duration: 0.3s;
+                            transition-duration: 0.3s;
+                            -webkit-perspective: 1000;
+                            perspective: 1000;
+                            -webkit-transform: translateZ(0);
+                            -ms-transform: translateZ(0);
+                            transform: translateZ(0);
+                            right: 0px;
+                            border-width: 1px 1px 0 0;
+                        }
+
+                        .main-news .news-content .news-item .post-media .top-corners:before {
+                            content: '';
+                            position: absolute;
+                            width: 8px;
+                            height: 8px;
+                            border-color: #00edff;
+                            border-style: solid;
+                            -webkit-transition-duration: 0.3s;
+                            -moz-transition-duration: 0.3s;
+                            -o-transition-duration: 0.3s;
+                            transition-duration: 0.3s;
+                            -webkit-perspective: 1000;
+                            perspective: 1000;
+                            -webkit-transform: translateZ(0);
+                            -ms-transform: translateZ(0);
+                            transform: translateZ(0);
+                            left: 0px;
+                            border-width: 1px 0 0 1px;
+                        }
+
+                    .main-news .news-content .news-item .post-media .bottom-corners {
+                        position: absolute;
+                        width: 100%;
+                        bottom: 9px;
+                    }
+
+                        .main-news .news-content .news-item .post-media .bottom-corners:after {
+                            content: '';
+                            position: absolute;
+                            width: 8px;
+                            height: 8px;
+                            border-color: #00edff;
+                            border-style: solid;
+                            -webkit-transition-duration: 0.3s;
+                            -moz-transition-duration: 0.3s;
+                            -o-transition-duration: 0.3s;
+                            transition-duration: 0.3s;
+                            -webkit-perspective: 1000;
+                            perspective: 1000;
+                            -webkit-transform: translateZ(0);
+                            -ms-transform: translateZ(0);
+                            transform: translateZ(0);
+                            right: 0px;
+                            border-width: 0 1px 1px 0;
+                        }
+
+                        .main-news .news-content .news-item .post-media .bottom-corners:before {
+                            content: '';
+                            position: absolute;
+                            width: 8px;
+                            height: 8px;
+                            border-color: #00edff;
+                            border-style: solid;
+                            -webkit-transition-duration: 0.3s;
+                            -moz-transition-duration: 0.3s;
+                            -o-transition-duration: 0.3s;
+                            transition-duration: 0.3s;
+                            -webkit-perspective: 1000;
+                            perspective: 1000;
+                            -webkit-transform: translateZ(0);
+                            -ms-transform: translateZ(0);
+                            transform: translateZ(0);
+                            left: 0px;
+                            border-width: 0 0 1px 1px;
+                        }
+
+                .main-news .news-content .news-item .post-container h4 {
+                }
+
+                    .main-news .news-content .news-item .post-container h4 a {
+                        font-size: 18px;
+                        color: #b1d8f1;
+                        max-height: 60px;
+                        min-height: 30px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        text-decoration: none;
+                    }
+
+                .main-news .news-content .news-item .post-container .post-content {
+                    font-size: 14px;
+                    text-transform: none;
+                    color: #0891c5;
+                    max-height: 60px;
+                    word-wrap: break-word;
+                    max-width: 750px;
+                    margin: 10px 0;
+                    line-height: 18px;
+                    overflow: hidden;
+                }
+
+                .main-news .news-content .news-item .post-container .post-comments {
+                    color: #da9e00;
+                    font-size: 14px;
+                    margin-top: 5px;
+                    text-align: right;
+                }
+
+                    .main-news .news-content .news-item .post-container .post-comments .comment-count {
+                        color: #0891c5;
+                        font-weight: bold;
+                    }
+
+                .main-news .news-content .news-item .post-container .post-date {
+                    text-align: right;
+                    font-size: 12px;
+                    color: #b1d8f1;
+                    margin-top: 5px;
+                }
+
+        .main-news .news-footer {
+            float: left;
+            width: 100%;
+            min-height: 40px;
+            background: url(../../assets/images/main-news-footer.png) bottom no-repeat;
+            margin-top: -15px;
+        }
+
+    .main-events {
+        float: left;
+        width: 380px;
+        margin-left: 24px;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+        .main-events .events-head {
+            float: left;
+            width: 100%;
+        }
+
+            .main-events .events-head .events-title {
+                float: left;
+                width: 50%;
+                height: 30px;
+                position: relative;
+                background: rgba(0, 44, 65, 0.5); /*color: #af820a;*/
+                color: #ffd700;
+                font-size: 16px; /*font-weight: bold;*/
+                padding: 8px 0px;
+                text-align: center;
+            }
+
+                .main-events .events-head .events-title:before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    height: 0;
+                    border-style: solid;
+                    bottom: 0;
+                    z-index: 1;
+                    border-width: 30px 0 0 30px;
+                    border-color: transparent transparent transparent rgba(0, 44, 69, 0.5);
+                    right: -30px;
+                }
+
+        .main-events .events-container {
+            float: left;
+            width: 100%;
+            background: rgba(0, 44, 65, 0.5);
+        }
+
+            .main-events .events-container .event-item {
+                float: left;
+                width: 100%;
+                position: relative;
+                min-height: 80px;
+                max-height: 200px;
+                margin: 12px 0px;
+                padding: 10px 15px;
+                overflow: hidden;
+                border: 1px solid rgba(66, 237, 248, 0.1);
+                border-left: none;
+            }
+
+                .main-events .events-container .event-item.event-expired {
+                    opacity: 0.4;
+                }
+
+                .main-events .events-container .event-item:after {
+                    position: absolute;
+                    content: '';
+                    width: 3px;
+                    height: 100%;
+                    top: 0px;
+                    left: 0px;
+                    background-color: #42EDF8; /*box-shadow: 100px 0px 160px 34px rgba(11, 183, 226, 0.65);*/
+                    box-shadow: 0px 0px 160px 34px rgba(11, 183, 226, 0.65);
+                }
+
+                .main-events .events-container .event-item h4 {
+                    font-size: 18px;
+                    color: #b1d8f1; /*border-bottom: 1px solid #0A456D;*/ /*padding-bottom: 5px;*/
+                }
+
+                .main-events .events-container .event-item .event-content {
+                    color: #da9e00;
+                    font-size: 14px;
+                    margin-top: 15px;
+                }
+
+                .main-events .events-container .event-item .event-date {
+                    font-size: 12px;
+                    color: #b1d8f1;
+                    margin-top: 15px; /*border-top: 1px solid #0A456D;*/ /*padding-top: 10px;*/
+                }
+
+
+    .table_server_props {
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.5px;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+        .table_server_props tr {
+            /*border-top: 1px solid #444;*/
+            /*border-bottom: 1px solid #444;*/
+        }
+
+            .table_server_props tr td {
+                padding: 3px 6px;
+            }
+
+                .table_server_props tr td.server_info_td_left {
+                    text-align: right;
+                }
+
+                .table_server_props tr td.server_info_td_right {
+                    text-align: left;
+                }
+
+    @media only screen and (max-width: 1200px) {
+        .main-description-1 {
+            margin: 30px auto;
+        }
+
+        .main-description-2 {
+            margin-top: 60px;
+        }
+
+        .main-promo {
+            height: 384px;
+        }
+
+        .main-news {
+            width: 596px;
+        }
+
+        .main-events {
+            width: 340px;
+        }
+    }
+
+    @media only screen and (max-width: 992px) {
+
+
+
+        .main-description h1 {
+            font-size: 22px;
+        }
+
+        .main-description h2 {
+            font-size: 22px;
+        }
+
+        .main-description h3 {
+            font-size: 14px;
+        }
+
+        .main-description-1 {
+            width: calc(100% - 240px);
+            margin: 20px auto;
+        }
+
+            .main-description-1 .btn-play-container {
+                top: 30px;
+            }
+
+        .main-description-2 {
+            margin-top: 40px;
+        }
+
+        .main-promo {
+            height: 290px;
+        }
+
+        .promo-text {
+            bottom: 15px;
+            right: 15px;
+            letter-spacing: 0.3px;
+            font-size: 14px;
+            line-height: 16px;
+            background-color: rgba(0,0,0,0.8);
+            padding: 8px;
+            max-width: 380px;
+        }
+
+            .promo-text ul li {
+                margin-top: 3px;
+                margin-bottom: 3px;
+            }
+
+        .main-news {
+            width: 100%;
+            margin-top: 60px;
+            margin-bottom: 0px;
+        }
+
+        .main-events {
+            width: 100%;
+            margin-left: 0px;
+            margin: 40px auto;
+        }
+
+        .server-informations .server-list-container.serverListDesktop {
+            display: none;
+        }
+
+        .server-informations .server-list-container.serverListMobile {
+            display: block;
+            color: #f1f1f1;
+            margin: 0px;
+        }
+
+        .server-informations .server-list-container .server-list-content {
+            margin: 0px;
+        }
+
+        .server-list-container.serverListMobile .server-item {
+            position: relative;
+            height: 80px;
+            font-size: 14px;
+            margin-bottom: 10px !important;
+            margin-top: 10px !important;
+        }
+
+        .server-list-container.serverListMobile .server-col {
+            position: absolute;
+            width: unset;
+            min-width: unset;
+            max-width: unset;
+            line-height: 20px;
+            text-align: left;
+        }
+
+        .server-list-container.serverListMobile .col-universe {
+            width: 320px;
+            left: 20px;
+            top: 6px;
+            font-size: 16px;
+            color: #93d7f7;
+            font-weight: bold;
+        }
+
+        .server-list-container.serverListMobile .col-online-players {
+            width: 160px;
+            left: 20px;
+            top: 35px;
+        }
+
+        .server-list-container.serverListMobile .col-server-age {
+            width: 160px;
+            left: 20px;
+            top: 55px;
+        }
+
+        .server-list-container.serverListMobile .col-player-name {
+            width: 200px;
+            left: 250px;
+            top: 35px;
+            color: #f1f1f1;
+            font-weight: initial;
+        }
+
+        .server-list-container.serverListMobile .col-player-rank {
+            width: 200px;
+            left: 250px;
+            top: 55px;
+            color: #f1f1f1;
+            font-weight: initial;
+        }
+
+        .server-list-container.serverListMobile .col-server-actions {
+            right: 20px;
+            bottom: 18px;
+        }
+
+        .server-list-container.serverListMobile .col-value {
+            float: right; /*color: #93d7f7;*/
+        }
+
+        .server-list-container.serverListMobile .col-player-name .col-value, .server-list-container.serverListMobile .col-player-rank .col-value {
+            color: #48AD23;
+            font-weight: bold;
+        }
+
+        .server-list-container.serverListMobile .col-player-name .col-value {
+            max-width: 90px;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
+
+        .server-list-container.serverListMobile .col-online-players .col-value {
+            color: #48AD23;
+            font-weight: bold;
+        }
+    }
+
+    @media only screen and (max-width: 760px) {
+
+        .main-description h1 {
+            font-size: 20px;
+        }
+
+        .main-description h2 {
+            font-size: 20px;
+        }
+
+        .main-description-1 {
+            width: 100%;
+            text-align: center;
+            margin: 10px auto;
+        }
+
+            .main-description-1 .btn-play-container {
+                position: relative;
+                margin: 10px auto;
+                top: unset;
+                right: unset;
+                margin-top: 20px;
+            }
+
+        .main-description-2 {
+            margin-top: 20px;
+        }
+
+        .main-promo {
+            border: 1px solid rgba(22, 129, 165,0.5);
+            border-bottom: none;
+            border-radius: 5px 5px 0px 0px !important;
+            height: 240px;
+        }
+
+        .promo-text {
+            position: inherit;
+            float: left;
+            width: 100%;
+            max-width: 100%;
+            right: unset;
+            top: unset;
+            left: unset;
+            bottom: unset;
+            margin-bottom: 20px;
+            border-radius: 2px;
+            border-color: rgba(22, 129, 165,0.5);
+            margin-top: -1px;
+            font-size: 13px;
+        }
+
+        .server-informations {
+            margin-top: 20px;
+        }
+
+            .server-informations .server-list-container.serverListMobile .server-item {
+                margin-bottom: 8px;
+                margin-top: 8px;
+                padding: 10px;
+                height: unset;
+            }
+
+                .server-informations .server-list-container.serverListMobile .server-item .server-col {
+                    position: initial !important;
+                    width: unset;
+                    min-width: unset;
+                    max-width: unset;
+                    line-height: 20px;
+                    text-align: left;
+                    float: left;
+                    width: 100%;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+
+                .server-informations .server-list-container.serverListMobile .server-item .col-server-actions {
+                    right: unset;
+                    bottom: unset;
+                    width: 100% !important;
+                    margin-top: 10px;
+                }
+
+                    .server-informations .server-list-container.serverListMobile .server-item .col-server-actions .btnConnect {
+                        min-width: calc(100% - 32px);
+                        float: left;
+                    }
+
+        .btnServerInfo {
+            margin-right: 0px;
+            margin-left: 5px;
+        }
+
+        .table_server_props {
+            /*font-size: 12px;
+            letter-spacing: 0.2px;*/
+        }
+    }
+
+    @media only screen and (max-width: 576px) {
+
+        .server-informations {
+            border-radius: 0px;
+        }
+
+        .main-description h1 {
+            font-size: 18px;
+        }
+
+        .main-description h2 {
+            font-size: 18px;
+        }
+
+        .main-description h3 {
+            font-size: 13px;
+        }
+
+        .main-promo {
+            height: 180px;
+        }
+
+        .main-news .news-content .news-item {
+            padding: 15px 10px;
+        }
+
+            .main-news .news-content .news-item .post-media {
+                display: none;
+            }
+
+        .main-news .news-head {
+            background: url(../../assets/images/main-news-head.png) right -125px top no-repeat;
+            padding: 0px 20px;
+        }
+
+            .main-news .news-head a {
+                width: 100px;
+                padding: 5px 3px;
+            }
+
+
+        .col-online-players {
+            margin-top: 10px !important;
+            border-top: 1px solid #1d3d52;
+            padding-top: 5px;
+        }
+
+        .btnConnect {
+            min-width: 100% !important;
+        }
+
+        .btnServerInfo {
+            min-width: 10px !important;
+            margin-right: 0px;
+            margin-left: 5px;
+            position: absolute;
+            right: 10px;
+            top: 0px;
+            padding: 4px 8px;
+        }
+    }
+</style>
+
+
+
+        <div class="row">
+            <div class="server-informations">
+                <h3>Select a universe.</h3>
+                <div class="server-list-container serverListDesktop">
+                    <div class="server-list-head">
+                        <div class="head-col col-universe">Universe</div>
+                        <div class="head-col col-online-players">Online players</div>
+                        <div class="head-col col-server-age">Age in days</div>
+                        <div class="head-col col-player-name">Player name</div>
+                        <div class="head-col col-player-rank">Ranking</div>
+                        <div class="head-col col-server-actions"></div>
+                    </div>
+                    <div class="server-list-content">
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Mars
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">846</div>
+
+
+                                            <div class="server-col col-server-age">26</div>
+                                            <div class="server-col col-player-name">Sub Zero</div>
+                                            <div class="server-col col-player-rank">88</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=6161ae2d-f205-460b-9fcb-e748106ce659" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x2000</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x2</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Pegasus
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">239</div>
+
+
+                                            <div class="server-col col-server-age">138</div>
+                                            <div class="server-col col-player-name">Bandit Majoris</div>
+                                            <div class="server-col col-player-rank">3.710</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=1a0c2c4d-0860-421a-b01e-7ea63364c168" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x1200</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x6</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Cypher
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">69</div>
+
+
+                                            <div class="server-col col-server-age">222</div>
+                                            <div class="server-col col-player-name">HELLCAT</div>
+                                            <div class="server-col col-player-rank">57</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=daa7396c-0f03-47a5-85ca-9ddb53e3510c" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x400</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x4</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Falcon
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">105</div>
+
+
+                                            <div class="server-col col-server-age">306</div>
+                                            <div class="server-col col-player-name">-</div>
+                                            <div class="server-col col-player-rank">-</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=099324e1-6ea9-442e-a7dd-29d66c9ddc79" target="_blank" class="btnConnect">Start</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x800</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x8</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Altar
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">82</div>
+
+
+                                            <div class="server-col col-server-age">1.041</div>
+                                            <div class="server-col col-player-name">-</div>
+                                            <div class="server-col col-player-rank">-</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=33b15024-f66a-49cc-be23-6f59d713cf8b" target="_blank" class="btnConnect">Start</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x400</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x4</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Omega
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">235</div>
+
+
+                                            <div class="server-col col-server-age">1.370</div>
+                                            <div class="server-col col-player-name">-</div>
+                                            <div class="server-col col-player-rank">-</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=e6482de7-d8e0-4984-b185-c5334c07420d" target="_blank" class="btnConnect">Start</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x1200</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x6</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            <div class="server-col col-universe">
+
+                                                
+
+                                                Vega
+
+
+
+                                            </div>
+
+                                                    <div class="server-col col-online-players">134</div>
+
+
+                                            <div class="server-col col-server-age">1.937</div>
+                                            <div class="server-col col-player-name">Cardinal Raven</div>
+                                            <div class="server-col col-player-rank">1.551</div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=2f965194-a236-41b9-8807-6bcc8e6aa734" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x1000</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x5</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+
+                    </div>
+                </div>
+
+                <div class="server-list-container serverListMobile">
+                    <div class="server-list-content">
+
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Mars
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">846</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">26</span></div>
+                                                        <div class="server-col col-player-name">Player name : <span class="col-value">Sub Zero</span></div>
+                                                        <div class="server-col col-player-rank">Ranking : <span class="col-value">88</span></div>
+                                                            <div class="server-col col-server-actions"><a href="/connect?serverId=6161ae2d-f205-460b-9fcb-e748106ce659" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x2000</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x2</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Pegasus
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">239</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">138</span></div>
+                                                        <div class="server-col col-player-name">Player name : <span class="col-value">Bandit Majoris</span></div>
+                                                        <div class="server-col col-player-rank">Ranking : <span class="col-value">3.710</span></div>
+                                                            <div class="server-col col-server-actions"><a href="/connect?serverId=1a0c2c4d-0860-421a-b01e-7ea63364c168" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x1200</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x6</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Cypher
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">69</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">222</span></div>
+                                                        <div class="server-col col-player-name">Player name : <span class="col-value">HELLCAT</span></div>
+                                                        <div class="server-col col-player-rank">Ranking : <span class="col-value">57</span></div>
+                                                            <div class="server-col col-server-actions"><a href="/connect?serverId=daa7396c-0f03-47a5-85ca-9ddb53e3510c" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x400</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x4</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Falcon
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">105</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">306</span></div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=099324e1-6ea9-442e-a7dd-29d66c9ddc79" target="_blank" class="btnConnect">Start</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x800</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x8</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Altar
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">82</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">1.041</span></div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=33b15024-f66a-49cc-be23-6f59d713cf8b" target="_blank" class="btnConnect">Start</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x400</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x4</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Omega
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">235</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">1.370</span></div>
+                                                        <div class="server-col col-server-actions"><a href="/connect?serverId=e6482de7-d8e0-4984-b185-c5334c07420d" target="_blank" class="btnConnect">Start</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x1200</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x6</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+                                        <div class="server-item">
+                                            
+
+                                            <div class="server-col col-universe">
+                                                Vega
+                                            </div>
+
+                                                    <div class="server-col col-online-players">Online players : <span class="col-value">134</span></div>
+
+
+                                            <div class="server-col col-server-age">Age in days : <span class="col-value">1.937</span></div>
+                                                        <div class="server-col col-player-name">Player name : <span class="col-value">Cardinal Raven</span></div>
+                                                        <div class="server-col col-player-rank">Ranking : <span class="col-value">1.551</span></div>
+                                                            <div class="server-col col-server-actions"><a href="/connect?serverId=2f965194-a236-41b9-8807-6bcc8e6aa734" target="_blank" class="btnConnect btnConnectGreen">Play</a><span class="btnConnect btnServerInfo tooltip" data-tooltip-position="left" data-tooltip-offset-x="5" data-tooltip-offset-y="8" data-tooltip-content="<div class='server_info_table_container'><table class='table_server_props'><tbody><tr><td class='server_info_td_left'>Resource production : </td><td class='server_info_td_right'>x1000</td></tr><tr style='border-top: 2px groove #222;'><td class='server_info_td_left'>Fleet speed : </td><td class='server_info_td_right'>x5</td></tr></tbody></table></div>"><i class="fas fa-question"></i></span></div>
+
+
+                                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+        function ConvertToTimeString(seconds) {
+
+            if (seconds < 0) {
+                return '-';
+            }
+
+            var sec_num = parseInt(seconds);
+            var days = Math.floor(sec_num / 86400);
+            var hours = Math.floor(sec_num / 3600);
+            var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            seconds = sec_num % 60;
+            hours = hours % 24;
+
+            var daysStr = '';
+            if (days > 0) {
+                var dayMark = 'Days';
+
+                daysStr = days + ' ' + dayMark + ' ';
+            }
+
+            if (hours > 0) {
+                if (hours < 10) {
+                    hours = "0" + hours;
+                }
+
+                hours += ':';
+            }
+            else
+                hours = '';
+
+            if (minutes < 10) { minutes = "0" + minutes; }
+            if (seconds < 10) { seconds = "0" + seconds; }
+            return daysStr + hours + minutes + ':' + seconds;
+        }
+
+        $(function () {
+
+            ConfigureTooltips();
+
+            if ($('.x-date-countdown').length > 0) {
+                setInterval(function () {
+                    $('.x-date-countdown').each(function () {
+                        var seconds = $(this).attr('data-countdown-seconds');
+                        seconds -= 1;
+
+                        if (seconds < 0) {
+                            window.location.reload();
+                        }
+
+                        $(this).attr('data-countdown-seconds', seconds);
+                        $(this).html(ConvertToTimeString(seconds));
+                    });
+                }, 1000);
+            }
+        })
+
+</script>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <span href="#" class="footer-column-header">Game</span>
+                    
+                    
+                    <a href="/home/gallery" class="footer-column-item">Screenshots</a>
+                    <a href="/home/rules" class="footer-column-item">Rules</a>
+                    <a href="/" class="footer-column-item">Play</a>
+                </div>
+                <div class="footer-column">
+                    <span href="#" class="footer-column-header">Account</span>
+                            <a href="/home/confirm?ConfirmationType=ChangePassword" class="footer-column-item">Change password</a>
+                            <a href="/home/confirm?ConfirmationType=ChangeEmail" class="footer-column-item">Change email</a>
+                            <a href="#" class="footer-column-item" onclick="LogOut();">Log out</a>
+
+                    <a href="/home/termsofconditions" class="footer-column-item">Terms of conditions</a>
+                    <a href="/home/privacypolicy" class="footer-column-item">Privacy policy</a>
+                    <a href="/home/refundpolicy" class="footer-column-item">Refund Policy</a>
+                </div>
+                <div class="footer-column">
+                    <span href="#" class="footer-column-header">Community</span>
+                    <a href="/home/contact" class="footer-column-item">Contact us</a>
+                    <a href="https://www.facebook.com/ogamexnet" target="_blank" class="footer-column-item">Facebook</a>
+                    <a href="https://discord.gg/N4ckzJwRtJ" target="_blank" class="footer-column-item">Discord channel</a>
+                    
+                </div>
+                <div class="footer-column footer-corp">
+                    <div style="font-size:16px;color: #93d7f7;text-shadow: 0px 0px 15px #006cff, 0px 0px 15px #006cff;">©2025 - OgameX</div>
+                    <div style="font-size:12px;color:#888;">All rights reserved.</div>
+                    <div style="font-size:12px;color:#888;margin-top:20px;">Powered by TEKNOLIA LTD.</div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+
+        function OpenLogin() {
+            SwitchToLogin();
+            $('#bodyWrapper').removeClass('mobileLeftMenuActive');
+            $('#bodyWrapper').removeClass('mobileRightMenuActive');
+            $('#bodyWrapper').toggleClass('loginFrameActive');
+            $('#btnMobileLogin').toggleClass('active');
+            $('#btnMobileMenu').removeClass('active');
+            return false;
+        }
+
+        function OpenRegister() {
+            SwitchToRegister();
+            $('#bodyWrapper').removeClass('mobileLeftMenuActive');
+            $('#bodyWrapper').removeClass('mobileRightMenuActive');
+            $('#bodyWrapper').toggleClass('loginFrameActive');
+            $('#btnMobileMenu').removeClass('active');
+            $('#btnMobileLogin').addClass('active');
+            return false;
+        }
+
+        function LogOut() {
+            PostRequest('/home/logout', null, function () { window.location.href = '/'; }, function () { window.location.href = '/'; });
+        }
+
+        function SelectLanguage(lang) {
+            PostRequest('/home/langchange?lang=' + lang, null, function () { window.location.reload(); }, function () { window.location.reload(); });
+            return false;
+        }
+
+        function SwitchToLogin() {
+            $('#loginFrame .loginRegisterContainer').removeClass('loginForm').removeClass('registerForm').removeClass('forgotPasswordForm');
+            $('#loginFrame .loginRegisterContainer').addClass('loginForm');
+        }
+
+        function SwitchToRegister() {
+            $('#loginFrame .loginRegisterContainer').removeClass('loginForm').removeClass('registerForm').removeClass('forgotPasswordForm');
+            $('#loginFrame .loginRegisterContainer').addClass('registerForm');
+        }
+
+        function SwitchToPasswordRecovery() {
+            $('#loginFrame .loginRegisterContainer').removeClass('loginForm').removeClass('registerForm').removeClass('forgotPasswordForm');
+            $('#loginFrame .loginRegisterContainer').addClass('forgotPasswordForm');
+        }
+
+        function ClearFormErrors(formId) {
+            var formObj = $('#' + formId);
+            if (formObj.length) {
+                formObj.find('.form-error').hide();
+                formObj.find('.form-error').html('');
+
+                formObj.find('fieldset').each(function () {
+                    $(this).removeClass('error');
+                    $(this).find('.error-label').html('');
+                })
+            }
+        }
+
+        function ShowFormError(formId, res) {
+            ClearFormErrors(formId);
+
+            var formObj = $('#' + formId);
+            if (formObj.length) {
+                if (res.ValidationErrors != undefined && res.ValidationErrors != null && res.ValidationErrors.length > 0) {
+                    for (var i = 0; i < res.ValidationErrors.length; i++) {
+                        var error = res.ValidationErrors[i];
+                        var errorObj = formObj.find('input[name="' + error.Object + '"]');
+                        if (errorObj.length) {
+                            errorObj.closest('fieldset').find('.error-label').html(error.Message);
+                            errorObj.closest('fieldset').addClass('error');
+                        }
+                    }
+                }
+                else {
+                    formObj.find('.form-error').html(res.Message);
+                    formObj.find('.form-error').show();
+                }
+            }
+        }
+
+        $(function () {
+
+            $('#btnMobileMenu').click(function () {
+                $('#bodyWrapper').removeClass('mobileRightMenuActive');
+                $('#bodyWrapper').removeClass('loginFrameActive');
+                $('#bodyWrapper').toggleClass('mobileLeftMenuActive');
+                $(this).toggleClass('active');
+                $('#btnMobileLogin').removeClass('active');
+                return false;
+            });
+
+            $('#btnMobileLogin').click(function () {
+                $('#bodyWrapper').removeClass('mobileLeftMenuActive');
+                $('#bodyWrapper').removeClass('mobileRightMenuActive');
+                $('#bodyWrapper').toggleClass('loginFrameActive');
+                $(this).toggleClass('active');
+                $('#btnMobileMenu').removeClass('active');
+                return false;
+            });
+
+            $('#btnMobileProfile').click(function () {
+                $('#bodyWrapper').removeClass('mobileLeftMenuActive');
+                $('#bodyWrapper').removeClass('loginFrameActive');
+                $('#bodyWrapper').toggleClass('mobileRightMenuActive');
+                $(this).toggleClass('active');
+                $('#btnMobileMenu').removeClass('active');
+                return false;
+            });
+
+            $('.btnPlay').click(function () {
+                $(window).scrollTop(0);
+                SwitchToRegister();
+                $('#bodyWrapper').removeClass('mobileLeftMenuActive');
+                $('#bodyWrapper').removeClass('mobileRightMenuActive');
+                $('#bodyWrapper').toggleClass('loginFrameActive');
+                $('#btnMobileMenu').removeClass('active');
+                $('#btnMobileLogin').addClass('active');
+                return false;
+            });
+
+            $('#loginFrameClose').click(function () {
+                $('#bodyWrapper').removeClass('loginFrameActive');
+                $('#btnMobileLogin').removeClass('active');
+                return false;
+            });
+
+            $('#btnMobileLangMenu').click(function () {
+                $('#mobileMenuLangList').toggleClass('active');
+                $(this).toggleClass('active');
+            });
+
+            $('#langSelector').click(function () {
+                $('#langSelectList').toggleClass('active');
+            });
+
+            var body = document.getElementById('bodyWrapper');
+            var except1 = document.getElementById('langSelectList');
+            var except2 = document.getElementById('langSelector');
+            var except3 = document.getElementById('btnAccountOptions');
+            var except4 = document.getElementById('accountOptions');
+
+            body.addEventListener("click", function () {
+                $('#langSelectList').removeClass('active');
+                $('#accountOptions').removeClass('active');
+            }, false);
+
+            if (except1 != undefined && except1 != null) {
+                except1.addEventListener("click", function (ev) {
+                    $('#accountOptions').removeClass('active');
+                    ev.stopPropagation();
+                }, false);
+            }
+
+            if (except2 != undefined && except2 != null) {
+                except2.addEventListener("click", function (ev) {
+                    $('#accountOptions').removeClass('active');
+                    ev.stopPropagation();
+                }, false);
+            }
+
+            if (except3 != undefined && except3 != null) {
+                except3.addEventListener("click", function (ev) {
+                    $('#langSelectList').removeClass('active');
+                    ev.stopPropagation();
+                }, false);
+            }
+
+            if (except4 != undefined && except4 != null) {
+                except4.addEventListener("click", function (ev) {
+                    $('#langSelectList').removeClass('active');
+                    ev.stopPropagation();
+                }, false);
+            }
+
+
+            $('#btnAccountOptions').click(function () {
+                $('#accountOptions').toggleClass('active');
+            })
+
+            $('#loginFrame input').on('focus', function () {
+                ClearFormErrors($(this).closest('.form-area').attr('id'));
+            });
+
+            $('#btnLogin').click(function () {
+
+                var email = $('#loginForm').find('input[name="Email"]').val();
+                var password = $('#loginForm').find('input[name="Password"]').val();
+                var rememberMe = $('#loginForm').find('input[name="RememberMe"]').prop('checked');
+
+                var data = {
+                    Email: email,
+                    Password: password,
+                    RememberMe: rememberMe
+                };
+
+                console.log(data);
+
+                $('#loginForm').loading(true);
+                PostRequest('/home/login', JSON.stringify(data),
+                    function (res) {
+                        if (res.IsSuccess) {
+                            window.location.reload();
+                        }
+                        else {
+                            $('#loginForm').loading(false);
+                            ShowFormError('loginForm', res);
+                        }
+                    },
+                    function () {
+                        $('#loginForm').loading(false);
+                        ShowFormError('loginForm');
+                    }
+                );
+
+            });
+
+            $('#btnRegister').click(function () {
+
+                var email = $('#registerForm').find('input[name="Email"]').val();
+                var password = $('#registerForm').find('input[name="Password"]').val();
+                var recaptchaResponse = grecaptcha.getResponse();
+
+                var data = {
+                    Email: email,
+                    Password: password,
+                    RecaptchaResponse: recaptchaResponse
+                };
+
+                console.log(data);
+
+                $('#registerForm').loading(true);
+                PostRequest('/home/register', JSON.stringify(data),
+                    function (res) {
+                        if (res.IsSuccess) {
+                            window.location.reload();
+                        }
+                        else {
+                            $('#registerForm').loading(false);
+                            ShowFormError('registerForm', res);
+                            grecaptcha.reset();
+                        }
+                    },
+                    function () {
+                        $('#registerForm').loading(false);
+                        ShowFormError('registerForm');
+                        grecaptcha.reset();
+                    }
+                );
+
+            });
+
+            $('#btnForgotPassword').click(function () {
+
+                var email = $('#forgotPasswordForm').find('input[name="Email"]').val();
+
+                var data = {
+                    Email: email,
+                };
+
+                $('#forgotPasswordForm').loading(true);
+                PostRequest('/home/sendpasswordrecovery', JSON.stringify(data),
+                    function (res) {
+                        if (res.IsSuccess) {
+                            $('#forgotPasswordForm').loading(false);
+                            $('#forgotPasswordInfoMessage').show();
+                        }
+                        else {
+                            $('#forgotPasswordForm').loading(false);
+                            ShowFormError('forgotPasswordForm', res);
+                        }
+                    },
+                    function () {
+                        $('#forgotPasswordForm').loading(false);
+                        ShowFormError('forgotPasswordForm');
+                    }
+                );
+
+            });
+
+        });
+    </script>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"2bf9dd8fdb5f462fab051c0ef58ac7d9","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

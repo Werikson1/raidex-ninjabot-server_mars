@@ -1,0 +1,51 @@
+# Ogamex Bot - Galaxy Pagination
+
+- [x] Analyze HTML structure of the Galaxy page <!-- id: 0 -->
+    - [x] Identify selectors for System input/display <!-- id: 1 -->
+    - [x] Identify selectors for "Next System" and "Previous System" buttons <!-- id: 2 -->
+    - [x] Identify selectors for Galaxy input/display (if needed) <!-- id: 3 -->
+- [/] Setup Project <!-- id: 4 -->
+# Ogamex Bot - Galaxy Pagination
+
+- [x] Analyze HTML structure of the Galaxy page <!-- id: 0 -->
+    - [x] Identify selectors for System input/display <!-- id: 1 -->
+    - [x] Identify selectors for "Next System" and "Previous System" buttons <!-- id: 2 -->
+    - [x] Identify selectors for Galaxy input/display (if needed) <!-- id: 3 -->
+- [/] Setup Project <!-- id: 4 -->
+    - [x] Create Python virtual environment (if applicable) or setup script <!-- id: 5 -->
+    - [x] Install necessary libraries (Playwright/Selenium) <!-- id: 6 -->
+- [x] Implement Bot Logic <!-- id: 7 -->
+    - [x] Create main bot script <!-- id: 8 -->
+    - [x] Implement navigation to Galaxy page <!-- id: 9 -->
+    - [x] Implement pagination loop <!-- id: 10 -->
+    - [x] Implement persistent browser session
+- [x] Implement Asteroid Finder Feature
+    - [x] Detect "Find asteroids" button
+    - [x] Handle modal and parse coordinates
+    - [x] Implement range-based search logic
+    - [x] Fix asteroid detection and clicking
+- [x] Implement Fleet Dispatch
+    - [x] Select fleet group
+    - [x] Navigate through fleet wizard
+    - [x] Send fleet and return to galaxy (visit systems in range) <!-- id: 17 -->
+- [x] Implement Asteroid Cooldown System
+    - [x] Save dispatched asteroid ranges to file
+    - [x] Skip ranges in cooldown (1 hour)
+    - [x] Clean up expired cooldowns
+- [x] Code Modularization and Improvements
+    - [x] Create modules directory structure
+    - [x] Create config.py
+    - [x] Create cooldown_manager.py (save specific systems)
+    - [x] Create asteroid_finder.py
+    - [x] Create fleet_dispatcher.py
+    - [x] Update bot.py to use modules
+    - [x] Add 45-minute wait when no asteroids found
+- [x] Travel Time Verification System
+    - [x] Add base system and travel time configs
+    - [x] Parse asteroid disappear timer
+    - [x] Calculate required travel time by distance
+    - [x] Skip asteroids with insufficient time
+    - [x] Add skipped asteroids to cooldown
+    - [x] Create travel time documentation
+- [x] Verification <!-- id: 11 -->
+    - [x] Test pagination against local HTML or live site <!-- id: 12 -->

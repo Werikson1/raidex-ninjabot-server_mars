@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card empire-card">
+    <div class="card-header">
+        <h2>Empire Overview</h2>
+        <div class="header-actions">
+            <button id="crawlerBtn" class="btn btn-primary">Run Crawler</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="empireTable" class="empire-table">
+                <thead>
+                    <!-- Header row will be populated by JS -->
+                </thead>
+                <tbody>
+                    <!-- Body rows will be populated by JS -->
+                </tbody>
+            </table>
+        </div>
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>No empire data found. Click "Run Crawler" to fetch data.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .empire-card {
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        padding: 0;
+        /* Maximize space for table */
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        flex-grow: 1;
+    }
+
+    .empire-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9em;
+        white-space: nowrap;
+    }
+
+    .empire-table th,
+    .empire-table td {
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .empire-table th {
+        background: rgba(0, 0, 0, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        font-weight: 600;
+        color: #ddd;
+    }
+
+    /* First column (Labels) sticky */
+    .empire-table td:first-child,
+    .empire-table th:first-child {
+        position: sticky;
+        left: 0;
+        background: #1a2635;
+        /* Match card bg or slightly darker */
+        z-index: 11;
+        text-align: left;
+        font-weight: 600;
+        border-right: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .empire-table th:first-child {
+        z-index: 12;
+        /* Corner cell on top */
+    }
+
+    .empire-table tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .empire-table tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Category Headers (if used as rows) */
+    .row-category {
+        background: rgba(11, 74, 100, 0.3) !important;
+        font-weight: bold;
+        text-align: left !important;
+        padding-left: 10px;
+        color: #4fc3f7;
+    }
+
+    /* Specific styling for different row types */
+    .row-resources td {
+        color: #a8d5e2;
+    }
+
+    .row-facilities td {
+        color: #e2a8d5;
+    }
+
+    .row-ships td {
+        color: #d5e2a8;
+    }
+
+    .row-defense td {
+        color: #e2d5a8;
+    }
+
+    .planet-header-name {
+        font-size: 1.1em;
+        color: #fff;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .planet-header-coords {
+        font-size: 0.85em;
+        color: #4fc3f7;
+    }
+
+    .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: #888;
+    }
+</style>
+
+<!-- Footer Logs -->
+<footer class="log-footer">
+    <div class="log-header">Execution Log</div>
+    <div id="logContainer" class="log-container">
+        <!-- Logs will be injected here -->
+    </div>
+</footer>
+{% endblock %}
