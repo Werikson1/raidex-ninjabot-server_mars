@@ -270,7 +270,18 @@ class FleetDispatcher:
             await self._human_click(page, next_btn3_selector)
             await asyncio.sleep(random.uniform(0.7, 1.4))
             
-            # Step 4: Click Send Fleet
+            # Step 4: Ensure mission selection (Asteroid Mining) and click Send Fleet
+            try:
+                mission = page.locator(".mission-item.ASTEROID_MINING")
+                await mission.wait_for(state="visible", timeout=8000)
+                is_selected = await mission.evaluate("(el) => el.classList.contains('selected') || el.classList.contains('active')")
+                if not is_selected:
+                    await self._human_click(page, mission)
+                    await asyncio.sleep(random.uniform(0.3, 0.6))
+            except Exception as e:
+                print(f"! Could not ensure asteroid mission selection: {e}")
+
+            # Some UIs keep submit disabled until mission is selected; wait a bit more if needed
             print("? Sending fleet...")
             submit_btn_selector = "#btn-submit-fleet"
             await page.wait_for_selector(submit_btn_selector, state="visible")
@@ -279,6 +290,12 @@ class FleetDispatcher:
                 await page.wait_for_selector(f"{submit_btn_selector}:not(.disabled)", state="visible", timeout=5000)
             except Exception:
                 print("! Submit button still disabled. Waiting a bit more...")
+                # Retry mission click once more then wait
+                try:
+                    mission = page.locator(".mission-item.ASTEROID_MINING")
+                    await self._human_click(page, mission)
+                except Exception:
+                    pass
                 await asyncio.sleep(2.0)
 
             await self._human_click(page, submit_btn_selector)
