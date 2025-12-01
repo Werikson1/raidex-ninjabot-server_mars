@@ -5,6 +5,7 @@ Handles asteroid detection, modal parsing, and system searching
 
 import asyncio
 import random
+import time
 from typing import List, Tuple, Optional
 from playwright.async_api import Page
 
@@ -29,8 +30,18 @@ class AsteroidFinder:
         self.base_system = base_system
         self.travel_time_ranges = travel_time_ranges
         self.galaxy_page: Optional[Page] = None
-        # Track ranges recently dispatched to skip immediate re-checks
-        self.range_skip_cooldowns = set()
+        # Track ranges recently dispatched to skip immediate re-checks (range_key -> expiry_ts)
+        self.range_skip_cooldowns = {}
+        self.range_skip_ttl_seconds = 20 * 60  # skip a range for 20 minutes by default
+
+    def _prune_range_skip(self, active_ranges: List[Tuple[int, int, int, int]]):
+        """Prune range skip entries that expired or are not in current modal."""
+        now = time.time()
+        active_set = set(active_ranges)
+        self.range_skip_cooldowns = {
+            k: v for k, v in self.range_skip_cooldowns.items()
+            if v > now and k in active_set
+        }
 
     async def _get_galaxy_page(self, page: Page) -> Page:
         """
@@ -133,7 +144,7 @@ class AsteroidFinder:
             print(f"📊 Found {len(ranges)} asteroid range(s) to check")
 
             # Keep skip list only for current ranges (avoid stale entries)
-            self.range_skip_cooldowns = {r for r in self.range_skip_cooldowns if r in ranges}
+            self._prune_range_skip(ranges)
 
             # Close modal before searching
             await self._close_modal(page)
@@ -194,11 +205,10 @@ class AsteroidFinder:
         for galaxy, start_sys, end_sys, position in ranges:
             range_key = (galaxy, start_sys, end_sys, position)
             if range_key in self.range_skip_cooldowns:
-                print(f"  ⚠ Skipping range [{galaxy}:{start_sys}-{end_sys}:{position}] (recent dispatch cooldown)")
+                print(f"  Skipping range [{galaxy}:{start_sys}-{end_sys}:{position}] (recent dispatch cooldown)")
                 continue
 
-            print(f"
-👀 Checking range [{galaxy}:{start_sys}:{position}] 🔎 [{galaxy}:{end_sys}:{position}]")
+            print(f"Checking range [{galaxy}:{start_sys}:{position}] -> [{galaxy}:{end_sys}:{position}]")
 
             last_visited_sys = None
 
@@ -210,15 +220,15 @@ class AsteroidFinder:
 
                 # Smart Navigation
                 if last_visited_sys is not None and sys == last_visited_sys + 1:
-                    print(f"  ➡ Navigating to system {sys} [ArrowRight]...")
+                    print(f"  Navigating to system {sys} [ArrowRight]...")
                     await page.keyboard.press("ArrowRight")
                     await self._human_pause(0.05, 0.18)
                 elif last_visited_sys is not None and sys == last_visited_sys - 1:
-                    print(f"  ⬅ Navigating to system {sys} [ArrowLeft]...")
+                    print(f"  Navigating to system {sys} [ArrowLeft]...")
                     await page.keyboard.press("ArrowLeft")
                     await self._human_pause(0.05, 0.18)
                 else:
-                    print(f"  ➤ Navigating to system {sys} [Direct]...")
+                    print(f"  Navigating to system {sys} [Direct]...")
                     await self._type_safely(page, "#systemInput", str(sys))
                     await self._human_click(page, page.locator(".x-btn-go"))
 
@@ -242,40 +252,39 @@ class AsteroidFinder:
                     timer_minutes = await self._get_asteroid_timer(page)
 
                     if timer_minutes is None:
-                        print(f"  ? Could not read asteroid timer, skipping...")
+                        print("  Could not read asteroid timer, skipping...")
                         continue
 
                     # Calculate required travel time
                     distance = abs(sys - self.base_system)
                     required_minutes = self._get_required_travel_time(distance)
 
-                    print(f"
-🚀 ASTEROID FOUND: [{galaxy}:{sys}:{position}]")
-                    print(f"  ⏱  Asteroid timer: {timer_minutes} minutes")
-                    print(f"  📏 Distance: {distance} systems (from base {self.base_system})")
-                    print(f"  🕓 Required time: {required_minutes} minutes")
+                    print(f"ASTEROID FOUND: [{galaxy}:{sys}:{position}]")
+                    print(f"  Asteroid timer: {timer_minutes} minutes")
+                    print(f"  Distance: {distance} systems (from base {self.base_system})")
+                    print(f"  Required time: {required_minutes} minutes")
 
                     if timer_minutes >= required_minutes:
-                        print(f"  ✅ Sufficient time! Dispatching fleet...")
+                        print("  Sufficient time! Dispatching fleet...")
                         print("? Clicking asteroid...")
                         await self._human_click(page, asteroid_btn.first)
                         # Mark this range to skip next cycle to avoid immediate re-check
-                        self.range_skip_cooldowns.add(range_key)
+                        self.range_skip_cooldowns[range_key] = time.time() + self.range_skip_ttl_seconds
                         return (galaxy, sys, position)
                     else:
-                        print(f"  ⚠ Insufficient time ({timer_minutes} < {required_minutes} min)")
-                        print(f"  ⚠ Adding to cooldown to avoid wasted trip")
+                        print(f"  Insufficient time ({timer_minutes} < {required_minutes} min)")
+                        print("  Adding to cooldown to avoid wasted trip")
                         cooldown_mgr.add_to_cooldown(galaxy, sys, position)
                         # Also skip this range in the next cycle to avoid immediate re-check
-                        self.range_skip_cooldowns.add(range_key)
+                        self.range_skip_cooldowns[range_key] = time.time() + self.range_skip_ttl_seconds
                         continue
 
-            print(f"  ? No available asteroids in range [{galaxy}:{start_sys}-{end_sys}:{position}]")
+            print(f"  No available asteroids in range [{galaxy}:{start_sys}-{end_sys}:{position}]")
 
-        print("
-? No available asteroids found in any range")
+        print("No available asteroids found in any range")
         return None
-async def _get_asteroid_timer(self, page: Page) -> Optional[int]:
+
+    async def _get_asteroid_timer(self, page: Page) -> Optional[int]:
         """
         Parse asteroid disappear timer from the page
 

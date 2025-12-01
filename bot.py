@@ -69,8 +69,16 @@ class OgameBot:
     def enable_asteroid_miner(self):
         """Enable the asteroid miner feature"""
         self.asteroid_miner_enabled = True
+        # Reset miner-specific state if available
+        try:
+            if self.asteroid_runner and hasattr(self.asteroid_runner, "asteroid_finder"):
+                af = getattr(self.asteroid_runner, "asteroid_finder")
+                if hasattr(af, "range_skip_cooldowns"):
+                    af.range_skip_cooldowns = {}
+        except Exception:
+            pass
         logger.info("Asteroid Miner enabled")
-    
+
     def disable_asteroid_miner(self):
         """Disable the asteroid miner feature"""
         self.asteroid_miner_enabled = False
@@ -218,7 +226,7 @@ class OgameBot:
 
         # Initialize modules
         self.cooldown_mgr = CooldownManager(COOLDOWN_FILE, COOLDOWN_HOURS)
-        fleet_dispatcher = FleetDispatcher(FLEET_GROUP_NAME, FLEET_GROUP_VALUE)
+        fleet_dispatcher = FleetDispatcher(FLEET_GROUP_NAME, FLEET_GROUP_VALUE, config_module.ASTEROID_MINER_AMOUNT)
         asteroid_finder = AsteroidFinder(
             SEARCH_DELAY_MIN,
             SEARCH_DELAY_MAX,

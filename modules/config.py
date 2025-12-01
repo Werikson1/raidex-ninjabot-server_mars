@@ -53,6 +53,8 @@ TELEGRAM_USERNAME = _config.get("TELEGRAM_USERNAME", os.environ.get("TELEGRAM_US
 TELEGRAM_ENABLED = bool(_config.get("TELEGRAM_ENABLED", bool(TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)))
 # Asteroid miner runtime toggle (persisted)
 ASTEROID_ENABLED = bool(_config.get("ASTEROID_ENABLED", True))
+# Asteroid miner ship amount (when not using fleet groups)
+ASTEROID_MINER_AMOUNT = int(_config.get("ASTEROID_MINER_AMOUNT", 0) or 0)
 # Web server binding (override via env or config)
 WEB_HOST = _config.get("WEB_HOST", os.environ.get("WEB_HOST", "0.0.0.0"))
 try:
@@ -190,6 +192,7 @@ def get_farmer_config(config_override: dict = None) -> dict:
         "random_sleep_mode": bool(farmer_cfg.get("random_sleep_mode", False)),
         "attack_cooldown_min": cd_min,
         "attack_cooldown_max": cd_max,
+        "active_mode": bool(farmer_cfg.get("active_mode", False)),
     }
 
 

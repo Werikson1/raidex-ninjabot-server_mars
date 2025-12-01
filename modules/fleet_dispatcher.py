@@ -12,9 +12,10 @@ import modules.config as config
 
 
 class FleetDispatcher:
-    def __init__(self, fleet_group_name: str, fleet_group_value: str):
+    def __init__(self, fleet_group_name: str, fleet_group_value: str, asteroid_miner_amount: int = 0):
         self.fleet_group_name = fleet_group_name
         self.fleet_group_value = fleet_group_value
+        self.asteroid_miner_amount = max(0, int(asteroid_miner_amount or 0))
 
     async def _human_click(self, page: Page, selector: str):
         """Click with a small randomized delay to look human."""
@@ -98,6 +99,25 @@ class FleetDispatcher:
                     return True
 
         return False
+
+    async def _fill_asteroid_miners(self, page: Page):
+        """Fill the asteroid miner amount if configured."""
+        if self.asteroid_miner_amount <= 0:
+            return
+        try:
+            input_box = page.locator("a.ship-btn[data-ship-type='ASTEROID_MINER'] + div input")
+            await input_box.wait_for(state="visible", timeout=6000)
+            await input_box.click()
+            await input_box.fill("")
+            await input_box.type(str(self.asteroid_miner_amount), delay=random.randint(20, 60))
+            # Trigger change/input to ensure UI updates
+            await input_box.evaluate(
+                "(el, val) => { el.value = val; el.dispatchEvent(new Event('input', {bubbles:true})); el.dispatchEvent(new Event('change', {bubbles:true})); }",
+                str(self.asteroid_miner_amount),
+            )
+            await asyncio.sleep(random.uniform(0.2, 0.5))
+        except Exception as e:
+            print(f"! Could not fill asteroid miner amount: {e}")
 
     async def _ensure_fleet_page(self, page: Page) -> Page:
         """Ensure we are on a fleet page, capturing popups if a new tab opens."""
@@ -227,6 +247,9 @@ class FleetDispatcher:
             elapsed = (time.monotonic() - started) * 1000
             print(f"V Fleet group selected in {elapsed:.0f}ms: {self.fleet_group_name} (ID: {self.fleet_group_value or target_value})")
 
+            # Fill asteroid miners according to configured amount (no select-all)
+            await self._fill_asteroid_miners(page)
+
             await asyncio.sleep(random.uniform(0.6, 1.2))
             
             # Step 1: Click Next (Step 1 -> 2)
@@ -265,6 +288,11 @@ class FleetDispatcher:
                 await page.wait_for_selector(f"{next_btn3_selector}:not(.disabled)", state="visible", timeout=5000)
             except Exception:
                 print("! Next button (2) still disabled. Waiting a bit more...")
+                try:
+                    mission = page.locator(".mission-item.ASTEROID_MINING")
+                    await self._human_click(page, mission)
+                except Exception:
+                    pass
                 await asyncio.sleep(2.0)
             
             await self._human_click(page, next_btn3_selector)

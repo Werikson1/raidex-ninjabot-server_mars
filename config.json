@@ -4,7 +4,7 @@
     "TELEGRAM_BOT_TOKEN": "8512782833:AAEyT2bEFDyY68djCmUh30NWu43CjO3U9go",
     "TELEGRAM_CHAT_ID": "960771858",
     "TELEGRAM_USERNAME": "@ogame_xbot",
-    "FLEET_GROUP_NAME": "5433d121-6efd-455d-a58f-0aef576a77bf",
+    "FLEET_GROUP_NAME": "196b56d1-f7f5-455a-9fa3-294c3a4e42af",
     "COOLDOWN_HOURS": 1,
     "SEARCH_DELAY_MIN": 0.3,
     "SEARCH_DELAY_MAX": 0.7,
@@ -19,36 +19,38 @@
         "fleet_group_value": "a7be13c9-8a44-459a-a193-2f9b7d3ead4f",
         "headless": false,
         "sleep_start": {
-            "hour": 22,
+            "hour": 0,
             "minute": 0
         },
         "wake_up": {
-            "hour": 6,
-            "minute": 40
+            "hour": 0,
+            "minute": 0
         },
         "dispatch_cooldown": {
             "hour": 1,
-            "minute": 40
+            "minute": 35
         },
-        "sleep_mode": true,
-        "random_sleep_mode": true
+        "sleep_mode": false,
+        "random_sleep_mode": false
     },
     "farmer_mode": {
         "enabled": false,
-        "planet_id": "b112b711-2fa5-47fe-ab0b-6bf377267217",
+        "planet_id": "3fb9d71e-596c-4743-ae68-2427c884239b",
         "headless": false,
         "sleep_start": {
             "hour": 22,
             "minute": 0
         },
         "wake_up": {
-            "hour": 5,
-            "minute": 0
+            "hour": 7,
+            "minute": 37
         },
-        "sleep_mode": false,
+        "sleep_mode": true,
         "random_sleep_mode": false,
-        "attack_cooldown_min": 19,
-        "attack_cooldown_max": 23
+        "attack_cooldown_min": 35,
+        "attack_cooldown_max": 37,
+        "active_mode": true
     },
-    "FLEET_GROUP_VALUE": "5433d121-6efd-455d-a58f-0aef576a77bf"
+    "FLEET_GROUP_VALUE": "196b56d1-f7f5-455a-9fa3-294c3a4e42af",
+    "ASTEROID_MINER_AMOUNT": 200000000
 }

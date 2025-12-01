@@ -12,11 +12,11 @@
     <div class="card-body config-layout">
         <div class="config-form-section">
             <form id="configForm">
-                <div class="form-group checkbox-group">
-                    <label>
-                        <input type="checkbox" id="ASTEROID_ENABLED" name="ASTEROID_ENABLED">
-                        Enable Asteroid Miner (persist)
-                    </label>
+                <div class="form-group">
+                    <label>Select Planet</label>
+                    <select id="asteroidPlanet" name="ASTEROID_PLANET_ID" class="compact-input">
+                        <option value="">Carregando planetas...</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Fleet Group</label>
@@ -24,6 +24,10 @@
                         <option value="">Carregando grupos...</option>
                     </select>
                     <input type="hidden" id="FLEET_GROUP_VALUE" name="FLEET_GROUP_VALUE" value="">
+                </div>
+                <div class="form-group">
+                    <label>Asteroid Miner Amount</label>
+                    <input type="number" id="ASTEROID_MINER_AMOUNT" name="ASTEROID_MINER_AMOUNT" min="0" step="1" class="compact-input" placeholder="0 = usar fleet group">
                 </div>
 
                 <div class="form-group checkbox-group">

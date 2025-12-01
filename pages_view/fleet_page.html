@@ -19,8 +19,8 @@
     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
     <link rel="stylesheet" href="/assets/other/fonts/fa-pro/css/pro.min.css" />
 
-    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3990">
-    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3990">
+    <link rel="stylesheet" href="/assets/styles/V2/default.css?v=3992">
+    <link rel="stylesheet" href="/assets/styles/V2/app.css?v=3992">
 
     
 
@@ -50,15 +50,15 @@
 
 
         var resources = {
-            initialMetal:0,
-            initialCrystal:0,
-            initialDeuterium:1775074582061,
-            metal: 0,
-            crystal: 0,
-            deuterium: 1775074582061,
+            initialMetal:2797680958884,
+            initialCrystal:1434262416028,
+            initialDeuterium:2369612300023,
+            metal: 2797680958884,
+            crystal: 1434262416028,
+            deuterium: 2369612300023,
             energy: 0,
             energyConsumption: 0,
-            darkmatter: 585158,
+            darkmatter: 667429,
             metalProduction: 0,
             crystalProduction: 0,
             deuteriumProduction: 0,
@@ -67,14 +67,14 @@
             deuteriumStorageCapacity: 10000000.000000
         };
 
-        var initialServerTime = 1764352975000;
-        var currentServerTime = 1764352975000;
+        var initialServerTime = 1764429418000;
+        var currentServerTime = 1764429418000;
 
         var lang = 'pt';
 
     </script>
-    <script src="/assets/js/default.js?v=3990"></script>
-    <script src="/assets/js/app/tooltip.js?v=3990"></script>
+    <script src="/assets/js/default.js?v=3992"></script>
+    <script src="/assets/js/app/tooltip.js?v=3992"></script>
     <script src="/assets/js/libs/autonumeric.min.js"></script>
 
     
@@ -213,42 +213,42 @@
                 </div>
                 <div class="resources-section">
                     <div class="resources-content">
-                        <a href="/resource" class="resource-item resource-item-metal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>0</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-metal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Metal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>2.797.680.958.884</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-metal"></span>
 
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
-                                                <span id="metal-amount" style="font-size:10px;">0</span>
-                                                
-                                            </span>
-                                        </div>
+                                    <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                        <span class="resource-amount">
+                                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Metal</span>
+                                            <span id="metal-amount" style="color:#F00;font-size:10px;">2.797.680.958.884</span>
+                                            
+                                        </span>
+                                    </div>
 
 
 
 
                         </a>
-                        <a href="/resource" class="resource-item resource-item-crystal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>0</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-crystal tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Crystal</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>1.434.262.416.028</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-crystal"></span>
 
-                                        <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
-                                            <span class="resource-amount">
-                                                <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
-                                                <span id="crystal-amount" style="font-size:10px;">0</span>
-                                                
-                                            </span>
-                                        </div>
+                                    <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
+                                        <span class="resource-amount">
+                                            <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Crystal</span>
+                                            <span id="crystal-amount" style="color:#F00;font-size:10px;">1.434.262.416.028</span>
+                                            
+                                        </span>
+                                    </div>
 
 
 
                         </a>
-                        <a href="/resource" class="resource-item resource-item-deuterium tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>1.775.074.582.061</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
+                        <a href="/resource" class="resource-item resource-item-deuterium tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;'>Deuterium</td></tr><tr><td>Available : </td><td style='font-size: 11px;font-weight: bold;text-align:right;color:#CCC;'>2.369.612.300.023</td></tr><tr><td>Production per hour : </td><td><span>0</span></td></tr><tr><td>Production per day : </td><td><span>0</span></td></tr><tr><td>Storage capacity : </td><td><span>10.000.000</span></td></tr></table></div>">
                             <span class="resource-icon resource-icon-deuterium"></span>
 
                                     <div style="position:absolute;width:116px;top:18px;left:56px;text-align:left;">
                                         <span class="resource-amount">
                                             <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: -16px;left: 0px;">Deuterium</span>
-                                            <span id="deuterium-amount" style="color:#F00;font-size:10px;">1.775.074.582.061</span>
+                                            <span id="deuterium-amount" style="color:#F00;font-size:10px;">2.369.612.300.023</span>
                                             
                                         </span>
                                     </div>
@@ -268,7 +268,7 @@
                         <a href="/darkmatter/purchase" class="resource-item right-item resource-item-darkmatter tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Dark matter</td></tr></table></div>">
                             <span class="resource-icon resource-icon-darkmatter" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
                             <span style="position:absolute;font-size: 10px;font-weight: bold;color: #b3c8e1;top: 8px;right: 56px;">Dark matter</span>
-                            <span class="resource-amount" style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">585.158</span>
+                            <span class="resource-amount" style="position: absolute;top: 24px;width: 116px;right: 58px;text-align: right;font-size: 11px;font-weight: bold;">667.429</span>
                         </a>
                         <a href="/wiki" class="resource-item right-item resource-item-wiki tooltip" data-tooltip-position="bottom" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 12px;font-weight: bold;text-align:center;color:#f1f1f1;border:none;'>Wiki</td></tr></table></div>">
                             <span class="resource-icon resource-icon-wiki" style="right: 6px !important;left: unset !important;top: 5px !important;"></span>
@@ -278,10 +278,7 @@
                 </div>
                 <div class="messages-section">
 
-                    <a href="/messages" class="messages-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread messages (1)</div>">
-                                <span class="new-msg-count">
-                                    1
-                                </span>
+                    <a href="/messages" class="messages-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread messages (0)</div>">
 
                     </a>
                     <a href="/chat" class="chat-button tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;'>Unread chat messages (0)</div>">
@@ -292,8 +289,8 @@
 
                             <div style="cursor:pointer;text-align:left;padding-left:20px;" id="fleet-movement-detail-btn">
                                 <div style="padding:4px;color:#FFF;font-size:11px;">
-                                    <span><b>4</b> Missions: </span>
-                                            <span style="color:#9C0;">4 Own</span>
+                                    <span><b>14</b> Missions: </span>
+                                            <span style="color:#9C0;">14 Own</span>
 
                                 </div>
                                 <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
@@ -301,7 +298,7 @@
 
 
 
-                                        Next: <span id="NextMissionRemainingTime">04:31</span>
+                                        Next: <span id="NextMissionRemainingTime">04:34</span>
                                     </span>
                                 </div>
                                 <div style="padding:4px;font-size:11px;color:#FFF;width:50%;float:left;">
@@ -317,13 +314,13 @@
 
                 </div>
 
-                <div id="system-clock">28.11.2025 15:02:55</div>
-                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>Ettone</div><div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>777</span> / 3.017</div></div></div></div>">
+                <div id="system-clock">29.11.2025 12:16:58</div>
+                <a href="/home/playerprofile" id="user-profile-section" class="tooltip" data-tooltip-position="bottom" data-tooltip-content="<div style='font-size:11px;width:240px;float:left;'><div style='float:left;width:60px;height:60px;'><img style='width:60px;height:60px;' src='/assets/images/V2/officer/EMPEROR.png' /></div><div style='float:left;width:180px;padding:3px 8px;'><div style='float:left;width:100%;color: #ffc107;max-width: 170px;max-height: 15px;overflow: hidden;text-align: left;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;line-height: 16px;font-weight: bold;'>Ettone</div><div style='float:left;width:100%;border-top: 1px solid #8f9cab;padding-top: 4px;margin-top:4px;line-height:12px;'>Ranking : <span style='color: #ffc107;font-weight: bold;'>741</span> / 3.033</div></div></div></div>">
 
                             <div class="avatar-box player_class_MINER"></div>
 
                     <div class="player-name">Ettone</div>
-                    <div class="player-ranking"><i class="fad fa-crown"></i> 777</div>
+                    <div class="player-ranking"><i class="fad fa-crown"></i> 741</div>
                 </a>
 
 
@@ -341,6 +338,9 @@
                             <a href="/home" class="text-item">Overview</a>
                         </div>
 
+                                <div class="menu-item btn-planet-debris ">
+                                    <a href="/planetdebris" class="text-item">Planet debris</a>
+                                </div>
 
 
 
@@ -425,18 +425,18 @@
 
                         
 
-<link href="/assets/styles/app/pages/fleet.css?v=3990" rel="stylesheet" />
+<link href="/assets/styles/app/pages/fleet.css?v=3992" rel="stylesheet" />
 <script>
 
     
 
     window.FleetGroups = {};
-    window.fleetGroupCount = 4;
+    window.fleetGroupCount = 3;
     
     window.FleetGroups['5433d121-6efd-455d-a58f-0aef576a77bf'] = [];
     
     
-    window.FleetGroups['5433d121-6efd-455d-a58f-0aef576a77bf'].push({ shipType: 'ASTEROID_MINER', quantity: 60000000 });
+    window.FleetGroups['5433d121-6efd-455d-a58f-0aef576a77bf'].push({ shipType: 'ASTEROID_MINER', quantity: 68000000 });
     
     
     window.FleetGroups['196b56d1-f7f5-455a-9fa3-294c3a4e42af'] = [];
@@ -477,12 +477,6 @@
     
     window.FleetGroups['a7be13c9-8a44-459a-a193-2f9b7d3ead4f'].push({ shipType: 'REAPER', quantity: 100000000000 });
     
-    
-    window.FleetGroups['91042a5b-06e5-4f26-b772-742c69e75d51'] = [];
-    
-    
-    window.FleetGroups['91042a5b-06e5-4f26-b772-742c69e75d51'].push({ shipType: 'ASTEROID_MINER', quantity: 70000000 });
-    
 
 
     
@@ -502,8 +496,8 @@
 
                 <div class="fleet-info-box">
                     <div class="overlay"></div>
-                    <span class="info-item info_item_active_fleets  tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;'>Used/Total fleet slots</div>">Fleets: 4/46</span>
-                    <span class="info-item info_item_active_expeditions  tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;'>Used/Total expedition slots</div>">Expeditions: 0/12</span>
+                    <span class="info-item info_item_active_fleets  tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;'>Used/Total fleet slots</div>">Fleets: 14/47</span>
+                    <span class="info-item info_item_active_expeditions red tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:10px;'>Used/Total expedition slots</div>">Expeditions: 12/12</span>
 
                     <a href="/fleet/fleetmovements" class="info-item info_item_fleet_movements fleet-movements-route">> Fleet movements</a>
                 </div>
@@ -513,7 +507,7 @@
                         <div class="property-img" style="background:url(../../assets/images/V2/research/WEAPONS_TECHNOLOGY.gif) no-repeat;"></div>
                         <div class="property-data">
                             <span class="property-title">Weapons</span>
-                            <span class="property-value">+560%</span>
+                            <span class="property-value">+610%</span>
                         </div>
                     </div>
 
@@ -521,7 +515,7 @@
                         <div class="property-img" style="background:url(../../assets/images/V2/research/ARMOUR_TECHNOLOGY.gif) no-repeat;"></div>
                         <div class="property-data">
                             <span class="property-title">Armors</span>
-                            <span class="property-value">+590%</span>
+                            <span class="property-value">+640%</span>
                         </div>
                     </div>
 
@@ -529,7 +523,7 @@
                         <div class="property-img" style="background:url(../../assets/images/V2/research/SHIELD_TECHNOLOGY.gif) no-repeat;"></div>
                         <div class="property-data">
                             <span class="property-title">Shields</span>
-                            <span class="property-value">+540%</span>
+                            <span class="property-value">+590%</span>
                         </div>
                     </div>
                 </div>
@@ -550,100 +544,28 @@
             <div class="content">
                 <div style="float:left;width:100%;position:relative;padding:10px 10px 0px 10px;" id="fleet1_content_container">
 
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Spy Probe (757)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>646.800.000</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>0</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>0</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="SPY_PROBE" data-ship-quantity="757" data-ship-points="1" style="background:url(../../assets/images/V2/hangar/SPY_PROBE.gif)">
-                                        <span class="ship-quantity">757</span>
+                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Light Cargo (357.859.941)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>117.040</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>77.500</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>27.734.145.427.500</span></td></tr></table></div>">
+                                    <a href="#" class="ship-btn" data-ship-type="LIGHT_CARGO" data-ship-quantity="357859941" data-ship-points="4" style="background:url(../../assets/images/V2/hangar/LIGHT_CARGO.gif)">
+                                        <span class="ship-quantity">357.859.941</span>
                                     </a>
                                     <div>
-                                        <input type="text" class="numberFormatInput" max-ships="757" min-value="0" max-value="757" />
+                                        <input type="text" class="numberFormatInput" max-ships="357859941" min-value="0" max-value="357859941" />
                                     </div>
                                 </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Light Cargo (2.144.245.366)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>107.800</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>77.500</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>166.179.015.865.000</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="LIGHT_CARGO" data-ship-quantity="2144245366" data-ship-points="4" style="background:url(../../assets/images/V2/hangar/LIGHT_CARGO.gif)">
-                                        <span class="ship-quantity">2.144.245.366</span>
+                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Recycler (49.980.420)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>23.408</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>310.000</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>15.493.930.200.000</span></td></tr></table></div>">
+                                    <a href="#" class="ship-btn" data-ship-type="RECYCLER" data-ship-quantity="49980420" data-ship-points="18" style="background:url(../../assets/images/V2/hangar/RECYCLER.gif)">
+                                        <span class="ship-quantity">49.980.420</span>
                                     </a>
                                     <div>
-                                        <input type="text" class="numberFormatInput" max-ships="2144245366" min-value="0" max-value="2144245366" />
+                                        <input type="text" class="numberFormatInput" max-ships="49980420" min-value="0" max-value="49980420" />
                                     </div>
                                 </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Heavy Cargo (422.115.311)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>80.850</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>387.500</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>163.569.683.012.500</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="HEAVY_CARGO" data-ship-quantity="422115311" data-ship-points="12" style="background:url(../../assets/images/V2/hangar/HEAVY_CARGO.gif)">
-                                        <span class="ship-quantity">422.115.311</span>
+                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Asteroid Miner (170.000.000)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>107.800</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>16.750</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>2.847.500.000.000</span></td></tr></table></div>">
+                                    <a href="#" class="ship-btn" data-ship-type="ASTEROID_MINER" data-ship-quantity="170000000" data-ship-points="68" style="background:url(../../assets/images/V2/hangar/ASTEROID_MINER.gif)">
+                                        <span class="ship-quantity">170.000.000</span>
                                     </a>
                                     <div>
-                                        <input type="text" class="numberFormatInput" max-ships="422115311" min-value="0" max-value="422115311" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Light Fighter (2.209.494.372)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>80.850</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>168</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>371.195.054.496</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="LIGHT_FIGHTER" data-ship-quantity="2209494372" data-ship-points="4" style="background:url(../../assets/images/V2/hangar/LIGHT_FIGHTER.gif)">
-                                        <span class="ship-quantity">2.209.494.372</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="2209494372" min-value="0" max-value="2209494372" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Heavy Fighter (870.082.033)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>107.800</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>335</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>291.477.481.055</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="HEAVY_FIGHTER" data-ship-quantity="870082033" data-ship-points="10" style="background:url(../../assets/images/V2/hangar/HEAVY_FIGHTER.gif)">
-                                        <span class="ship-quantity">870.082.033</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="870082033" min-value="0" max-value="870082033" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Recycler (492.850.296)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>21.560</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>310.000</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>152.783.591.760.000</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="RECYCLER" data-ship-quantity="492850296" data-ship-points="18" style="background:url(../../assets/images/V2/hangar/RECYCLER.gif)">
-                                        <span class="ship-quantity">492.850.296</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="492850296" min-value="0" max-value="492850296" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Cruiser (248.805.166)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>161.700</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>2.680</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>666.797.844.880</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="CRUISER" data-ship-quantity="248805166" data-ship-points="29" style="background:url(../../assets/images/V2/hangar/CRUISER.gif)">
-                                        <span class="ship-quantity">248.805.166</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="248805166" min-value="0" max-value="248805166" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Battleship (76.366.488)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>112.420</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>8.375</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>639.569.337.000</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="BATTLESHIP" data-ship-quantity="76366488" data-ship-points="60" style="background:url(../../assets/images/V2/hangar/BATTLESHIP.gif)">
-                                        <span class="ship-quantity">76.366.488</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="76366488" min-value="0" max-value="76366488" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Battle Cruiser (51.725.243)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>125.910</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>2.512</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>129.933.810.416</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="BATTLE_CRUISER" data-ship-quantity="51725243" data-ship-points="93" style="background:url(../../assets/images/V2/hangar/BATTLE_CRUISER.gif)">
-                                        <span class="ship-quantity">51.725.243</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="51725243" min-value="0" max-value="51725243" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Destroyer (24.771.132)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>56.210</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>6.700</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>165.966.584.400</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="DESTROYER" data-ship-quantity="24771132" data-ship-points="136" style="background:url(../../assets/images/V2/hangar/DESTROYER.gif)">
-                                        <span class="ship-quantity">24.771.132</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="24771132" min-value="0" max-value="24771132" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Planet Bomber (85.418.492)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>56.210</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>1.675</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>143.075.974.100</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="PLANET_BOMBER" data-ship-quantity="85418492" data-ship-points="90" style="background:url(../../assets/images/V2/hangar/PLANET_BOMBER.gif)">
-                                        <span class="ship-quantity">85.418.492</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="85418492" min-value="0" max-value="85418492" />
-                                    </div>
-                                </div>
-                                <div class="ship-item tooltip" data-tooltip-position="top" data-tooltip-content="<div class='player-level-info-tooltip'><table style='max-width:320px;'><tr><td colspan='2' style='font-size: 11px;font-weight: bold;text-align:center;color:#f1f1f1;'>Reaper (25.561.601)</td></tr><tr><td>Speed: </td><td style='text-align:left;'><span>78.694</span></td></tr><tr><td>Cargo capacity: </td><td style='text-align:left;'><span>33.500</span></td></tr><tr><td>Total cargo capacity: </td><td style='text-align:left;'><span>856.313.633.500</span></td></tr></table></div>">
-                                    <a href="#" class="ship-btn" data-ship-type="REAPER" data-ship-quantity="25561601" data-ship-points="175" style="background:url(../../assets/images/V2/hangar/REAPER.gif)">
-                                        <span class="ship-quantity">25.561.601</span>
-                                    </a>
-                                    <div>
-                                        <input type="text" class="numberFormatInput" max-ships="25561601" min-value="0" max-value="25561601" />
+                                        <input type="text" class="numberFormatInput" max-ships="170000000" min-value="0" max-value="170000000" />
                                     </div>
                                 </div>
 
@@ -658,10 +580,9 @@
                     <div class="left" style="border-right: 1px solid rgb(43,63,90);">
                         <select id="fleetGroupSelect" style="float: left;height: 32px;border-radius: 3px;width: 200px;background: rgba(33,150,243, 0.1);border: 1px solid rgba(33,150,243, 0.2);">
                             <option value="">Select fleet group</option>
-                                        <option value="5433d121-6efd-455d-a58f-0aef576a77bf">60 MM </option>
+                                        <option value="5433d121-6efd-455d-a58f-0aef576a77bf">68 MM </option>
                                         <option value="196b56d1-f7f5-455a-9fa3-294c3a4e42af">85 MM </option>
                                         <option value="a7be13c9-8a44-459a-a193-2f9b7d3ead4f">Exped </option>
-                                        <option value="91042a5b-06e5-4f26-b772-742c69e75d51">70 MM </option>
 
                         </select>
 
@@ -715,8 +636,8 @@
                                 <div style="color:#848484;">Coordinates:</div>
                                 <div id="fleet2_target_coords_container">
                                     <input type="text" id="fleet2_target_x" value="7" autocomplete="off" max-value="8" />
-                                    <input type="text" id="fleet2_target_y" value="183" autocomplete="off" max-value="499" />
-                                    <input type="text" id="fleet2_target_z" value="17" autocomplete="off" max-value="17" />
+                                    <input type="text" id="fleet2_target_y" value="230" autocomplete="off" max-value="499" />
+                                    <input type="text" id="fleet2_target_z" value="5" autocomplete="off" max-value="17" />
                                 </div>
                             </div>
                         </div>
@@ -799,6 +720,9 @@
                                 
                                     playerOwnPlanetCoords.push('7-362-5');
                                 
+                                
+                                    playerOwnPlanetCoords.push('7-364-5');
+                                
 
                                 });
 
@@ -832,6 +756,7 @@
                                             <option value="PLANET-7-340-5"> M21 [7:340:5]</option>
                                             <option value="PLANET-7-359-5"> M22 [7:359:5]</option>
                                             <option value="PLANET-7-362-5"> M23 [7:362:5]</option>
+                                            <option value="PLANET-7-364-5"> Colony [7:364:5]</option>
                                             <option value="MOON-7-230-5">(M) Moon [7:230:5]</option>
                                             <option value="MOON-7-154-5">(M) Moon [7:154:5]</option>
                                             <option value="MOON-7-229-5">(M) Moon [7:229:5]</option>
@@ -1053,10 +978,10 @@
     window.fleetSpeedFactor = 2;
     window.minFleetTimeOnSeconds = 5;
      window.defaultUnionFleetCode = '';
-    window.defaultMission = 'ASTEROID_MINING';
+    window.defaultMission = '';
 
-    var defaultMission = 'ASTEROID_MINING' == null || 'ASTEROID_MINING'=='' ? 0 : 'ASTEROID_MINING';
-    window.defaultMission_int = 12;
+    var defaultMission = '' == null || ''=='' ? 0 : '';
+    window.defaultMission_int = 0;
 
     window.planetType_DEBRIS_FIELD_Value = 3;
     window.missionType_EXPEDITION_Value = 1;
@@ -1066,11 +991,11 @@
 
 </script>
 
-<script src="/assets/js/app/pages/fleet.js?v=3990"></script>
+<script src="/assets/js/app/pages/fleet.js?v=3992"></script>
                     </div>
 
                     <div id="planet-selection">
-                        <span class="planet-info">[24/25] Planets</span>
+                        <span class="planet-info">[25/25] Planets</span>
                         <div id="other-planets">
                                         <div class="planet-item  selected">
                                             <a class="planet-select " href="?planet=474967ec-b46e-48be-b69f-a3749c6de11b">
@@ -1082,6 +1007,7 @@
                                                 <span class="planet-name">Masseratti</span>
                                                 <span class="planet-coords">
                                                     [7:230:5]
+                                                            <i class="fas fa-industry tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Crystal Mine (65)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
 
                                                 </span>
 
@@ -1218,6 +1144,7 @@
                                                 <span class="planet-name">M08</span>
                                                 <span class="planet-coords">
                                                     [7:285:5]
+                                                            <i class="fas fa-industry tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Metal Mine (64)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
 
                                                 </span>
 
@@ -1235,6 +1162,7 @@
                                                 <span class="planet-name">M09</span>
                                                 <span class="planet-coords">
                                                     [7:41:5]
+                                                            <i class="fas fa-industry tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Metal Mine (64)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
 
                                                 </span>
 
@@ -1252,6 +1180,7 @@
                                                 <span class="planet-name">M10</span>
                                                 <span class="planet-coords">
                                                     [7:294:5]
+                                                            <i class="fas fa-industry tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Metal Mine (64)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
 
                                                 </span>
 
@@ -1479,6 +1408,18 @@
                                             </a>
 
                                             <a class="moon-select " href="?planet=383d306f-38d3-407b-a6f6-9b8f92897558" style="background:url(../../assets/images/V2/planet/moon/1/1_small.jpg?v=4) no-repeat;background-size:cover !important;"></a>
+                                        </div>
+                                        <div class="planet-item  ">
+                                            <a class="planet-select " href="?planet=811050af-92b1-4e4c-94b3-780c2763a368">
+                                                <img class="planet-icon" src="/assets/images/v2/planet/16/16_small.jpg?v=4" />
+                                                <span class="planet-name">Colony</span>
+                                                <span class="planet-coords">
+                                                    [7:364:5]
+                                                            <i class="fas fa-industry tooltip" data-tooltip-position="top" data-tooltip-content="<div style='font-size:11px;color:#DDD;'>Metal Mine (64)</div>" style="font-size: 12px;color: #FF9800;float: right;margin-left:5px;"></i>
+
+                                                </span>
+
+                                            </a>
                                         </div>
 
                         </div>
@@ -1773,7 +1714,7 @@
 
             window.fleetDetailTableOpened = false;
 
-            var currentMissionRemainingSeconds = 271;
+            var currentMissionRemainingSeconds = 274;
 
             setInterval(function () {
                 currentMissionRemainingSeconds -= 1;
@@ -1938,7 +1879,7 @@
 
     </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"2bf9dd8fdb5f462fab051c0ef58ac7d9","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6311b50fdb646f',t:'MTc2NDQyOTQxNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
 
 

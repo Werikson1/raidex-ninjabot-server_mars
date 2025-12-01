@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from typing import Callable, Optional, List
 
 from playwright.async_api import BrowserContext, Page
+from urllib.parse import urlparse, parse_qs
 
 from . import config
 
@@ -60,6 +61,7 @@ class FarmerRunner:
         self.error_count = 0
         self.running = False
         self.state = load_farmer_state()
+        self.next_active_ping_ts = 0
 
         self.nav_timeout_ms = max(config.FLEET_PAGE_TIMEOUT, 12000)
 
@@ -70,6 +72,7 @@ class FarmerRunner:
         if (self.config or {}).get("enabled", False) and not previous_enabled:
             self.error_count = 0
         self.state = load_farmer_state()
+        self.next_active_ping_ts = 0
 
     async def run(self, context: BrowserContext, stop_cb: Callable[[], bool]):
         """Main farmer loop."""
@@ -83,9 +86,14 @@ class FarmerRunner:
         while not stop_cb() and self.config.get("enabled", False):
             sleep_seconds = self._sleep_window_remaining()
             if sleep_seconds > 0:
-                logger.info(f"Farmer sleeping for {int(sleep_seconds // 60)} minutes (sleep window)")
+                logger.info(
+                    f"Farmer sleeping for {int(sleep_seconds // 60)} minutes (sleep window)"
+                )
                 await self._sleep_with_stop(sleep_seconds, stop_cb)
                 continue
+
+            # Active mode keep-alive (if enabled)
+            await self._maybe_keep_active(context, stop_cb)
 
             try:
                 delay_seconds = await self._execute_cycle(context, stop_cb)
@@ -205,7 +213,7 @@ class FarmerRunner:
                 logger.warning(f"?? Target {idx}/{total} ({target_id}) not interactable: {exc}")
                 continue
 
-            await asyncio.sleep(random.uniform(0.25, 0.8))
+            await asyncio.sleep(random.uniform(0.2, 0.5))
 
             try:
                 await self._human_click(btn)
@@ -274,10 +282,16 @@ class FarmerRunner:
 
         if start_dt <= now < wake_dt:
             remaining = (wake_dt - now).total_seconds()
+            # Optional jitter
+            jitter = 0
             if self.config.get("random_sleep_mode"):
                 jitter = random.randint(-5, 5) * 60
                 remaining = max(0, remaining + jitter)
-                logger.info(f"? Farmer random sleep jitter applied: {int(jitter/60)} minute(s)")
+            logger.info(
+                f"Farmer sleep window active now={now.strftime('%H:%M')} "
+                f"start={start_dt.strftime('%H:%M')} wake={wake_dt.strftime('%H:%M')} "
+                f"remaining={int(remaining)}s jitter={int(jitter/60)}m"
+            )
             return int(remaining)
 
         return 0
@@ -311,3 +325,41 @@ class FarmerRunner:
                 save_farmer_state(self.state)
             return 0
         return remaining
+
+    async def _maybe_keep_active(self, context: BrowserContext, stop_cb: Callable[[], bool]):
+        """Ping fleet page periodically to keep the planet active."""
+        if not self.config.get("active_mode"):
+            return
+        now = time.time()
+        if self.next_active_ping_ts and now < self.next_active_ping_ts:
+            return
+        if self._sleep_window_remaining() > 0:
+            return
+
+        try:
+            url = self._build_fleet_url()
+            logger.info(f"Farmer active mode pinging {url}")
+            page = await context.new_page()
+            await page.goto(url, wait_until="domcontentloaded", timeout=self.nav_timeout_ms)
+            try:
+                await page.wait_for_load_state("networkidle", timeout=config.NETWORK_IDLE_TIMEOUT)
+            except Exception:
+                pass
+            await page.close()
+        except Exception as exc:
+            logger.error(f"Active mode ping failed: {exc}")
+        finally:
+            jitter = random.randint(13, 16) * 60
+            self.next_active_ping_ts = time.time() + jitter
+
+    def _build_fleet_url(self) -> str:
+        """Build fleet URL using base of LIVE_URL and configured planet."""
+        try:
+            parsed = urlparse(config.LIVE_URL)
+            base_url = f"{parsed.scheme}://{parsed.netloc}" if parsed.scheme and parsed.netloc else "https://mars.ogamex.net"
+            planet_id = self.config.get("planet_id") or config.MAIN_PLANET_ID
+            if planet_id:
+                return f"{base_url}/fleet?planet={planet_id}"
+            return f"{base_url}/fleet"
+        except Exception:
+            return "https://mars.ogamex.net/fleet"

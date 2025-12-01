@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadConfig();
         // Only update cooldowns on miner page
         updateCooldowns();
-        setInterval(updateCooldowns, 2000);
+    setInterval(updateCooldowns, 2000);
     }
 
     // Empire Tab Logic
