@@ -6,6 +6,7 @@ All bot settings are centralized here for easy modification
 import os
 import json
 from typing import Tuple
+from urllib.parse import urlparse
 
 # Path to the JSON configuration file
 CONFIG_FILE = os.path.abspath("config.json")
@@ -40,11 +41,23 @@ def _normalize_time_dict(raw: dict, default: dict) -> dict:
     minute = max(0, min(59, minute))
     return {"hour": hour, "minute": minute}
 
+def _get_base_url(raw_url: str = None) -> str:
+    """Return scheme + host for a given URL or default to mars host."""
+    try:
+        parsed = urlparse(raw_url) if raw_url else None
+        if parsed and parsed.scheme and parsed.netloc:
+            return f"{parsed.scheme}://{parsed.netloc}"
+    except Exception:
+        pass
+    return "https://mars.ogamex.net"
+
 # URLs and Paths
 USE_LOCAL_FILE = _config.get("USE_LOCAL_FILE", False)
 LOCAL_FILE_PATH = os.path.abspath(_config.get("LOCAL_FILE_PATH", os.path.join("debug", "galaxy_view.html")))
 MAIN_PLANET_ID = _config.get("MAIN_PLANET_ID", "ae2da001-49d9-4c0e-b1f7-71b564ca0259")
+ASTEROID_PLANET_ID = _config.get("ASTEROID_PLANET_ID", MAIN_PLANET_ID)
 LIVE_URL = _config.get("LIVE_URL", f"https://mars.ogamex.net/galaxy?planet={MAIN_PLANET_ID}")
+BASE_URL = _get_base_url(LIVE_URL)
 USER_DATA_DIR = os.path.abspath(_config.get("USER_DATA_DIR", "user_data"))
 HEADLESS_MODE = _config.get("HEADLESS_MODE", False)
 TELEGRAM_BOT_TOKEN = _config.get("TELEGRAM_BOT_TOKEN", os.environ.get("TELEGRAM_BOT_TOKEN", ""))
@@ -62,19 +75,12 @@ try:
 except Exception:
     WEB_PORT = 5001
 
-# Fleet Group Configuration (IDs from fleet_page.html)
-# NOTE: The bot will automatically find the correct ID if the Name matches, 
-# so these IDs don't need to be perfect as long as the Names are correct.
-FLEET_GROUPS = {
-    "100 MM": "aa97bb4c-1552-4718-8c31-1337a9d58d6b",
-    "FARM (Plunder fleet)": "6d5eb5ed-4003-4921-9632-4dde3843fe04",
-    "EXPEDITION GROUP": "36f37c84-5093-47fc-9b62-dc1cbfbfbf1d",
-    "200 MM": "7b27df67-9973-4deb-9515-df263686a617",
-}
+# Fleet Group Configuration - dynamically fetched from game
+# Used only for expedition/farmer modes
+FLEET_GROUPS = {}
 
-FLEET_GROUP_NAME = _config.get("FLEET_GROUP_NAME", "200 MM")
-# Allow overriding ID from config, otherwise look up in map
-FLEET_GROUP_VALUE = _config.get("FLEET_GROUP_VALUE", FLEET_GROUPS.get(FLEET_GROUP_NAME, FLEET_GROUPS.get("200 MM")))
+FLEET_GROUP_NAME = _config.get("FLEET_GROUP_NAME", "")
+FLEET_GROUP_VALUE = _config.get("FLEET_GROUP_VALUE", "")
 
 # Cooldown Configuration
 COOLDOWN_FILE = os.path.abspath(os.path.join("data", "asteroid_cooldowns.json"))
@@ -106,6 +112,17 @@ TRAVEL_TIME_RANGES = _config.get("TRAVEL_TIME_RANGES", [
 NETWORK_IDLE_TIMEOUT = _config.get("NETWORK_IDLE_TIMEOUT", 5000)
 FLEET_PAGE_TIMEOUT = _config.get("FLEET_PAGE_TIMEOUT", 10000)
 MODAL_TIMEOUT = _config.get("MODAL_TIMEOUT", 5000)
+
+def get_asteroid_galaxy_url(config_override: dict = None) -> str:
+    """Build galaxy URL for asteroid navigation using selected planet."""
+    cfg_source = config_override if config_override is not None else load_config()
+    planet_id = cfg_source.get("ASTEROID_PLANET_ID") or cfg_source.get("MAIN_PLANET_ID", MAIN_PLANET_ID)
+    live_url = cfg_source.get("LIVE_URL", LIVE_URL)
+    base_url = _get_base_url(live_url)
+    return f"{base_url}/galaxy?planet={planet_id}"
+
+# Expose resolved asteroid galaxy URL using current config snapshot
+ASTEROID_GALAXY_URL = get_asteroid_galaxy_url(_config)
 
 def get_expedition_config(config_override: dict = None) -> dict:
     """Return sanitized expedition configuration."""

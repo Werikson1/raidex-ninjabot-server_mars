@@ -4,7 +4,7 @@
     "TELEGRAM_BOT_TOKEN": "8512782833:AAEyT2bEFDyY68djCmUh30NWu43CjO3U9go",
     "TELEGRAM_CHAT_ID": "960771858",
     "TELEGRAM_USERNAME": "@ogame_xbot",
-    "FLEET_GROUP_NAME": "196b56d1-f7f5-455a-9fa3-294c3a4e42af",
+    "FLEET_GROUP_NAME": "5433d121-6efd-455d-a58f-0aef576a77bf",
     "COOLDOWN_HOURS": 1,
     "SEARCH_DELAY_MIN": 0.3,
     "SEARCH_DELAY_MAX": 0.7,
@@ -12,6 +12,7 @@
     "NO_ASTEROID_WAIT_MAX": 45,
     "FLEET_FAIL_WAIT_MINUTES": 35,
     "ASTEROID_ENABLED": true,
+    "ASTEROID_PLANET_ID": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
     "expedition_mode": {
         "enabled": true,
         "planet_id": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
@@ -51,6 +52,25 @@
         "attack_cooldown_max": 37,
         "active_mode": true
     },
-    "FLEET_GROUP_VALUE": "196b56d1-f7f5-455a-9fa3-294c3a4e42af",
-    "ASTEROID_MINER_AMOUNT": 200000000
+    "FLEET_GROUP_VALUE": "5433d121-6efd-455d-a58f-0aef576a77bf",
+    "ASTEROID_MINER_AMOUNT": 210000000,
+    "asteroidPlanet": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
+    "asteroidSleepMode": false,
+    "asteroidRandomSleepMode": false,
+    "sleepStartHour": "23",
+    "sleepStartMinute": "0",
+    "wakeHour": "7",
+    "wakeMinute": "30",
+    "asteroid_mode": {
+        "sleep_mode": false,
+        "random_sleep_mode": false,
+        "sleep_start": {
+            "hour": 23,
+            "minute": 0
+        },
+        "wake_up": {
+            "hour": 7,
+            "minute": 30
+        }
+    }
 }

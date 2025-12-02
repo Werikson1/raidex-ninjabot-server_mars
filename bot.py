@@ -233,9 +233,16 @@ class OgameBot:
             NETWORK_IDLE_TIMEOUT,
             MODAL_TIMEOUT,
             BASE_SYSTEM,
-            TRAVEL_TIME_RANGES
+            TRAVEL_TIME_RANGES,
+            config_module.ASTEROID_GALAXY_URL,
+            range_cooldown_hours=COOLDOWN_HOURS,
         )
-        self.asteroid_runner = AsteroidMinerRunner(fleet_dispatcher, asteroid_finder, self.cooldown_mgr)
+        self.asteroid_runner = AsteroidMinerRunner(
+            fleet_dispatcher,
+            asteroid_finder,
+            self.cooldown_mgr,
+            galaxy_url=config_module.ASTEROID_GALAXY_URL,
+        )
         expedition_runner = ExpeditionRunner(expedition_cfg)
         farmer_runner = FarmerRunner(farmer_cfg)
 

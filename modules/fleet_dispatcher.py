@@ -12,7 +12,7 @@ import modules.config as config
 
 
 class FleetDispatcher:
-    def __init__(self, fleet_group_name: str, fleet_group_value: str, asteroid_miner_amount: int = 0):
+    def __init__(self, fleet_group_name: str = "", fleet_group_value: str = "", asteroid_miner_amount: int = 0):
         self.fleet_group_name = fleet_group_name
         self.fleet_group_value = fleet_group_value
         self.asteroid_miner_amount = max(0, int(asteroid_miner_amount or 0))
@@ -202,53 +202,55 @@ class FleetDispatcher:
             page = await self._ensure_fleet_page(page)
             print(f"V Fleet page ready at {page.url}")
             
-            # Step 1: Select Fleet Group
-            print(f"? Selecting fleet group: {self.fleet_group_name}")
-            select = page.locator("#fleetGroupSelect")
-            await select.wait_for(state="visible", timeout=5000)
-            await select.scroll_into_view_if_needed()
-            started = time.monotonic()
-            await self._wait_for_options(page, minimum=1, retries=5, delay_ms=120)
+            # For asteroid mining, we use manual ship amount instead of fleet groups
+            if self.asteroid_miner_amount > 0:
+                print(f"? Using manual asteroid miner amount: {self.asteroid_miner_amount}")
+                await self._fill_asteroid_miners(page)
+            else:
+                # Fallback to fleet group selection if no amount configured
+                print(f"? Selecting fleet group: {self.fleet_group_name}")
+                select = page.locator("#fleetGroupSelect")
+                await select.wait_for(state="visible", timeout=5000)
+                await select.scroll_into_view_if_needed()
+                started = time.monotonic()
+                await self._wait_for_options(page, minimum=1, retries=5, delay_ms=120)
 
-            # Fast-path selection
-            target_value = self.fleet_group_value
-            matched = await self._select_fleet_group_fast(select, self.fleet_group_name, target_value)
+                # Fast-path selection
+                target_value = self.fleet_group_value
+                matched = await self._select_fleet_group_fast(select, self.fleet_group_name, target_value)
 
-            current_value = await select.evaluate("(sel) => sel.value")
-            if not matched or (target_value and current_value != target_value):
-                # retry with fresh options and label/value selection
-                await self._log_debug_options(page)
-                try:
-                    await select.select_option(value=target_value)
-                    matched = True
-                    current_value = await select.evaluate("(sel) => sel.value")
-                except Exception:
-                    matched = False
-
-                if not matched:
+                current_value = await select.evaluate("(sel) => sel.value")
+                if not matched or (target_value and current_value != target_value):
+                    # retry with fresh options and label/value selection
+                    await self._log_debug_options(page)
                     try:
-                        await select.select_option(label=self.fleet_group_name)
+                        await select.select_option(value=target_value)
                         matched = True
                         current_value = await select.evaluate("(sel) => sel.value")
-                        if current_value:
-                            self.fleet_group_value = current_value
                     except Exception:
                         matched = False
 
-                expected = self.fleet_group_value or target_value
-                if not matched or (expected and current_value != expected):
-                    print(f"!! Fleet group selection failed. Expected {expected}, got {current_value}")
+                    if not matched:
+                        try:
+                            await select.select_option(label=self.fleet_group_name)
+                            matched = True
+                            current_value = await select.evaluate("(sel) => sel.value")
+                            if current_value:
+                                self.fleet_group_value = current_value
+                        except Exception:
+                            matched = False
+
+                    expected = self.fleet_group_value or target_value
+                    if not matched or (expected and current_value != expected):
+                        print(f"!! Fleet group selection failed. Expected {expected}, got {current_value}")
+                        return False
+
+                if not current_value:
+                    print("!! Fleet group selection failed (empty value after selection)")
                     return False
 
-            if not current_value:
-                print("!! Fleet group selection failed (empty value after selection)")
-                return False
-
-            elapsed = (time.monotonic() - started) * 1000
-            print(f"V Fleet group selected in {elapsed:.0f}ms: {self.fleet_group_name} (ID: {self.fleet_group_value or target_value})")
-
-            # Fill asteroid miners according to configured amount (no select-all)
-            await self._fill_asteroid_miners(page)
+                elapsed = (time.monotonic() - started) * 1000
+                print(f"V Fleet group selected in {elapsed:.0f}ms: {self.fleet_group_name} (ID: {self.fleet_group_value or target_value})")
 
             await asyncio.sleep(random.uniform(0.6, 1.2))
             
@@ -262,19 +264,13 @@ class FleetDispatcher:
                 # Wait up to 5 seconds for the disabled class to be removed
                 await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=5000)
             except Exception:
-                print("! Next button still disabled. Retrying selection event...")
-                # Retry dispatching change event if button is still disabled
-                if target_value:
-                    await select.evaluate(
-                        "(sel, val) => { sel.value = val; sel.dispatchEvent(new Event('change', {bubbles:true})); }",
-                        target_value,
-                    )
-                    await asyncio.sleep(0.5)
-                    try:
-                        await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=3000)
-                    except Exception:
-                        print("!! Next button failed to enable.")
-                        return False
+                print("! Next button still disabled. Waiting a bit more...")
+                await asyncio.sleep(1.0)
+                try:
+                    await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=3000)
+                except Exception:
+                    print("!! Next button failed to enable.")
+                    return False
 
             await self._human_click(page, next_btn_selector)
             await asyncio.sleep(random.uniform(1.5, 2.5))

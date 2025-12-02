@@ -1,16 +1,99 @@
-"""
-Asteroid Finder Module
+"""Asteroid Finder Module
 Handles asteroid detection, modal parsing, and system searching
 """
 
 import asyncio
+import json
+import os
 import random
 import time
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict
 from playwright.async_api import Page
 
 from .cooldown_manager import CooldownManager
 from .config import LIVE_URL, USE_LOCAL_FILE
+
+# File path for range cooldowns persistence
+RANGE_COOLDOWN_FILE = os.path.abspath(os.path.join("data", "range_cooldowns.json"))
+
+
+class RangeCooldownManager:
+    """Manages cooldowns for asteroid ranges to avoid re-checking recently visited ranges."""
+    
+    def __init__(self, cooldown_file: str = RANGE_COOLDOWN_FILE, cooldown_hours: float = 1.0):
+        self.cooldown_file = cooldown_file
+        self.cooldown_hours = cooldown_hours
+        self.cooldowns: Dict[str, float] = self._load()
+    
+    def _load(self) -> Dict[str, float]:
+        """Load range cooldowns from file."""
+        try:
+            with open(self.cooldown_file, 'r') as f:
+                return json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return {}
+    
+    def _save(self):
+        """Save range cooldowns to file."""
+        try:
+            os.makedirs(os.path.dirname(self.cooldown_file), exist_ok=True)
+            with open(self.cooldown_file, 'w') as f:
+                json.dump(self.cooldowns, f, indent=2)
+        except Exception as e:
+            print(f"⚠ Failed to save range cooldowns: {e}")
+    
+    def _make_key(self, galaxy: int, start_sys: int, end_sys: int, position: int) -> str:
+        """Create a string key from range tuple."""
+        return f"{galaxy}:{start_sys}-{end_sys}:{position}"
+    
+    def is_in_cooldown(self, galaxy: int, start_sys: int, end_sys: int, position: int) -> bool:
+        """Check if a range is in cooldown."""
+        key = self._make_key(galaxy, start_sys, end_sys, position)
+        
+        if key in self.cooldowns:
+            sent_time = self.cooldowns[key]
+            elapsed_hours = (time.time() - sent_time) / 3600
+            
+            if elapsed_hours < self.cooldown_hours:
+                remaining = self.cooldown_hours - elapsed_hours
+                print(f"  → Range [{galaxy}:{start_sys}-{end_sys}:{position}] in cooldown. {remaining:.1f}h remaining.")
+                return True
+            else:
+                # Cooldown expired, remove it
+                del self.cooldowns[key]
+                self._save()
+        
+        return False
+    
+    def add_to_cooldown(self, galaxy: int, start_sys: int, end_sys: int, position: int):
+        """Add a range to cooldown after successful dispatch or insufficient time."""
+        key = self._make_key(galaxy, start_sys, end_sys, position)
+        self.cooldowns[key] = time.time()
+        self._save()
+        print(f"✓ Range [{galaxy}:{start_sys}-{end_sys}:{position}] added to cooldown for {self.cooldown_hours}h")
+    
+    def cleanup_expired(self):
+        """Remove all expired range cooldowns."""
+        current_time = time.time()
+        expired_keys = []
+        
+        for key, sent_time in self.cooldowns.items():
+            elapsed_hours = (current_time - sent_time) / 3600
+            if elapsed_hours >= self.cooldown_hours:
+                expired_keys.append(key)
+        
+        for key in expired_keys:
+            del self.cooldowns[key]
+        
+        if expired_keys:
+            self._save()
+            print(f"✓ Cleaned up {len(expired_keys)} expired range cooldown(s)")
+    
+    def clear_all(self):
+        """Clear all range cooldowns."""
+        self.cooldowns = {}
+        self._save()
+        print("✓ All range cooldowns cleared")
 
 
 class AsteroidFinder:
@@ -22,6 +105,8 @@ class AsteroidFinder:
         modal_timeout: int,
         base_system: int,
         travel_time_ranges: List[Tuple[int, int, int]],
+        galaxy_url: str = None,
+        range_cooldown_hours: float = 1.0,
     ):
         self.search_delay_min = search_delay_min
         self.search_delay_max = search_delay_max
@@ -30,18 +115,14 @@ class AsteroidFinder:
         self.base_system = base_system
         self.travel_time_ranges = travel_time_ranges
         self.galaxy_page: Optional[Page] = None
-        # Track ranges recently dispatched to skip immediate re-checks (range_key -> expiry_ts)
-        self.range_skip_cooldowns = {}
-        self.range_skip_ttl_seconds = 20 * 60  # skip a range for 20 minutes by default
+        self.galaxy_url = galaxy_url or LIVE_URL
+        # Persistent range cooldown manager (saves to JSON)
+        self.range_cooldown_mgr = RangeCooldownManager(cooldown_hours=range_cooldown_hours)
 
-    def _prune_range_skip(self, active_ranges: List[Tuple[int, int, int, int]]):
-        """Prune range skip entries that expired or are not in current modal."""
-        now = time.time()
-        active_set = set(active_ranges)
-        self.range_skip_cooldowns = {
-            k: v for k, v in self.range_skip_cooldowns.items()
-            if v > now and k in active_set
-        }
+    def set_galaxy_url(self, galaxy_url: str):
+        """Update target galaxy URL for navigation."""
+        if galaxy_url:
+            self.galaxy_url = galaxy_url
 
     async def _get_galaxy_page(self, page: Page) -> Page:
         """
@@ -52,12 +133,19 @@ class AsteroidFinder:
             return page
         try:
             if self.galaxy_page and not self.galaxy_page.is_closed():
+                try:
+                    current_url = self.galaxy_page.url or ""
+                except Exception:
+                    current_url = ""
+                if self.galaxy_url and self.galaxy_url not in current_url:
+                    await self.galaxy_page.goto(self.galaxy_url)
                 return self.galaxy_page
         except Exception:
             pass
 
+        target_url = self.galaxy_url or LIVE_URL
         self.galaxy_page = await page.context.new_page()
-        await self.galaxy_page.goto(LIVE_URL)
+        await self.galaxy_page.goto(target_url)
         await self.galaxy_page.wait_for_selector("#systemInput", state="visible", timeout=10000)
         return self.galaxy_page
 
@@ -143,9 +231,6 @@ class AsteroidFinder:
 
             print(f"📊 Found {len(ranges)} asteroid range(s) to check")
 
-            # Keep skip list only for current ranges (avoid stale entries)
-            self._prune_range_skip(ranges)
-
             # Close modal before searching
             await self._close_modal(page)
 
@@ -202,10 +287,12 @@ class AsteroidFinder:
         Returns:
             Tuple of (galaxy, system, position) if found, None otherwise
         """
+        # Cleanup expired range cooldowns at start of search
+        self.range_cooldown_mgr.cleanup_expired()
+        
         for galaxy, start_sys, end_sys, position in ranges:
-            range_key = (galaxy, start_sys, end_sys, position)
-            if range_key in self.range_skip_cooldowns:
-                print(f"  Skipping range [{galaxy}:{start_sys}-{end_sys}:{position}] (recent dispatch cooldown)")
+            # Check if this range is in cooldown (persisted in JSON)
+            if self.range_cooldown_mgr.is_in_cooldown(galaxy, start_sys, end_sys, position):
                 continue
 
             print(f"Checking range [{galaxy}:{start_sys}:{position}] -> [{galaxy}:{end_sys}:{position}]")
@@ -268,15 +355,15 @@ class AsteroidFinder:
                         print("  Sufficient time! Dispatching fleet...")
                         print("? Clicking asteroid...")
                         await self._human_click(page, asteroid_btn.first)
-                        # Mark this range to skip next cycle to avoid immediate re-check
-                        self.range_skip_cooldowns[range_key] = time.time() + self.range_skip_ttl_seconds
+                        # Mark this range to skip for 1 hour (persisted to JSON)
+                        self.range_cooldown_mgr.add_to_cooldown(galaxy, start_sys, end_sys, position)
                         return (galaxy, sys, position)
                     else:
                         print(f"  Insufficient time ({timer_minutes} < {required_minutes} min)")
-                        print("  Adding to cooldown to avoid wasted trip")
+                        print("  Adding asteroid and range to cooldown")
                         cooldown_mgr.add_to_cooldown(galaxy, sys, position)
-                        # Also skip this range in the next cycle to avoid immediate re-check
-                        self.range_skip_cooldowns[range_key] = time.time() + self.range_skip_ttl_seconds
+                        # Also skip this range for 1 hour (persisted to JSON)
+                        self.range_cooldown_mgr.add_to_cooldown(galaxy, start_sys, end_sys, position)
                         continue
 
             print(f"  No available asteroids in range [{galaxy}:{start_sys}-{end_sys}:{position}]")

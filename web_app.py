@@ -8,6 +8,7 @@ from bot import bot_instance, log_queue
 import modules.config as config_module
 from modules.expedition_runner import load_expedition_state
 from modules.farmer_runner import load_farmer_state
+from modules.telegram_bot import telegram_controller
 
 
 def _deep_merge(base: dict, updates: dict) -> dict:
@@ -328,9 +329,12 @@ def start_asteroid_miner():
     try:
         cfg = config_module.load_config()
         cfg["ASTEROID_ENABLED"] = True
+        galaxy_url = config_module.get_asteroid_galaxy_url(cfg)
         with open(config_module.CONFIG_FILE, 'w') as f:
             json.dump(cfg, f, indent=4)
         config_module._config = cfg
+        if bot_instance.asteroid_runner:
+            bot_instance.asteroid_runner.reset(galaxy_url)
     except Exception as e:
         return jsonify({"status": "asteroid_miner_started", "warning": str(e)})
     return jsonify({"status": "asteroid_miner_started"})
@@ -347,6 +351,50 @@ def stop_asteroid_miner():
     except Exception as e:
         return jsonify({"status": "asteroid_miner_stopped", "warning": str(e)})
     return jsonify({"status": "asteroid_miner_stopped"})
+
+@app.route('/api/asteroid/config', methods=['POST'])
+def save_asteroid_config():
+    try:
+        payload = request.json or {}
+        if not isinstance(payload, dict):
+            return jsonify({"error": "Invalid asteroid config format"}), 400
+
+        cfg = config_module.load_config()
+        
+        # Handle planet_id (root level)
+        if "planet_id" in payload:
+            cfg["ASTEROID_PLANET_ID"] = payload.get("planet_id") or cfg.get("ASTEROID_PLANET_ID")
+
+        # Handle sleep settings (asteroid_mode sub-object)
+        sleep_fields = ["sleep_mode", "random_sleep_mode", "sleep_start", "wake_up"]
+        if any(field in payload for field in sleep_fields):
+            asteroid_mode = cfg.get("asteroid_mode", {})
+            if "sleep_mode" in payload:
+                asteroid_mode["sleep_mode"] = bool(payload.get("sleep_mode"))
+            if "random_sleep_mode" in payload:
+                asteroid_mode["random_sleep_mode"] = bool(payload.get("random_sleep_mode"))
+            if "sleep_start" in payload:
+                asteroid_mode["sleep_start"] = payload.get("sleep_start")
+            if "wake_up" in payload:
+                asteroid_mode["wake_up"] = payload.get("wake_up")
+            cfg["asteroid_mode"] = asteroid_mode
+
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+
+        config_module._config = cfg
+        galaxy_url = config_module.get_asteroid_galaxy_url(cfg)
+        if bot_instance.asteroid_runner:
+            bot_instance.asteroid_runner.reset(galaxy_url)
+
+        return jsonify({
+            "status": "saved",
+            "planet_id": cfg.get("ASTEROID_PLANET_ID"),
+            "galaxy_url": galaxy_url,
+            "asteroid_mode": cfg.get("asteroid_mode", {})
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/asteroid/status', methods=['GET'])
 def get_asteroid_miner_status():
@@ -480,7 +528,134 @@ def get_farmer_planets():
     # Reuse expedition planet listing
     return get_expedition_planets()
 
+
+# ============================================================================
+# Telegram Bot Controller Integration
+# ============================================================================
+
+def _get_bot_status():
+    """Get current bot status for Telegram commands."""
+    cooldowns = bot_instance.get_cooldowns()
+    return {
+        "bot_running": bot_instance.running,
+        "asteroid_enabled": bot_instance.is_asteroid_miner_enabled(),
+        "expedition_enabled": bot_instance.is_expedition_enabled(),
+        "farmer_enabled": bot_instance.is_farmer_enabled(),
+        "active_cooldowns": len(cooldowns) if cooldowns else 0,
+    }
+
+
+def _start_asteroid_via_telegram():
+    """Start asteroid miner via Telegram command."""
+    try:
+        bot_instance.enable_asteroid_miner()
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = True
+        galaxy_url = config_module.get_asteroid_galaxy_url(cfg)
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        if bot_instance.asteroid_runner:
+            bot_instance.asteroid_runner.reset(galaxy_url)
+        return True
+    except Exception as e:
+        print(f"Error starting asteroid via telegram: {e}")
+        return False
+
+
+def _stop_asteroid_via_telegram():
+    """Stop asteroid miner via Telegram command."""
+    try:
+        bot_instance.disable_asteroid_miner()
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = False
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error stopping asteroid via telegram: {e}")
+        return False
+
+
+def _start_expedition_via_telegram():
+    """Start expedition mode via Telegram command."""
+    try:
+        bot_instance.enable_expedition_mode()
+        cfg = config_module.load_config()
+        cfg["expedition_mode"] = _deep_merge(cfg.get("expedition_mode", {}), {"enabled": True})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error starting expedition via telegram: {e}")
+        return False
+
+
+def _stop_expedition_via_telegram():
+    """Stop expedition mode via Telegram command."""
+    try:
+        bot_instance.disable_expedition_mode()
+        cfg = config_module.load_config()
+        cfg["expedition_mode"] = _deep_merge(cfg.get("expedition_mode", {}), {"enabled": False})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error stopping expedition via telegram: {e}")
+        return False
+
+
+def _start_farmer_via_telegram():
+    """Start farmer mode via Telegram command."""
+    try:
+        bot_instance.enable_farmer_mode()
+        cfg = config_module.load_config()
+        cfg["farmer_mode"] = _deep_merge(cfg.get("farmer_mode", {}), {"enabled": True})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error starting farmer via telegram: {e}")
+        return False
+
+
+def _stop_farmer_via_telegram():
+    """Stop farmer mode via Telegram command."""
+    try:
+        bot_instance.disable_farmer_mode()
+        cfg = config_module.load_config()
+        cfg["farmer_mode"] = _deep_merge(cfg.get("farmer_mode", {}), {"enabled": False})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error stopping farmer via telegram: {e}")
+        return False
+
+
+def _initialize_telegram_bot():
+    """Initialize and start the Telegram bot controller."""
+    telegram_controller.set_callbacks(
+        get_status=_get_bot_status,
+        start_asteroid=_start_asteroid_via_telegram,
+        stop_asteroid=_stop_asteroid_via_telegram,
+        start_expedition=_start_expedition_via_telegram,
+        stop_expedition=_stop_expedition_via_telegram,
+        start_farmer=_start_farmer_via_telegram,
+        stop_farmer=_stop_farmer_via_telegram,
+    )
+    telegram_controller.start()
+
+
 if __name__ == '__main__':
+    # Start Telegram bot controller
+    _initialize_telegram_bot()
+    
     app.run(
         debug=True,
         use_reloader=False,

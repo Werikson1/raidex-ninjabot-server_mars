@@ -6,8 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const logContainer = document.getElementById('logContainer');
     const fleetGroupSelect = document.getElementById('FLEET_GROUP_NAME');
     const fleetGroupValueInput = document.getElementById('FLEET_GROUP_VALUE');
+    const asteroidPlanetSelect = document.getElementById('asteroidPlanet');
 
     let isRunning = false;
+
+    const fetchJson = async (url, options = {}) => {
+        const resp = await fetch(url, options);
+        if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error(text || `Request failed (${resp.status})`);
+        }
+        return resp.json();
+    };
 
     const syncFleetValueFromSelect = () => {
         if (fleetGroupSelect && fleetGroupValueInput) {
@@ -18,8 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function populateFleetGroups(currentName, currentValue) {
         if (!fleetGroupSelect) return;
         try {
-            const res = await fetch('/api/fleet/groups');
-            const data = await res.json();
+            const data = await fetchJson('/api/fleet/groups');
             const groups = data.groups || [];
             fleetGroupSelect.innerHTML = '';
 
@@ -65,15 +74,65 @@ document.addEventListener('DOMContentLoaded', () => {
         fleetGroupSelect.addEventListener('change', syncFleetValueFromSelect);
     }
 
+    async function populateAsteroidPlanets(currentPlanetId) {
+        if (!asteroidPlanetSelect) return;
+        try {
+            const data = await fetchJson('/api/expedition/planets');
+            const planets = data.planets || [];
+            asteroidPlanetSelect.innerHTML = '';
+
+            if (!planets.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No planets found';
+                asteroidPlanetSelect.appendChild(opt);
+                return;
+            }
+
+            planets.forEach((p) => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.coords ? `${p.name} ${p.coords}` : p.name;
+                asteroidPlanetSelect.appendChild(opt);
+            });
+
+            if (currentPlanetId) {
+                const option = Array.from(asteroidPlanetSelect.options).find(o => o.value === currentPlanetId);
+                if (option) {
+                    asteroidPlanetSelect.value = currentPlanetId;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading asteroid planets:', error);
+        }
+    }
+
+    async function saveAsteroidPlanetSelection(planetId) {
+        try {
+            await fetchJson('/api/asteroid/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ planet_id: planetId })
+            });
+        } catch (error) {
+            console.error('Error saving asteroid planet selection:', error);
+        }
+    }
+
+    if (asteroidPlanetSelect) {
+        asteroidPlanetSelect.addEventListener('change', async () => {
+            await saveAsteroidPlanetSelection(asteroidPlanetSelect.value);
+        });
+    }
+
     // Load Config
     async function loadConfig() {
         try {
-            const response = await fetch('/api/config');
-            const config = await response.json();
+            const config = await fetchJson('/api/config');
 
             // Populate form
             for (const [key, value] of Object.entries(config)) {
-                if (key === 'FLEET_GROUP_NAME' || key === 'FLEET_GROUP_VALUE') {
+                if (key === 'FLEET_GROUP_NAME' || key === 'FLEET_GROUP_VALUE' || key === 'ASTEROID_PLANET_ID') {
                     continue; // handled after options load
                 }
                 const input = document.getElementById(key);
@@ -88,6 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (fleetGroupSelect) {
                 await populateFleetGroups(config.FLEET_GROUP_NAME, config.FLEET_GROUP_VALUE);
+            }
+            if (asteroidPlanetSelect) {
+                await populateAsteroidPlanets(config.ASTEROID_PLANET_ID);
             }
         } catch (error) {
             console.error('Error loading config:', error);
@@ -267,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadConfig();
         // Only update cooldowns on miner page
         updateCooldowns();
-    setInterval(updateCooldowns, 2000);
+        setInterval(updateCooldowns, 2000);
     }
 
     // Empire Tab Logic
