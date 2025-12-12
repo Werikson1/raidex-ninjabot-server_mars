@@ -19,8 +19,10 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Asteroid Miner Amount</label>
-                    <input type="number" id="ASTEROID_MINER_AMOUNT" name="ASTEROID_MINER_AMOUNT" min="1" step="1" class="compact-input" placeholder="Quantidade de naves">
+                    <label>Fleet Group</label>
+                    <select id="asteroidFleetGroup" name="ASTEROID_FLEET_GROUP" class="compact-input">
+                        <option value="">Carregando grupos...</option>
+                    </select>
                 </div>
 
                 <div class="form-group checkbox-group">
@@ -190,6 +192,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const botToggle = document.getElementById('botToggle');
         const planetSelect = document.getElementById('asteroidPlanet');
+        const fleetGroupSelect = document.getElementById('asteroidFleetGroup');
         const sleepModeCheckbox = document.getElementById('asteroidSleepMode');
         const randomSleepCheckbox = document.getElementById('asteroidRandomSleepMode');
         const sleepStartHour = document.getElementById('sleepStartHour');
@@ -259,6 +262,37 @@
             }
         };
 
+        const populateFleetGroups = async (currentValue, currentName) => {
+            try {
+                const data = await fetchJson('/api/fleet/groups');
+                const groups = data.groups || [];
+                fleetGroupSelect.innerHTML = '';
+                if (!groups.length) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.textContent = 'No fleet groups found';
+                    fleetGroupSelect.appendChild(opt);
+                    return;
+                }
+                groups.forEach(g => {
+                    const opt = document.createElement('option');
+                    opt.value = g.value;
+                    opt.textContent = g.name;
+                    fleetGroupSelect.appendChild(opt);
+                });
+                if (currentValue) {
+                    setSelectValue(fleetGroupSelect, currentValue);
+                } else if (currentName) {
+                    const option = Array.from(fleetGroupSelect.options).find(o => o.textContent === currentName);
+                    if (option) {
+                        fleetGroupSelect.value = option.value;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading fleet groups:', error);
+            }
+        };
+
         // Auto-save planet selection
         planetSelect.addEventListener('change', async () => {
             try {
@@ -307,6 +341,25 @@
         wakeHour.addEventListener('change', saveSleepSettings);
         wakeMinute.addEventListener('change', saveSleepSettings);
 
+        // Auto-save fleet group selection
+        fleetGroupSelect.addEventListener('change', async () => {
+            try {
+                const fleetOption = fleetGroupSelect.options[fleetGroupSelect.selectedIndex];
+                await fetchJson('/api/asteroid/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fleet_group_name: fleetOption ? fleetOption.textContent : '',
+                        fleet_group_value: fleetGroupSelect.value
+                    })
+                });
+                console.log('Fleet group saved:', fleetGroupSelect.value);
+            } catch (error) {
+                console.error('Error saving fleet group:', error);
+                alert('Failed to save fleet group selection');
+            }
+        });
+
         // Load config and populate selectors
         const loadConfig = async () => {
             try {
@@ -317,6 +370,7 @@
 
                 // Load sleep settings from asteroid_mode
                 const asteroidMode = config.asteroid_mode || {};
+                await populateFleetGroups(asteroidMode.fleet_group_value, asteroidMode.fleet_group_name);
                 sleepModeCheckbox.checked = asteroidMode.sleep_mode || false;
                 randomSleepCheckbox.checked = asteroidMode.random_sleep_mode || false;
 

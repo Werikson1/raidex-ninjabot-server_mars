@@ -39,6 +39,26 @@ def _fetch_fleet_groups():
     Fetch fleet group options from the live fleet page (or local fallback).
     Returns a list of {"name": str, "value": str}.
     """
+    def _parse_groups(html_text: str):
+        if not html_text:
+            return []
+        try:
+            soup = BeautifulSoup(html_text, "html.parser")
+            select = soup.find("select", id="fleetGroupSelect")
+            if not select:
+                return []
+
+            groups = []
+            for opt in select.find_all("option"):
+                value = (opt.get("value") or "").strip()
+                name = (opt.get_text() or "").strip()
+                if not value or not name or value.lower() == "select":
+                    continue
+                groups.append({"name": name, "value": value})
+            return groups
+        except Exception:
+            return []
+
     html = None
     url = f"{_get_base_url()}/fleet"
 
@@ -67,31 +87,26 @@ def _fetch_fleet_groups():
         except Exception:
             html = None
 
-    # Fallback to local reference page if live fetch fails
-    if not html:
+    groups = _parse_groups(html)
+
+    # Fallback to local reference page if live fetch fails or returns empty
+    if not groups:
         try:
             local_path = os.path.abspath(os.path.join("pages_view", "fleet_page.html"))
             with open(local_path, "r", encoding="utf-8") as f:
-                html = f.read()
+                groups = _parse_groups(f.read())
         except Exception:
-            return []
+            groups = []
 
-    try:
-        soup = BeautifulSoup(html, "html.parser")
-        select = soup.find("select", id="fleetGroupSelect")
-        if not select:
-            return []
+    # Last resort: use configured fleet group name/value if present
+    if not groups:
+        cfg = config_module.load_config()
+        name = cfg.get("FLEET_GROUP_NAME", "")
+        value = cfg.get("FLEET_GROUP_VALUE", "")
+        if name or value:
+            groups = [{"name": name or value, "value": value or name}]
 
-        groups = []
-        for opt in select.find_all("option"):
-            value = (opt.get("value") or "").strip()
-            name = (opt.get_text() or "").strip()
-            if not value or not name or value.lower() == "select":
-                continue
-            groups.append({"name": name, "value": value})
-        return groups
-    except Exception:
-        return []
+    return groups
 
 app = Flask(__name__)
 
@@ -360,15 +375,21 @@ def save_asteroid_config():
             return jsonify({"error": "Invalid asteroid config format"}), 400
 
         cfg = config_module.load_config()
+        asteroid_mode = cfg.get("asteroid_mode", {})
         
         # Handle planet_id (root level)
         if "planet_id" in payload:
             cfg["ASTEROID_PLANET_ID"] = payload.get("planet_id") or cfg.get("ASTEROID_PLANET_ID")
 
+        # Handle fleet group selection
+        if "fleet_group_name" in payload:
+            asteroid_mode["fleet_group_name"] = payload.get("fleet_group_name", "")
+        if "fleet_group_value" in payload:
+            asteroid_mode["fleet_group_value"] = payload.get("fleet_group_value", "")
+
         # Handle sleep settings (asteroid_mode sub-object)
         sleep_fields = ["sleep_mode", "random_sleep_mode", "sleep_start", "wake_up"]
         if any(field in payload for field in sleep_fields):
-            asteroid_mode = cfg.get("asteroid_mode", {})
             if "sleep_mode" in payload:
                 asteroid_mode["sleep_mode"] = bool(payload.get("sleep_mode"))
             if "random_sleep_mode" in payload:
@@ -377,7 +398,8 @@ def save_asteroid_config():
                 asteroid_mode["sleep_start"] = payload.get("sleep_start")
             if "wake_up" in payload:
                 asteroid_mode["wake_up"] = payload.get("wake_up")
-            cfg["asteroid_mode"] = asteroid_mode
+
+        cfg["asteroid_mode"] = asteroid_mode
 
         with open(config_module.CONFIG_FILE, 'w') as f:
             json.dump(cfg, f, indent=4)

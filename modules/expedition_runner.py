@@ -87,7 +87,8 @@ class ExpeditionRunner:
             # Sleep window guard
             sleep_seconds = self._sleep_window_remaining()
             if sleep_seconds > 0:
-                logger.info(f"Expedition sleeping for {int(sleep_seconds // 60)} minutes (sleep window)")
+                wake_time = (datetime.now() + timedelta(seconds=sleep_seconds)).strftime("%H:%M")
+                logger.info(f"Expedition sleeping until {wake_time} ({int(sleep_seconds // 60)} minutes)")
                 await self._sleep_with_stop(sleep_seconds, stop_cb)
                 continue
 

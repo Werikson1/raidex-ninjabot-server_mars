@@ -44,16 +44,14 @@ class AsteroidMinerRunner:
                 self.update_galaxy_url(new_galaxy_url)
             
             # Update fleet dispatcher settings
-            fleet_group_name = cfg.get("FLEET_GROUP_NAME", config.FLEET_GROUP_NAME)
-            fleet_group_value = cfg.get("FLEET_GROUP_VALUE", config.FLEET_GROUP_VALUE)
-            miner_amount = int(cfg.get("ASTEROID_MINER_AMOUNT", 0) or 0)
+            asteroid_mode = cfg.get("asteroid_mode", {})
+            fleet_group_name = asteroid_mode.get("fleet_group_name") or cfg.get("FLEET_GROUP_NAME", config.FLEET_GROUP_NAME)
+            fleet_group_value = asteroid_mode.get("fleet_group_value") or cfg.get("FLEET_GROUP_VALUE", config.FLEET_GROUP_VALUE)
             
             if hasattr(self.fleet_dispatcher, "fleet_group_name"):
                 self.fleet_dispatcher.fleet_group_name = fleet_group_name
             if hasattr(self.fleet_dispatcher, "fleet_group_value"):
                 self.fleet_dispatcher.fleet_group_value = fleet_group_value
-            if hasattr(self.fleet_dispatcher, "asteroid_miner_amount"):
-                self.fleet_dispatcher.asteroid_miner_amount = miner_amount
             
             # Update cooldown hours for asteroids
             cooldown_hours = cfg.get("COOLDOWN_HOURS", config.COOLDOWN_HOURS)
@@ -165,7 +163,8 @@ class AsteroidMinerRunner:
                 # Sleep window guard - wait until wake up time
                 sleep_seconds = self._sleep_window_remaining()
                 if sleep_seconds > 0:
-                    logger.info(f"💤 Asteroid miner sleeping for {int(sleep_seconds // 60)} minutes (sleep window)")
+                    wake_time = (datetime.now() + timedelta(seconds=sleep_seconds)).strftime("%H:%M")
+                    logger.info(f"💤 Asteroid miner sleeping until {wake_time} ({int(sleep_seconds // 60)} minutes)")
                     await self._sleep_with_stop(sleep_seconds, stop_cb)
                     continue
 

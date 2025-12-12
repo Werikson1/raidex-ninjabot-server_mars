@@ -4,7 +4,15 @@ Tests if the stealth evasions are working correctly
 """
 
 import asyncio
+import os
+import sys
 from playwright.async_api import async_playwright
+
+# Ensure project root is importable when running the test directly
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
 from modules.stealth import apply_stealth, get_stealth_args, get_stealth_user_agent
 
 
@@ -13,11 +21,14 @@ async def test_stealth():
     print("TESTING STEALTH MODE")
     print("=" * 70)
 
-    stealth_args = get_stealth_args() + ["--start-maximized"]
-    user_agent = get_stealth_user_agent()
-    viewport = {"width": 1366, "height": 768}
-
     async with async_playwright() as p:
+        probe = await p.chromium.launch(headless=True)
+        chrome_version = probe.version
+        await probe.close()
+        stealth_args = get_stealth_args() + ["--start-maximized"]
+        user_agent = get_stealth_user_agent(chrome_version=chrome_version)
+        viewport = {"width": 1366, "height": 768}
+
         context = await p.chromium.launch_persistent_context(
             user_data_dir="test_profile",
             headless=False,
@@ -29,9 +40,10 @@ async def test_stealth():
             ignore_default_args=["--enable-automation"],
         )
 
-        await apply_stealth(context, user_agent=user_agent)
+        await apply_stealth(context, user_agent=user_agent, chrome_version=chrome_version)
 
-        page = context.pages[0] if context.pages else await context.new_page()
+        # Always start from a fresh page to guarantee init scripts ran
+        page = await context.new_page()
 
         print("\n> Navigating to bot detection test site...")
         await page.goto("https://bot.sannysoft.com/")

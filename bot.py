@@ -226,7 +226,10 @@ class OgameBot:
 
         # Initialize modules
         self.cooldown_mgr = CooldownManager(COOLDOWN_FILE, COOLDOWN_HOURS)
-        fleet_dispatcher = FleetDispatcher(FLEET_GROUP_NAME, FLEET_GROUP_VALUE, config_module.ASTEROID_MINER_AMOUNT)
+        asteroid_mode_cfg = config_module._config.get("asteroid_mode", {})
+        asteroid_fleet_name = asteroid_mode_cfg.get("fleet_group_name") or FLEET_GROUP_NAME
+        asteroid_fleet_value = asteroid_mode_cfg.get("fleet_group_value") or FLEET_GROUP_VALUE
+        fleet_dispatcher = FleetDispatcher(asteroid_fleet_name, asteroid_fleet_value)
         asteroid_finder = AsteroidFinder(
             SEARCH_DELAY_MIN,
             SEARCH_DELAY_MAX,
@@ -249,10 +252,15 @@ class OgameBot:
         async with async_playwright() as p:
             logger.info(f"Launching browser with persistent profile: {USER_DATA_DIR}")
 
+            # Detect real Chromium version to align UA/Client Hints
+            chrome_probe = await p.chromium.launch(headless=True)
+            chrome_version = chrome_probe.version
+            await chrome_probe.close()
+
             # Use persistent context to save login session with stealth mode
             stealth_args = get_stealth_args()
             stealth_args.append("--start-maximized")
-            user_agent = get_stealth_user_agent()
+            user_agent = get_stealth_user_agent(chrome_version=chrome_version)
             viewport_choice = {
                 "width": random.randint(1330, 1380),
                 "height": random.randint(750, 820),
@@ -274,7 +282,7 @@ class OgameBot:
             self.browser_context = context
 
             # Apply stealth JavaScript evasions
-            await apply_stealth(context, user_agent=user_agent)
+            await apply_stealth(context, user_agent=user_agent, chrome_version=chrome_version)
             logger.info("Stealth mode activated - bot detection evasions applied")
             
             # Get or create page

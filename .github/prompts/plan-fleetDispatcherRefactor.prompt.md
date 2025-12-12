@@ -1,3 +1,15 @@
+# Plan: Refatorar Fleet Dispatcher para usar Fleet Group
+
+## Objetivo
+Remover a lógica de `asteroid_miner_amount` e usar o seletor `#fleetGroupSelect` igual ao Expedition.
+
+---
+
+## 1. `modules/fleet_dispatcher.py`
+
+**Substituir TODO o arquivo por:**
+
+```python
 """
 Fleet Dispatcher Module
 Handles fleet selection and dispatch to asteroids using fleet groups
@@ -39,8 +51,8 @@ class FleetDispatcher:
         except Exception as e:
             print(f"Could not read fleet options: {e}")
 
-    async def _wait_for_options(self, page: Page, minimum: int = 1, retries: int = 15, delay_ms: int = 200):
-        """Wait until the fleet group select has at least `minimum` non-empty options."""
+    async def _wait_for_options(self, page: Page, minimum: int = 2, retries: int = 10, delay_ms: int = 200):
+        """Wait until the select has at least `minimum` options with value."""
         select = page.locator("#fleetGroupSelect")
         for _ in range(retries):
             try:
@@ -74,114 +86,60 @@ class FleetDispatcher:
     async def _select_fleet_group(self, page: Page) -> bool:
         """Select the configured fleet group from #fleetGroupSelect."""
         try:
-            start = time.monotonic()
             select = page.locator("#fleetGroupSelect")
-            await select.wait_for(state="visible", timeout=10000)
+            await select.wait_for(state="visible", timeout=6000)
             await select.scroll_into_view_if_needed()
-
-            # Wait for options to be populated (page now injects fleet groups later)
-            options_ready = await self._wait_for_options(page, minimum=1, retries=24, delay_ms=250)
-            if not options_ready:
-                await self._log_debug_options(page)
-                print("!! Fleet group options did not load in time")
-                return False
-
+            
+            # Wait for options to be populated
+            await self._wait_for_options(page, minimum=1, retries=10, delay_ms=200)
+            
+            # Log available options for debug
+            await self._log_debug_options(page)
+            
             target_label = self.fleet_group_name or ""
             target_value = self.fleet_group_value or ""
-
-            # Skip work if already selected
-            try:
-                current_val = await select.evaluate("(sel) => sel.value || ''")
-                current_text = await select.evaluate(
-                    "(sel) => { const o = sel.selectedOptions[0]; return o ? (o.textContent||'').trim() : ''; }"
-                )
-                if (target_value and current_val == target_value) or (target_label and current_text == target_label):
-                    if current_val:
-                        self.fleet_group_value = current_val
-                    return True
-            except Exception:
-                pass
-
-            # Fetch options once for faster matching
-            try:
-                options = await select.evaluate(
-                    "(sel) => Array.from(sel.options).map(o => ({value:o.value,label:(o.textContent||'').trim()}))"
-                )
-            except Exception:
-                options = []
-
             matched = False
-            norm = lambda s: (s or "").strip().casefold()
-
-            # Helper: set value via JS quickly
-            async def _set_value(val: str):
-                if not val:
-                    return False
-                try:
-                    await select.select_option(value=val)
-                except Exception:
-                    pass
-                try:
-                    await select.evaluate(
-                        "(sel, val) => { sel.value = val; sel.dispatchEvent(new Event('input', {bubbles:true})); sel.dispatchEvent(new Event('change', {bubbles:true})); sel.dispatchEvent(new Event('blur', {bubbles:true})); }",
-                        val,
-                    )
-                    current = await select.evaluate("(sel) => sel.value || ''")
-                    return current == val
-                except Exception:
-                    return False
             
             # 1) Try by label first (visible text)
-            if target_label and options:
-                target_label_norm = norm(target_label)
-                for opt in options:
-                    if norm(opt["label"]) == target_label_norm:
-                        matched = await _set_value(opt["value"])
-                        if matched:
-                            self.fleet_group_value = opt["value"]
-                            target_value = opt["value"]
-                            print(f"V Selected fleet group by label: {target_label}")
-                        break
-                # Soft fallback: partial label match if exact failed
-                if not matched:
-                    candidates = [opt for opt in options if target_label_norm in norm(opt["label"])]
-                    if len(candidates) == 1:
-                        chosen = candidates[0]
-                        matched = await _set_value(chosen["value"])
-                        if matched:
-                            self.fleet_group_value = chosen["value"]
-                            target_value = chosen["value"]
-                            print(f"V Selected fleet group by partial label: {chosen['label']}")
+            if target_label:
+                try:
+                    await select.select_option(label=target_label)
+                    matched = True
+                    current_val = await select.evaluate("(sel) => sel.value")
+                    if current_val:
+                        self.fleet_group_value = current_val
+                    print(f"✓ Selected fleet group by label: {target_label}")
+                except Exception:
+                    matched = False
             
             # 2) Try by value
             if not matched and target_value:
-                matched = await _set_value(target_value)
-                if matched:
-                    print(f"V Selected fleet group by value: {target_value}")
+                try:
+                    await select.select_option(value=target_value)
+                    matched = True
+                    print(f"✓ Selected fleet group by value: {target_value}")
+                except Exception:
+                    matched = False
             
             # 3) Force via JS if needed
             if not matched and target_value:
-                matched = await _set_value(target_value)
-                if matched:
-                    print(f"V Selected fleet group via JS: {target_value}")
+                try:
+                    await select.evaluate(
+                        "(sel, val) => { sel.value = val; sel.dispatchEvent(new Event('input', {bubbles:true})); sel.dispatchEvent(new Event('change', {bubbles:true})); }",
+                        target_value,
+                    )
+                    current_val = await select.evaluate("(sel) => sel.value")
+                    matched = current_val == target_value
+                    if matched:
+                        print(f"✓ Selected fleet group via JS: {target_value}")
+                except Exception:
+                    matched = False
             
             if not matched:
-                # Log available options for debug on failure
-                await self._log_debug_options(page)
                 print(f"!! Fleet group selection failed for {target_label or target_value}")
                 return False
-
-            current_val = await select.evaluate("(sel) => sel.value || ''")
-            if target_value and current_val != target_value:
-                await self._log_debug_options(page)
-                print(f"!! Fleet group selection mismatch. Expected {target_value}, got {current_val}")
-                return False
-
-            elapsed_ms = (time.monotonic() - start) * 1000
-            print(f"V Fleet group ready in {elapsed_ms:.0f}ms")
             
-            # Short settle delay to stay below the 3s budget
-            await asyncio.sleep(random.uniform(0.3, 0.55))
+            await asyncio.sleep(random.uniform(0.3, 0.6))
             return True
             
         except Exception as e:
@@ -346,7 +304,7 @@ class FleetDispatcher:
 
             await self._human_click(page, submit_btn_selector)
             
-            print("V Fleet sent successfully!")
+            print("✓ Fleet sent successfully!")
             await asyncio.sleep(random.uniform(1.5, 2.4))
             
             # Return to galaxy
@@ -365,3 +323,147 @@ class FleetDispatcher:
             except:
                 pass
             return False
+```
+
+---
+
+## 2. `templates/asteroid_miner.html`
+
+### 2.1 Substituir o campo `Asteroid Miner Amount` por Fleet Group
+
+**De:**
+```html
+<div class="form-group">
+    <label>Asteroid Miner Amount</label>
+    <input type="number" id="ASTEROID_MINER_AMOUNT" name="ASTEROID_MINER_AMOUNT" min="1" step="1" class="compact-input" placeholder="Quantidade de naves">
+</div>
+```
+
+**Para:**
+```html
+<div class="form-group">
+    <label>Fleet Group</label>
+    <select id="asteroidFleetGroup" name="ASTEROID_FLEET_GROUP" class="compact-input">
+        <option value="">Carregando grupos...</option>
+    </select>
+</div>
+```
+
+### 2.2 Adicionar no JavaScript (após `const planetSelect`)
+
+```javascript
+const fleetGroupSelect = document.getElementById('asteroidFleetGroup');
+```
+
+### 2.3 Adicionar função `populateFleetGroups`
+
+```javascript
+const populateFleetGroups = async (currentValue, currentName) => {
+    try {
+        const data = await fetchJson('/api/fleet/groups');
+        const groups = data.groups || [];
+        fleetGroupSelect.innerHTML = '';
+        if (!groups.length) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'No fleet groups found';
+            fleetGroupSelect.appendChild(opt);
+            return;
+        }
+        groups.forEach(g => {
+            const opt = document.createElement('option');
+            opt.value = g.value;
+            opt.textContent = g.name;
+            fleetGroupSelect.appendChild(opt);
+        });
+        if (currentValue) {
+            setSelectValue(fleetGroupSelect, currentValue);
+        } else if (currentName) {
+            const option = Array.from(fleetGroupSelect.options).find(o => o.textContent === currentName);
+            if (option) {
+                fleetGroupSelect.value = option.value;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading fleet groups:', error);
+    }
+};
+```
+
+### 2.4 No `loadConfig`, adicionar chamada:
+
+```javascript
+// Dentro de loadConfig, após populatePlanets:
+const asteroidMode = config.asteroid_mode || {};
+await populateFleetGroups(asteroidMode.fleet_group_value, asteroidMode.fleet_group_name);
+```
+
+### 2.5 Adicionar auto-save para fleet group:
+
+```javascript
+// Auto-save fleet group selection
+fleetGroupSelect.addEventListener('change', async () => {
+    try {
+        const fleetOption = fleetGroupSelect.options[fleetGroupSelect.selectedIndex];
+        await fetchJson('/api/asteroid/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                fleet_group_name: fleetOption ? fleetOption.textContent : '',
+                fleet_group_value: fleetGroupSelect.value
+            })
+        });
+        console.log('Fleet group saved:', fleetGroupSelect.value);
+    } catch (error) {
+        console.error('Error saving fleet group:', error);
+        alert('Failed to save fleet group selection');
+    }
+});
+```
+
+---
+
+## 3. Atualizar `modules/asteroid_miner_runner.py`
+
+Onde o `FleetDispatcher` é instanciado, alterar de:
+
+```python
+FleetDispatcher(
+    fleet_group_name=...,
+    fleet_group_value=...,
+    asteroid_miner_amount=config.get("ASTEROID_MINER_AMOUNT", 0)
+)
+```
+
+Para:
+
+```python
+FleetDispatcher(
+    fleet_group_name=asteroid_mode.get("fleet_group_name", ""),
+    fleet_group_value=asteroid_mode.get("fleet_group_value", "")
+)
+```
+
+---
+
+## 4. Atualizar `web_app.py` (endpoint `/api/asteroid/config`)
+
+Garantir que o endpoint salva `fleet_group_name` e `fleet_group_value` no `asteroid_mode`:
+
+```python
+# No POST /api/asteroid/config
+if 'fleet_group_name' in data:
+    asteroid_mode['fleet_group_name'] = data['fleet_group_name']
+if 'fleet_group_value' in data:
+    asteroid_mode['fleet_group_value'] = data['fleet_group_value']
+```
+
+---
+
+## Checklist
+
+- [ ] Substituir `modules/fleet_dispatcher.py`
+- [ ] Atualizar `templates/asteroid_miner.html` (HTML + JS)
+- [ ] Atualizar `modules/asteroid_miner_runner.py` (instanciação do FleetDispatcher)
+- [ ] Atualizar `web_app.py` (salvar fleet_group no config)
+- [ ] Testar seleção de fleet group no Asteroid Miner
