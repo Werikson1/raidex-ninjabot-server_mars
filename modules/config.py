@@ -96,16 +96,16 @@ NO_ASTEROID_WAIT_MAX = _config.get("NO_ASTEROID_WAIT_MAX", 40)
 FLEET_FAIL_WAIT_MINUTES = _config.get("FLEET_FAIL_WAIT_MINUTES", 25)
 
 # Travel Time Configuration
-BASE_SYSTEM = _config.get("BASE_SYSTEM", 247)
+BASE_SYSTEM = _config.get("BASE_SYSTEM", 230)
 
 # Distance ranges and minimum required asteroid time (in minutes)
 TRAVEL_TIME_RANGES = _config.get("TRAVEL_TIME_RANGES", [
     (0, 23, 20),
-    (24, 53, 25),
-    (54, 103, 30),
-    (104, 153, 36),
-    (154, 203, 41),
-    (204, 499, 45),
+    (24, 53, 20),
+    (54, 103, 20),
+    (104, 153, 25),
+    (154, 203, 30),
+    (204, 499, 30),
 ])
 
 # Timeouts

@@ -17,6 +17,7 @@ class AsteroidMinerRunner:
         self.cooldown_mgr = cooldown_mgr
         self.galaxy_url = galaxy_url or getattr(config, "ASTEROID_GALAXY_URL", config.LIVE_URL)
         self.reset_requested = False
+        self.reset_reason = None
         try:
             self.asteroid_finder.set_galaxy_url(self.galaxy_url)
         except Exception:
@@ -123,11 +124,13 @@ class AsteroidMinerRunner:
 
         return 0
 
-    def reset(self, galaxy_url: str = None):
+    def reset(self, galaxy_url: str = None, reason: str = None):
         """Reset the asteroid miner loop to start fresh."""
         if galaxy_url:
             self.update_galaxy_url(galaxy_url)
         self.reset_requested = True
+        if reason:
+            self.reset_reason = reason
         # Cleanup expired range cooldowns (persisted in JSON)
         try:
             if hasattr(self.asteroid_finder, "range_cooldown_mgr"):
@@ -141,20 +144,41 @@ class AsteroidMinerRunner:
             pass
         logger.info("Asteroid miner cycle reset requested")
 
+    async def _perform_reset(self):
+        """Actually reset runtime state (close galaxy tab, clear cached page)."""
+        try:
+            galaxy_page = getattr(self.asteroid_finder, "galaxy_page", None)
+            if galaxy_page and not galaxy_page.is_closed():
+                await galaxy_page.close()
+        except Exception:
+            pass
+        try:
+            if hasattr(self.asteroid_finder, "galaxy_page"):
+                self.asteroid_finder.galaxy_page = None
+        except Exception:
+            pass
+
     async def _sleep_with_stop(self, seconds: int, stop_cb):
         remaining = max(0, int(seconds))
         for _ in range(remaining):
             if stop_cb() or self.reset_requested:
-                break
+                return False
             await asyncio.sleep(1)
+        return True
 
     async def run(self, page, stop_cb, enabled_cb):
         """Background loop for asteroid mining."""
         try:
             while not stop_cb():
                 if self.reset_requested:
+                    reset_reason = self.reset_reason
                     self.reset_requested = False
-                    logger.info("Asteroid miner reset acknowledged - restarting from search step")
+                    self.reset_reason = None
+                    await self._perform_reset()
+                    if reset_reason:
+                        logger.info(f"Asteroid miner reset acknowledged - restarting from step 1 ({reset_reason})")
+                    else:
+                        logger.info("Asteroid miner reset acknowledged - restarting from step 1")
 
                 if not enabled_cb():
                     await asyncio.sleep(1)
@@ -189,7 +213,9 @@ class AsteroidMinerRunner:
                         cfg = config.load_config()
                         wait_minutes = cfg.get("FLEET_FAIL_WAIT_MINUTES", config.FLEET_FAIL_WAIT_MINUTES)
                         logger.info(f"Waiting {wait_minutes} minutes before retrying...")
-                        await self._sleep_with_stop(wait_minutes * 60, stop_cb)
+                        completed = await self._sleep_with_stop(wait_minutes * 60, stop_cb)
+                        if completed and enabled_cb() and not stop_cb():
+                            self.reset(reason="Fleet Fail Wait finished")
                 else:
                     # Reload config to get latest wait times
                     cfg = config.load_config()
@@ -198,7 +224,9 @@ class AsteroidMinerRunner:
                     wait_minutes = random.randint(wait_min, wait_max)
                     logger.info("No asteroids available")
                     logger.info(f"Waiting {wait_minutes} minutes before next search...")
-                    await self._sleep_with_stop(wait_minutes * 60, stop_cb)
+                    completed = await self._sleep_with_stop(wait_minutes * 60, stop_cb)
+                    if completed and enabled_cb() and not stop_cb():
+                        self.reset(reason="No-asteroid standby finished")
         except asyncio.CancelledError:
             return
         except Exception as e:

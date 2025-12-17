@@ -7,25 +7,25 @@
     "FLEET_GROUP_NAME": "5433d121-6efd-455d-a58f-0aef576a77bf",
     "COOLDOWN_HOURS": 1,
     "SEARCH_DELAY_MIN": 0.3,
-    "SEARCH_DELAY_MAX": 0.7,
-    "NO_ASTEROID_WAIT_MIN": 25,
-    "NO_ASTEROID_WAIT_MAX": 35,
+    "SEARCH_DELAY_MAX": 0.8,
+    "NO_ASTEROID_WAIT_MIN": 17,
+    "NO_ASTEROID_WAIT_MAX": 25,
     "FLEET_FAIL_WAIT_MINUTES": 15,
     "ASTEROID_ENABLED": true,
     "ASTEROID_PLANET_ID": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
     "expedition_mode": {
-        "enabled": false,
+        "enabled": true,
         "planet_id": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
         "fleet_group_name": "Exped",
         "fleet_group_value": "a7be13c9-8a44-459a-a193-2f9b7d3ead4f",
         "headless": false,
         "sleep_start": {
-            "hour": 12,
+            "hour": 23,
             "minute": 0
         },
         "wake_up": {
             "hour": 7,
-            "minute": 31
+            "minute": 27
         },
         "dispatch_cooldown": {
             "hour": 0,
@@ -57,7 +57,7 @@
     "asteroidPlanet": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
     "asteroidSleepMode": true,
     "asteroidRandomSleepMode": false,
-    "sleepStartHour": "12",
+    "sleepStartHour": "23",
     "sleepStartMinute": "0",
     "wakeHour": "7",
     "wakeMinute": "28",
@@ -65,15 +65,15 @@
         "sleep_mode": true,
         "random_sleep_mode": false,
         "sleep_start": {
-            "hour": 12,
+            "hour": 23,
             "minute": 0
         },
         "wake_up": {
             "hour": 7,
             "minute": 28
         },
-        "fleet_group_name": "500 MM",
-        "fleet_group_value": "5433d121-6efd-455d-a58f-0aef576a77bf"
+        "fleet_group_name": "750 MM",
+        "fleet_group_value": "196b56d1-f7f5-455a-9fa3-294c3a4e42af"
     },
-    "asteroidFleetGroup": "5433d121-6efd-455d-a58f-0aef576a77bf"
+    "asteroidFleetGroup": "196b56d1-f7f5-455a-9fa3-294c3a4e42af"
 }

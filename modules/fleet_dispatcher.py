@@ -76,7 +76,7 @@ class FleetDispatcher:
         try:
             start = time.monotonic()
             select = page.locator("#fleetGroupSelect")
-            await select.wait_for(state="visible", timeout=10000)
+            await select.wait_for(state="visible", timeout=12000)
             await select.scroll_into_view_if_needed()
 
             # Wait for options to be populated (page now injects fleet groups later)
@@ -203,7 +203,7 @@ class FleetDispatcher:
             fleet_url = self._build_fleet_url(planet_param)
             print(f"[debug] redirecting from autoexpedition to fleet: {fleet_url}")
             await page.goto(fleet_url, timeout=15000)
-            await page.wait_for_selector("#fleetGroupSelect", timeout=10000)
+            await page.wait_for_selector("#fleetGroupSelect", timeout=120000)
             return page
 
         # If already on fleet page or selector exists, return current
@@ -239,7 +239,7 @@ class FleetDispatcher:
                         fleet_url = self._build_fleet_url(planet_param)
                         print(f"[debug] redirecting autoexpedition tab to fleet: {fleet_url}")
                         await p.goto(fleet_url, timeout=15000)
-                        await p.wait_for_selector("#fleetGroupSelect", timeout=10000)
+                        await p.wait_for_selector("#fleetGroupSelect", timeout=12000)
                     return p
             await ctx.wait_for_timeout(600)
 
@@ -248,7 +248,7 @@ class FleetDispatcher:
 
         print(f"[debug] navigating to fleet page fallback: {fleet_url}")
         await page.goto(fleet_url, timeout=15000)
-        await page.wait_for_selector("#fleetGroupSelect", timeout=10000)
+        await page.wait_for_selector("#fleetGroupSelect", timeout=15000)
         return page
     
     async def dispatch_to_asteroid(self, page: Page, galaxy_url: str) -> bool:
@@ -277,7 +277,7 @@ class FleetDispatcher:
                 print("!! Fleet group selection failed")
                 return False
 
-            await asyncio.sleep(random.uniform(0.6, 1.2))
+            await asyncio.sleep(random.uniform(1, 2.2))
             
             # Step 1: Click Next (Step 1 -> 2)
             print("? Clicking Next (1)...")
@@ -286,12 +286,12 @@ class FleetDispatcher:
             
             # Wait for button to become enabled
             try:
-                await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=5000)
+                await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=12000)
             except Exception:
                 print("! Next button still disabled. Waiting a bit more...")
                 await asyncio.sleep(1.0)
                 try:
-                    await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=3000)
+                    await page.wait_for_selector(f"{next_btn_selector}:not(.disabled)", state="visible", timeout=12000)
                 except Exception:
                     print("!! Next button failed to enable.")
                     return False
@@ -305,7 +305,7 @@ class FleetDispatcher:
             await page.wait_for_selector(next_btn3_selector, state="visible")
             await asyncio.sleep(0.5)
             try:
-                await page.wait_for_selector(f"{next_btn3_selector}:not(.disabled)", state="visible", timeout=5000)
+                await page.wait_for_selector(f"{next_btn3_selector}:not(.disabled)", state="visible", timeout=12000)
             except Exception:
                 print("! Next button (2) still disabled. Waiting a bit more...")
                 try:
@@ -316,16 +316,16 @@ class FleetDispatcher:
                 await asyncio.sleep(2.0)
             
             await self._human_click(page, next_btn3_selector)
-            await asyncio.sleep(random.uniform(0.7, 1.4))
+            await asyncio.sleep(random.uniform(1.7, 1.4))
             
             # Step 4: Ensure mission selection (Asteroid Mining) and click Send Fleet
             try:
                 mission = page.locator(".mission-item.ASTEROID_MINING")
-                await mission.wait_for(state="visible", timeout=8000)
+                await mission.wait_for(state="visible", timeout=12000)
                 is_selected = await mission.evaluate("(el) => el.classList.contains('selected') || el.classList.contains('active')")
                 if not is_selected:
                     await self._human_click(page, mission)
-                    await asyncio.sleep(random.uniform(0.3, 0.6))
+                    await asyncio.sleep(random.uniform(1.3, 2.6))
             except Exception as e:
                 print(f"! Could not ensure asteroid mission selection: {e}")
 
@@ -334,7 +334,7 @@ class FleetDispatcher:
             await page.wait_for_selector(submit_btn_selector, state="visible")
             await asyncio.sleep(0.5)
             try:
-                await page.wait_for_selector(f"{submit_btn_selector}:not(.disabled)", state="visible", timeout=5000)
+                await page.wait_for_selector(f"{submit_btn_selector}:not(.disabled)", state="visible", timeout=12000)
             except Exception:
                 print("! Submit button still disabled. Waiting a bit more...")
                 try:

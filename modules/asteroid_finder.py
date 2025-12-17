@@ -209,7 +209,7 @@ class AsteroidFinder:
             find_btn = page.locator(".btn-asteroid-find.x-find-asteroid")
             try:
                 print("🔍 Waiting for 'Find asteroids' button...")
-                await find_btn.wait_for(state="visible", timeout=5000)
+                await find_btn.wait_for(state="visible", timeout=12000)
             except Exception:
                 print("ℹ No 'Find asteroids' button visible (timeout).")
                 return None
