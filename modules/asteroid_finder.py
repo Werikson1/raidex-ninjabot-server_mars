@@ -191,7 +191,11 @@ class AsteroidFinder:
         except Exception:
             await page.fill(selector, value)
 
-    async def find_asteroids(self, page: Page, cooldown_mgr: CooldownManager) -> Optional[Tuple[int, int, int]]:
+    async def find_asteroids(
+        self,
+        page: Page,
+        cooldown_mgr: CooldownManager,
+    ) -> Optional[Tuple[int, int, int, int, int]]:
         """
         Search for asteroids and return coordinates of first available one
 
@@ -200,7 +204,7 @@ class AsteroidFinder:
             cooldown_mgr: Cooldown manager instance
 
         Returns:
-            Tuple of (galaxy, system, position) if found, None otherwise
+            Tuple of (galaxy, system, position, range_start_sys, range_end_sys) if found, None otherwise
         """
         try:
             page = await self._get_galaxy_page(page)
@@ -243,7 +247,7 @@ class AsteroidFinder:
             print(f"❌ Error in asteroid finder: {e}")
             return None
 
-    async def _parse_asteroid_ranges(self, page: Page) -> List[Tuple[int, int, int]]:
+    async def _parse_asteroid_ranges(self, page: Page) -> List[Tuple[int, int, int, int]]:
         """Parse asteroid coordinate ranges from the modal"""
         links = await page.locator("#playerAsteroidTable a").all_text_contents()
         print(f"  → Raw locations: {links}")
@@ -280,12 +284,12 @@ class AsteroidFinder:
         page: Page,
         ranges: List[Tuple[int, int, int, int]],
         cooldown_mgr: CooldownManager,
-    ) -> Optional[Tuple[int, int, int]]:
+    ) -> Optional[Tuple[int, int, int, int, int]]:
         """
         Search through asteroid ranges for an available asteroid
 
         Returns:
-            Tuple of (galaxy, system, position) if found, None otherwise
+            Tuple of (galaxy, system, position, range_start_sys, range_end_sys) if found, None otherwise
         """
         # Cleanup expired range cooldowns at start of search
         self.range_cooldown_mgr.cleanup_expired()
@@ -352,12 +356,12 @@ class AsteroidFinder:
                     print(f"  Required time: {required_minutes} minutes")
 
                     if timer_minutes >= required_minutes:
-                        print("  Sufficient time! Dispatching fleet...")
+                        print("  Sufficient time! Opening fleet dispatch...")
                         print("? Clicking asteroid...")
                         await self._human_click(page, asteroid_btn.first)
-                        # Mark this range to skip for 1 hour (persisted to JSON)
-                        self.range_cooldown_mgr.add_to_cooldown(galaxy, start_sys, end_sys, position)
-                        return (galaxy, sys, position)
+                        # IMPORTANT: range cooldown is only persisted after a successful dispatch
+                        # (handled by the runner). This prevents marking a range when dispatch fails.
+                        return (galaxy, sys, position, start_sys, end_sys)
                     else:
                         print(f"  Insufficient time ({timer_minutes} < {required_minutes} min)")
                         print("  Adding asteroid and range to cooldown")

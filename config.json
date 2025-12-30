@@ -9,7 +9,7 @@
     "SEARCH_DELAY_MIN": 0.3,
     "SEARCH_DELAY_MAX": 0.8,
     "NO_ASTEROID_WAIT_MIN": 17,
-    "NO_ASTEROID_WAIT_MAX": 25,
+    "NO_ASTEROID_WAIT_MAX": 22,
     "FLEET_FAIL_WAIT_MINUTES": 15,
     "ASTEROID_ENABLED": true,
     "ASTEROID_PLANET_ID": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
@@ -20,12 +20,12 @@
         "fleet_group_value": "a7be13c9-8a44-459a-a193-2f9b7d3ead4f",
         "headless": false,
         "sleep_start": {
-            "hour": 23,
+            "hour": 0,
             "minute": 0
         },
         "wake_up": {
-            "hour": 7,
-            "minute": 27
+            "hour": 10,
+            "minute": 24
         },
         "dispatch_cooldown": {
             "hour": 0,
@@ -43,8 +43,8 @@
             "minute": 0
         },
         "wake_up": {
-            "hour": 7,
-            "minute": 37
+            "hour": 9,
+            "minute": 14
         },
         "sleep_mode": true,
         "random_sleep_mode": false,
@@ -57,23 +57,23 @@
     "asteroidPlanet": "144b0289-44ed-49a5-af7b-b3e54a74d28a",
     "asteroidSleepMode": true,
     "asteroidRandomSleepMode": false,
-    "sleepStartHour": "23",
-    "sleepStartMinute": "0",
-    "wakeHour": "7",
-    "wakeMinute": "28",
+    "sleepStartHour": "0",
+    "sleepStartMinute": "28",
+    "wakeHour": "8",
+    "wakeMinute": "7",
     "asteroid_mode": {
         "sleep_mode": true,
         "random_sleep_mode": false,
         "sleep_start": {
-            "hour": 23,
-            "minute": 0
-        },
-        "wake_up": {
-            "hour": 7,
+            "hour": 0,
             "minute": 28
         },
-        "fleet_group_name": "750 MM",
-        "fleet_group_value": "196b56d1-f7f5-455a-9fa3-294c3a4e42af"
+        "wake_up": {
+            "hour": 8,
+            "minute": 7
+        },
+        "fleet_group_name": "1500",
+        "fleet_group_value": "216466ef-8fdb-46d0-af13-10d1672d448d"
     },
-    "asteroidFleetGroup": "196b56d1-f7f5-455a-9fa3-294c3a4e42af"
+    "asteroidFleetGroup": "216466ef-8fdb-46d0-af13-10d1672d448d"
 }

@@ -100,12 +100,21 @@ BASE_SYSTEM = _config.get("BASE_SYSTEM", 230)
 
 # Distance ranges and minimum required asteroid time (in minutes)
 TRAVEL_TIME_RANGES = _config.get("TRAVEL_TIME_RANGES", [
-    (0, 23, 20),
-    (24, 53, 20),
-    (54, 103, 20),
-    (104, 153, 25),
-    (154, 203, 30),
-    (204, 499, 30),
+    # Based on measured one-way travel times from BASE_SYSTEM=230.
+    # Times are rounded up to the next full minute (e.g., 19:53 -> 20).
+    (0, 20, 20),      # 0-20 systems   = 19:53 -> 20 min
+    (21, 40, 23),     # 21-40 systems  = 22:59 -> 23 min
+    (41, 60, 26),     # 41-60 systems  = 25:44 -> 26 min
+    (61, 80, 29),     # 61-80 systems  = 28:12 -> 29 min
+    (81, 100, 31),    # 81-100 systems = 30:28 -> 31 min
+    (101, 120, 33),   # 101-120        = 32:35 -> 33 min
+    (121, 140, 35),   # 121-140        = 34:34 -> 35 min
+    (141, 160, 37),   # 141-160        = 36:27 -> 37 min
+    (161, 180, 39),   # 161-180        = 38:14 -> 39 min
+    (181, 200, 40),   # 181-200        = 39:56 -> 40 min
+    (201, 220, 42),   # 201-220        = 41:34 -> 42 min
+    (221, 240, 44),   # 221-240        = 43:08 -> 44 min
+    (241, 499, 46),   # 241+ (269 max @ SS230->499) = 45:19 -> 46 min
 ])
 
 # Timeouts

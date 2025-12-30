@@ -163,7 +163,7 @@ class AsteroidFinder:
 #### `find_asteroids(page, cooldown_mgr)`
 Método principal que orquestra toda a busca.
 
-**Retorno**: `(galaxy, system, position)` ou `None`
+**Retorno**: `(galaxy, system, position, range_start_sys, range_end_sys)` ou `None`
 
 **Fluxo**:
 1. Clica no botão "Find asteroids"
@@ -318,7 +318,7 @@ class FleetDispatcher:
 
 ### Métodos Principais
 
-#### `dispatch_to_asteroid(page, galaxy_url)`
+#### `dispatch_to_asteroid(page, galaxy_url, target_coords=None)`
 Envia frota para o asteroide clicado.
 
 **Retorno**: `True` se sucesso, `False` se falha
@@ -335,7 +335,7 @@ Envia frota para o asteroide clicado.
 
 **Código simplificado**:
 ```python
-async def dispatch_to_asteroid(self, page, galaxy_url):
+async def dispatch_to_asteroid(self, page, galaxy_url, target_coords=None):
     # Passo 1: Selecionar frota
     await page.select_option("#fleetGroupSelect", 
                             value=self.fleet_group_value)

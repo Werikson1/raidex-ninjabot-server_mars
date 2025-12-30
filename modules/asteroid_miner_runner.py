@@ -199,13 +199,45 @@ class AsteroidMinerRunner:
                 asteroid_coords = await self.asteroid_finder.find_asteroids(page, self.cooldown_mgr)
 
                 if asteroid_coords:
-                    galaxy, system, position = asteroid_coords
+                    range_start_sys = None
+                    range_end_sys = None
+                    try:
+                        if len(asteroid_coords) == 3:
+                            galaxy, system, position = asteroid_coords
+                        else:
+                            galaxy, system, position, range_start_sys, range_end_sys = asteroid_coords
+                    except Exception:
+                        galaxy, system, position = asteroid_coords[:3]
+                        range_start_sys = None
+                        range_end_sys = None
                     logger.info(f"Dispatching fleet to [{galaxy}:{system}:{position}]")
 
-                    success = await self.fleet_dispatcher.dispatch_to_asteroid(page, self.galaxy_url)
+                    dispatch_page = page
+                    try:
+                        galaxy_page = getattr(self.asteroid_finder, "galaxy_page", None)
+                        if galaxy_page and not galaxy_page.is_closed():
+                            dispatch_page = galaxy_page
+                    except Exception:
+                        pass
+
+                    success = await self.fleet_dispatcher.dispatch_to_asteroid(
+                        dispatch_page, self.galaxy_url, target_coords=(galaxy, system, position)
+                    )
 
                     if success:
                         self.cooldown_mgr.add_to_cooldown(galaxy, system, position)
+                        # Only persist the range cooldown after successful dispatch
+                        try:
+                            if (
+                                range_start_sys is not None
+                                and range_end_sys is not None
+                                and hasattr(self.asteroid_finder, "range_cooldown_mgr")
+                            ):
+                                self.asteroid_finder.range_cooldown_mgr.add_to_cooldown(
+                                    galaxy, range_start_sys, range_end_sys, position
+                                )
+                        except Exception as e:
+                            logger.debug(f"Failed to persist range cooldown: {e}")
                         logger.info("Asteroid mission complete. Continuing search...")
                     else:
                         logger.warning("Fleet dispatch failed (possibly no fleet available)")
