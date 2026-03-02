@@ -4,17 +4,137 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
     const logContainer = document.getElementById('logContainer');
+    const fleetGroupSelect = document.getElementById('FLEET_GROUP_NAME');
+    const fleetGroupValueInput = document.getElementById('FLEET_GROUP_VALUE');
+    const asteroidPlanetSelect = document.getElementById('asteroidPlanet');
 
     let isRunning = false;
+
+    const fetchJson = async (url, options = {}) => {
+        const resp = await fetch(url, options);
+        if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error(text || `Request failed (${resp.status})`);
+        }
+        return resp.json();
+    };
+
+    const syncFleetValueFromSelect = () => {
+        if (fleetGroupSelect && fleetGroupValueInput) {
+            fleetGroupValueInput.value = fleetGroupSelect.value || '';
+        }
+    };
+
+    async function populateFleetGroups(currentName, currentValue) {
+        if (!fleetGroupSelect) return;
+        try {
+            const data = await fetchJson('/api/fleet/groups');
+            const groups = data.groups || [];
+            fleetGroupSelect.innerHTML = '';
+
+            if (!groups.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No fleet groups found';
+                fleetGroupSelect.appendChild(opt);
+                syncFleetValueFromSelect();
+                return;
+            }
+
+            groups.forEach((g) => {
+                const opt = document.createElement('option');
+                opt.value = g.value;
+                opt.textContent = g.name;
+                fleetGroupSelect.appendChild(opt);
+            });
+
+            let selectedValue = '';
+            if (currentValue && groups.some((g) => g.value === currentValue)) {
+                selectedValue = currentValue;
+            } else if (currentName) {
+                const match = groups.find((g) => g.name === currentName);
+                if (match) selectedValue = match.value;
+            }
+
+            if (!selectedValue && groups.length) {
+                selectedValue = groups[0].value;
+            }
+
+            if (selectedValue) {
+                fleetGroupSelect.value = selectedValue;
+            }
+
+            syncFleetValueFromSelect();
+        } catch (error) {
+            console.error('Error loading fleet groups:', error);
+        }
+    }
+
+    if (fleetGroupSelect) {
+        fleetGroupSelect.addEventListener('change', syncFleetValueFromSelect);
+    }
+
+    async function populateAsteroidPlanets(currentPlanetId) {
+        if (!asteroidPlanetSelect) return;
+        try {
+            const data = await fetchJson('/api/expedition/planets');
+            const planets = data.planets || [];
+            asteroidPlanetSelect.innerHTML = '';
+
+            if (!planets.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No planets found';
+                asteroidPlanetSelect.appendChild(opt);
+                return;
+            }
+
+            planets.forEach((p) => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.coords ? `${p.name} ${p.coords}` : p.name;
+                asteroidPlanetSelect.appendChild(opt);
+            });
+
+            if (currentPlanetId) {
+                const option = Array.from(asteroidPlanetSelect.options).find(o => o.value === currentPlanetId);
+                if (option) {
+                    asteroidPlanetSelect.value = currentPlanetId;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading asteroid planets:', error);
+        }
+    }
+
+    async function saveAsteroidPlanetSelection(planetId) {
+        try {
+            await fetchJson('/api/asteroid/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ planet_id: planetId })
+            });
+        } catch (error) {
+            console.error('Error saving asteroid planet selection:', error);
+        }
+    }
+
+    if (asteroidPlanetSelect) {
+        asteroidPlanetSelect.addEventListener('change', async () => {
+            await saveAsteroidPlanetSelection(asteroidPlanetSelect.value);
+        });
+    }
 
     // Load Config
     async function loadConfig() {
         try {
-            const response = await fetch('/api/config');
-            const config = await response.json();
+            const config = await fetchJson('/api/config');
 
             // Populate form
             for (const [key, value] of Object.entries(config)) {
+                if (key === 'FLEET_GROUP_NAME' || key === 'FLEET_GROUP_VALUE' || key === 'ASTEROID_PLANET_ID') {
+                    continue; // handled after options load
+                }
                 const input = document.getElementById(key);
                 if (input) {
                     if (input.type === 'checkbox') {
@@ -23,6 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         input.value = value;
                     }
                 }
+            }
+
+            if (fleetGroupSelect) {
+                await populateFleetGroups(config.FLEET_GROUP_NAME, config.FLEET_GROUP_VALUE);
+            }
+            if (asteroidPlanetSelect) {
+                await populateAsteroidPlanets(config.ASTEROID_PLANET_ID);
             }
         } catch (error) {
             console.error('Error loading config:', error);

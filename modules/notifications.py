@@ -87,7 +87,7 @@ class TelegramLogHandler(logging.Handler):
 
         try:
             msg = self.format(record)
-            text = f"Alerta no bot OgameX:\n{msg}"
+            text = f"Alerta no bot OgameX [MARS]:\n{msg}"
             if self.notifier.send_error(text):
                 self._last_sent_ts = now
         except Exception:

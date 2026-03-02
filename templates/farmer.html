@@ -34,6 +34,12 @@
                         Random Sleep Mode
                     </label>
                 </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="farmerActiveMode">
+                        Active Mode (ping fleet every ~15 min)
+                    </label>
+                </div>
             </div>
             <div class="expedition-column">
                 <div class="form-group">
@@ -194,6 +200,7 @@
         const saveBtn = document.getElementById('farmerSaveBtn');
         const toggle = document.getElementById('farmerToggle');
         const statusText = document.getElementById('farmerStatusText');
+        const activeMode = document.getElementById('farmerActiveMode');
 
         const addNumberOptions = (select, max, pad = 2) => {
             select.innerHTML = '';
@@ -257,6 +264,7 @@
             headlessCheckbox.checked = !!cfg.headless;
             sleepModeCheckbox.checked = !!cfg.sleep_mode;
             randomSleepCheckbox.checked = !!cfg.random_sleep_mode;
+            if (activeMode) activeMode.checked = !!cfg.active_mode;
             setSelectValue(sleepStartHour, cfg.sleep_start?.hour ?? 0);
             setSelectValue(sleepStartMinute, cfg.sleep_start?.minute ?? 0);
             setSelectValue(wakeHour, cfg.wake_up?.hour ?? 0);
@@ -327,6 +335,7 @@
                 },
                 sleep_mode: sleepModeCheckbox.checked,
                 random_sleep_mode: randomSleepCheckbox.checked,
+                active_mode: activeMode ? activeMode.checked : false,
                 attack_cooldown_min: minCooldown,
                 attack_cooldown_max: Math.max(minCooldown, maxCooldown)
             };
@@ -381,7 +390,7 @@
 
         loadConfig();
         refreshStatus();
-        setInterval(refreshStatus, 2000);
+        setInterval(refreshStatus, 30000);
     });
 </script>
 {% endblock %}

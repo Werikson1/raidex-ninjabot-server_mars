@@ -1,10 +1,14 @@
 from flask import Flask, render_template, jsonify, request
+import asyncio
 import json
 import os
+import urllib.request
+from bs4 import BeautifulSoup
 from bot import bot_instance, log_queue
 import modules.config as config_module
 from modules.expedition_runner import load_expedition_state
 from modules.farmer_runner import load_farmer_state
+from modules.telegram_bot import telegram_controller
 
 
 def _deep_merge(base: dict, updates: dict) -> dict:
@@ -15,6 +19,94 @@ def _deep_merge(base: dict, updates: dict) -> dict:
         else:
             base[key] = value
     return base
+
+
+def _get_base_url():
+    """Derive base URL from LIVE_URL to support other servers."""
+    try:
+        from urllib.parse import urlparse
+
+        parsed = urlparse(config_module.LIVE_URL)
+        if parsed.scheme and parsed.netloc:
+            return f"{parsed.scheme}://{parsed.netloc}"
+    except Exception:
+        pass
+    return "https://mars.ogamex.net"
+
+
+def _fetch_fleet_groups():
+    """
+    Fetch fleet group options from the live fleet page (or local fallback).
+    Returns a list of {"name": str, "value": str}.
+    """
+    def _parse_groups(html_text: str):
+        if not html_text:
+            return []
+        try:
+            soup = BeautifulSoup(html_text, "html.parser")
+            select = soup.find("select", id="fleetGroupSelect")
+            if not select:
+                return []
+
+            groups = []
+            for opt in select.find_all("option"):
+                value = (opt.get("value") or "").strip()
+                name = (opt.get_text() or "").strip()
+                if not value or not name or value.lower() == "select":
+                    continue
+                groups.append({"name": name, "value": value})
+            return groups
+        except Exception:
+            return []
+
+    html = None
+    url = f"{_get_base_url()}/fleet"
+
+    # Prefer the logged-in Playwright context to avoid stale/unauthenticated HTML
+    if bot_instance.browser_context and bot_instance.loop:
+        try:
+            async def _scrape_with_context():
+                page = await bot_instance.browser_context.new_page()
+                try:
+                    await page.goto(url, timeout=30000)
+                    await page.wait_for_selector("#fleetGroupSelect", timeout=10000)
+                    return await page.content()
+                finally:
+                    await page.close()
+
+            future = asyncio.run_coroutine_threadsafe(_scrape_with_context(), bot_instance.loop)
+            html = future.result(timeout=40)
+        except Exception:
+            html = None
+
+    # Fallback to plain HTTP fetch if browser context not available
+    if html is None:
+        try:
+            with urllib.request.urlopen(url, timeout=15) as resp:
+                html = resp.read().decode("utf-8", errors="ignore")
+        except Exception:
+            html = None
+
+    groups = _parse_groups(html)
+
+    # Fallback to local reference page if live fetch fails or returns empty
+    if not groups:
+        try:
+            local_path = os.path.abspath(os.path.join("pages_view", "fleet_page.html"))
+            with open(local_path, "r", encoding="utf-8") as f:
+                groups = _parse_groups(f.read())
+        except Exception:
+            groups = []
+
+    # Last resort: use configured fleet group name/value if present
+    if not groups:
+        cfg = config_module.load_config()
+        name = cfg.get("FLEET_GROUP_NAME", "")
+        value = cfg.get("FLEET_GROUP_VALUE", "")
+        if name or value:
+            groups = [{"name": name or value, "value": value or name}]
+
+    return groups
 
 app = Flask(__name__)
 
@@ -142,10 +234,13 @@ def get_expedition_planets():
 @app.route('/api/fleet/groups', methods=['GET'])
 def get_fleet_groups():
     try:
-        groups = [
-            {"name": name, "value": value}
-            for name, value in config_module.FLEET_GROUPS.items()
-        ]
+        groups = _fetch_fleet_groups()
+        if not groups:
+            # Fallback to static config if scraping fails
+            groups = [
+                {"name": name, "value": value}
+                for name, value in config_module.FLEET_GROUPS.items()
+            ]
         return jsonify({"groups": groups})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -246,17 +341,94 @@ def stop_brain():
 @app.route('/api/asteroid/start', methods=['POST'])
 def start_asteroid_miner():
     bot_instance.enable_asteroid_miner()
+    try:
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = True
+        galaxy_url = config_module.get_asteroid_galaxy_url(cfg)
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        if bot_instance.asteroid_runner:
+            bot_instance.asteroid_runner.reset(galaxy_url)
+    except Exception as e:
+        return jsonify({"status": "asteroid_miner_started", "warning": str(e)})
     return jsonify({"status": "asteroid_miner_started"})
 
 @app.route('/api/asteroid/stop', methods=['POST'])
 def stop_asteroid_miner():
     bot_instance.disable_asteroid_miner()
+    try:
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = False
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+    except Exception as e:
+        return jsonify({"status": "asteroid_miner_stopped", "warning": str(e)})
     return jsonify({"status": "asteroid_miner_stopped"})
+
+@app.route('/api/asteroid/config', methods=['POST'])
+def save_asteroid_config():
+    try:
+        payload = request.json or {}
+        if not isinstance(payload, dict):
+            return jsonify({"error": "Invalid asteroid config format"}), 400
+
+        cfg = config_module.load_config()
+        asteroid_mode = cfg.get("asteroid_mode", {})
+        
+        # Handle planet_id (root level)
+        if "planet_id" in payload:
+            cfg["ASTEROID_PLANET_ID"] = payload.get("planet_id") or cfg.get("ASTEROID_PLANET_ID")
+
+        # Handle fleet group selection
+        if "fleet_group_name" in payload:
+            asteroid_mode["fleet_group_name"] = payload.get("fleet_group_name", "")
+        if "fleet_group_value" in payload:
+            asteroid_mode["fleet_group_value"] = payload.get("fleet_group_value", "")
+
+        # Handle sleep settings (asteroid_mode sub-object)
+        sleep_fields = ["sleep_mode", "random_sleep_mode", "sleep_start", "wake_up"]
+        if any(field in payload for field in sleep_fields):
+            if "sleep_mode" in payload:
+                asteroid_mode["sleep_mode"] = bool(payload.get("sleep_mode"))
+            if "random_sleep_mode" in payload:
+                asteroid_mode["random_sleep_mode"] = bool(payload.get("random_sleep_mode"))
+            if "sleep_start" in payload:
+                asteroid_mode["sleep_start"] = payload.get("sleep_start")
+            if "wake_up" in payload:
+                asteroid_mode["wake_up"] = payload.get("wake_up")
+
+        cfg["asteroid_mode"] = asteroid_mode
+
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+
+        config_module._config = cfg
+        galaxy_url = config_module.get_asteroid_galaxy_url(cfg)
+        if bot_instance.asteroid_runner:
+            bot_instance.asteroid_runner.reset(galaxy_url)
+
+        return jsonify({
+            "status": "saved",
+            "planet_id": cfg.get("ASTEROID_PLANET_ID"),
+            "galaxy_url": galaxy_url,
+            "asteroid_mode": cfg.get("asteroid_mode", {})
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/asteroid/status', methods=['GET'])
 def get_asteroid_miner_status():
+    cfg = config_module.load_config()
+    cfg_enabled = bool(cfg.get("ASTEROID_ENABLED", True))
+    runtime_enabled = bot_instance.is_asteroid_miner_enabled()
+    if cfg_enabled and not runtime_enabled:
+        bot_instance.enable_asteroid_miner()
     return jsonify({
-        "enabled": bot_instance.is_asteroid_miner_enabled(),
+        "enabled": runtime_enabled or cfg_enabled,
+        "enabled_config": cfg_enabled,
+        "enabled_runtime": runtime_enabled,
         "running": bot_instance.running
     })
 
@@ -378,5 +550,137 @@ def get_farmer_planets():
     # Reuse expedition planet listing
     return get_expedition_planets()
 
+
+# ============================================================================
+# Telegram Bot Controller Integration
+# ============================================================================
+
+def _get_bot_status():
+    """Get current bot status for Telegram commands."""
+    cooldowns = bot_instance.get_cooldowns()
+    return {
+        "bot_running": bot_instance.running,
+        "asteroid_enabled": bot_instance.is_asteroid_miner_enabled(),
+        "expedition_enabled": bot_instance.is_expedition_enabled(),
+        "farmer_enabled": bot_instance.is_farmer_enabled(),
+        "active_cooldowns": len(cooldowns) if cooldowns else 0,
+    }
+
+
+def _start_asteroid_via_telegram():
+    """Start asteroid miner via Telegram command."""
+    try:
+        bot_instance.enable_asteroid_miner()
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = True
+        galaxy_url = config_module.get_asteroid_galaxy_url(cfg)
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        if bot_instance.asteroid_runner:
+            bot_instance.asteroid_runner.reset(galaxy_url)
+        return True
+    except Exception as e:
+        print(f"Error starting asteroid via telegram: {e}")
+        return False
+
+
+def _stop_asteroid_via_telegram():
+    """Stop asteroid miner via Telegram command."""
+    try:
+        bot_instance.disable_asteroid_miner()
+        cfg = config_module.load_config()
+        cfg["ASTEROID_ENABLED"] = False
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error stopping asteroid via telegram: {e}")
+        return False
+
+
+def _start_expedition_via_telegram():
+    """Start expedition mode via Telegram command."""
+    try:
+        bot_instance.enable_expedition_mode()
+        cfg = config_module.load_config()
+        cfg["expedition_mode"] = _deep_merge(cfg.get("expedition_mode", {}), {"enabled": True})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error starting expedition via telegram: {e}")
+        return False
+
+
+def _stop_expedition_via_telegram():
+    """Stop expedition mode via Telegram command."""
+    try:
+        bot_instance.disable_expedition_mode()
+        cfg = config_module.load_config()
+        cfg["expedition_mode"] = _deep_merge(cfg.get("expedition_mode", {}), {"enabled": False})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error stopping expedition via telegram: {e}")
+        return False
+
+
+def _start_farmer_via_telegram():
+    """Start farmer mode via Telegram command."""
+    try:
+        bot_instance.enable_farmer_mode()
+        cfg = config_module.load_config()
+        cfg["farmer_mode"] = _deep_merge(cfg.get("farmer_mode", {}), {"enabled": True})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error starting farmer via telegram: {e}")
+        return False
+
+
+def _stop_farmer_via_telegram():
+    """Stop farmer mode via Telegram command."""
+    try:
+        bot_instance.disable_farmer_mode()
+        cfg = config_module.load_config()
+        cfg["farmer_mode"] = _deep_merge(cfg.get("farmer_mode", {}), {"enabled": False})
+        with open(config_module.CONFIG_FILE, 'w') as f:
+            json.dump(cfg, f, indent=4)
+        config_module._config = cfg
+        return True
+    except Exception as e:
+        print(f"Error stopping farmer via telegram: {e}")
+        return False
+
+
+def _initialize_telegram_bot():
+    """Initialize and start the Telegram bot controller."""
+    telegram_controller.set_callbacks(
+        get_status=_get_bot_status,
+        start_asteroid=_start_asteroid_via_telegram,
+        stop_asteroid=_stop_asteroid_via_telegram,
+        start_expedition=_start_expedition_via_telegram,
+        stop_expedition=_stop_expedition_via_telegram,
+        start_farmer=_start_farmer_via_telegram,
+        stop_farmer=_stop_farmer_via_telegram,
+    )
+    telegram_controller.start()
+
+
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5000)
+    # Start Telegram bot controller
+    _initialize_telegram_bot()
+    
+    app.run(
+        debug=True,
+        use_reloader=False,
+        host=config_module.WEB_HOST,
+        port=config_module.WEB_PORT,
+    )

@@ -20,6 +20,7 @@ from modules.fleet_dispatcher import FleetDispatcher
 from modules.asteroid_finder import AsteroidFinder
 from modules.expedition_runner import ExpeditionRunner
 from modules.farmer_runner import FarmerRunner
+from modules.asteroid_miner_runner import AsteroidMinerRunner
 from modules.stealth import apply_stealth, get_stealth_args, get_stealth_user_agent
 from modules.empire_manager import EmpireManager
 from modules.notifications import TelegramLogHandler
@@ -63,12 +64,21 @@ class OgameBot:
         self.asteroid_task = None
         self.expedition_task = None
         self.farmer_task = None
+        self.asteroid_runner = None
         
     def enable_asteroid_miner(self):
         """Enable the asteroid miner feature"""
         self.asteroid_miner_enabled = True
+        # Reset miner-specific state if available
+        try:
+            if self.asteroid_runner and hasattr(self.asteroid_runner, "asteroid_finder"):
+                af = getattr(self.asteroid_runner, "asteroid_finder")
+                if hasattr(af, "range_skip_cooldowns"):
+                    af.range_skip_cooldowns = {}
+        except Exception:
+            pass
         logger.info("Asteroid Miner enabled")
-    
+
     def disable_asteroid_miner(self):
         """Disable the asteroid miner feature"""
         self.asteroid_miner_enabled = False
@@ -117,6 +127,8 @@ class OgameBot:
         # Sync runtime feature toggles with config on each start
         try:
             config_module._config = config_module.load_config()
+            asteroid_cfg = config_module._config.get("ASTEROID_ENABLED", True)
+            self.asteroid_miner_enabled = bool(asteroid_cfg)
             exp_cfg = config_module.get_expedition_config(config_module._config)
             self.expedition_enabled = exp_cfg.get("enabled", False)
             farmer_cfg = config_module.get_farmer_config(config_module._config)
@@ -206,6 +218,7 @@ class OgameBot:
     async def _main_logic(self):
         # Reload config at start
         config_module._config = config_module.load_config()
+        self.asteroid_miner_enabled = bool(config_module._config.get("ASTEROID_ENABLED", True))
         expedition_cfg = config_module.get_expedition_config(config_module._config)
         self.expedition_enabled = expedition_cfg.get("enabled", False)
         farmer_cfg = config_module.get_farmer_config(config_module._config)
@@ -213,14 +226,25 @@ class OgameBot:
 
         # Initialize modules
         self.cooldown_mgr = CooldownManager(COOLDOWN_FILE, COOLDOWN_HOURS)
-        fleet_dispatcher = FleetDispatcher(FLEET_GROUP_NAME, FLEET_GROUP_VALUE)
+        asteroid_mode_cfg = config_module._config.get("asteroid_mode", {})
+        asteroid_fleet_name = asteroid_mode_cfg.get("fleet_group_name") or FLEET_GROUP_NAME
+        asteroid_fleet_value = asteroid_mode_cfg.get("fleet_group_value") or FLEET_GROUP_VALUE
+        fleet_dispatcher = FleetDispatcher(asteroid_fleet_name, asteroid_fleet_value)
         asteroid_finder = AsteroidFinder(
             SEARCH_DELAY_MIN,
             SEARCH_DELAY_MAX,
             NETWORK_IDLE_TIMEOUT,
             MODAL_TIMEOUT,
             BASE_SYSTEM,
-            TRAVEL_TIME_RANGES
+            TRAVEL_TIME_RANGES,
+            config_module.ASTEROID_GALAXY_URL,
+            range_cooldown_hours=COOLDOWN_HOURS,
+        )
+        self.asteroid_runner = AsteroidMinerRunner(
+            fleet_dispatcher,
+            asteroid_finder,
+            self.cooldown_mgr,
+            galaxy_url=config_module.ASTEROID_GALAXY_URL,
         )
         expedition_runner = ExpeditionRunner(expedition_cfg)
         farmer_runner = FarmerRunner(farmer_cfg)
@@ -228,10 +252,15 @@ class OgameBot:
         async with async_playwright() as p:
             logger.info(f"Launching browser with persistent profile: {USER_DATA_DIR}")
 
+            # Detect real Chromium version to align UA/Client Hints
+            chrome_probe = await p.chromium.launch(headless=True)
+            chrome_version = chrome_probe.version
+            await chrome_probe.close()
+
             # Use persistent context to save login session with stealth mode
             stealth_args = get_stealth_args()
             stealth_args.append("--start-maximized")
-            user_agent = get_stealth_user_agent()
+            user_agent = get_stealth_user_agent(chrome_version=chrome_version)
             viewport_choice = {
                 "width": random.randint(1330, 1380),
                 "height": random.randint(750, 820),
@@ -253,7 +282,7 @@ class OgameBot:
             self.browser_context = context
 
             # Apply stealth JavaScript evasions
-            await apply_stealth(context, user_agent=user_agent)
+            await apply_stealth(context, user_agent=user_agent, chrome_version=chrome_version)
             logger.info("Stealth mode activated - bot detection evasions applied")
             
             # Get or create page
@@ -267,8 +296,8 @@ class OgameBot:
                 logger.info(f"Loading local file: {LOCAL_FILE_PATH}")
                 await page.goto(f"file:///{LOCAL_FILE_PATH}")
             else:
-                logger.info("Navigating to: https://cypher.ogamex.net/home")
-                await page.goto("https://cypher.ogamex.net/home")
+                logger.info("Navigating to: https://mars.ogamex.net/home")
+                await page.goto("https://mars.ogamex.net/home")
                 logger.info("Waiting for page load/login check...")
                 await asyncio.sleep(5)
 
@@ -279,7 +308,7 @@ class OgameBot:
 
             # Feature tasks
             self.asteroid_task = asyncio.create_task(
-                self._asteroid_loop(page, fleet_dispatcher, asteroid_finder)
+                self.asteroid_runner.run(page, lambda: self.stop_flag, lambda: self.asteroid_miner_enabled)
             )
             self.expedition_task = asyncio.create_task(
                 self._expedition_loop(context, expedition_runner)
@@ -300,44 +329,10 @@ class OgameBot:
                 self.asteroid_task = None
                 self.expedition_task = None
                 self.farmer_task = None
+                self.asteroid_runner = None
                 self.browser_context = None
                 await context.close()
                 logger.info("Browser context closed.")
-
-    async def _asteroid_loop(self, page, fleet_dispatcher, asteroid_finder):
-        """Asteroid miner loop (runs as a background task)."""
-        try:
-            while not self.stop_flag:
-                if not self.asteroid_miner_enabled:
-                    await asyncio.sleep(1)
-                    continue
-
-                logger.info("Searching for asteroids...")
-                asteroid_coords = await asteroid_finder.find_asteroids(page, self.cooldown_mgr)
-
-                if asteroid_coords:
-                    galaxy, system, position = asteroid_coords
-                    logger.info(f"Dispatching fleet to [{galaxy}:{system}:{position}]")
-
-                    success = await fleet_dispatcher.dispatch_to_asteroid(page, LIVE_URL)
-
-                    if success:
-                        self.cooldown_mgr.add_to_cooldown(galaxy, system, position)
-                        logger.info("Asteroid mission complete. Continuing search...")
-                    else:
-                        logger.warning("Fleet dispatch failed (possibly no fleet available)")
-                        logger.info(f"Waiting {FLEET_FAIL_WAIT_MINUTES} minutes before retrying...")
-                        await self._sleep_with_stop(FLEET_FAIL_WAIT_MINUTES * 60)
-                else:
-                    wait_minutes = random.randint(NO_ASTEROID_WAIT_MIN, NO_ASTEROID_WAIT_MAX)
-                    logger.info("No asteroids available")
-                    logger.info(f"Waiting {wait_minutes} minutes before next search...")
-                    await self._sleep_with_stop(wait_minutes * 60)
-        except asyncio.CancelledError:
-            return
-        except Exception as e:
-            logger.error(f"Asteroid loop error: {e}")
-            await asyncio.sleep(5)
 
     async def _expedition_loop(self, context, runner: ExpeditionRunner):
         """Expedition automation loop (runs as a background task)."""

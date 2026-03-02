@@ -13,12 +13,15 @@
         <div class="config-form-section">
             <form id="configForm">
                 <div class="form-group">
+                    <label>Select Planet</label>
+                    <select id="asteroidPlanet" name="ASTEROID_PLANET_ID" class="compact-input">
+                        <option value="">Carregando planetas...</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Fleet Group</label>
-                    <select id="FLEET_GROUP_NAME" name="FLEET_GROUP_NAME" class="compact-input">
-                        <option value="100 MM">100 MM</option>
-                        <option value="200 MM">200 MM</option>
-                        <option value="FARM (Plunder fleet)">FARM (Plunder fleet)</option>
-                        <option value="EXPEDITION GROUP">EXPEDITION GROUP</option>
+                    <select id="asteroidFleetGroup" name="ASTEROID_FLEET_GROUP" class="compact-input">
+                        <option value="">Carregando grupos...</option>
                     </select>
                 </div>
 
@@ -59,6 +62,39 @@
                 <div class="form-group">
                     <label>Fleet Fail Wait (m)</label>
                     <input type="number" id="FLEET_FAIL_WAIT_MINUTES" name="FLEET_FAIL_WAIT_MINUTES">
+                </div>
+
+                <hr style="margin: 20px 0; border-color: #444;">
+                <h4 style="margin-bottom: 15px; color: #ccc;">Sleep Schedule</h4>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="asteroidSleepMode" name="sleep_mode">
+                        Sleep Mode
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="asteroidRandomSleepMode" name="random_sleep_mode">
+                        Random Sleep Mode (±5 min jitter)
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sleep Start Time (HH:MM)</label>
+                        <div class="time-grid">
+                            <select id="sleepStartHour" class="time-select"></select>
+                            <select id="sleepStartMinute" class="time-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Wake Up Time (HH:MM)</label>
+                        <div class="time-grid">
+                            <select id="wakeHour" class="time-select"></select>
+                            <select id="wakeMinute" class="time-select"></select>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Configuration</button>
@@ -135,57 +171,266 @@
         cursor: not-allowed;
         opacity: 0.5;
     }
+
+    .time-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .time-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #444;
+        border-radius: 4px;
+        background-color: #2a2a2a;
+        color: #fff;
+    }
 </style>
 
 <script>
-    // Toggle asteroid miner on/off
-    const botToggle = document.getElementById('botToggle');
-    let isUpdatingToggle = false;
+    document.addEventListener('DOMContentLoaded', () => {
+        const botToggle = document.getElementById('botToggle');
+        const planetSelect = document.getElementById('asteroidPlanet');
+        const fleetGroupSelect = document.getElementById('asteroidFleetGroup');
+        const sleepModeCheckbox = document.getElementById('asteroidSleepMode');
+        const randomSleepCheckbox = document.getElementById('asteroidRandomSleepMode');
+        const sleepStartHour = document.getElementById('sleepStartHour');
+        const sleepStartMinute = document.getElementById('sleepStartMinute');
+        const wakeHour = document.getElementById('wakeHour');
+        const wakeMinute = document.getElementById('wakeMinute');
+        let isUpdatingToggle = false;
 
-    // Function to update toggle state based on asteroid miner status
-    async function updateToggleState() {
-        if (isUpdatingToggle) return;
+        const fetchJson = async (url, options = {}) => {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || `Request failed: ${response.status}`);
+            }
+            return response.json();
+        };
 
-        try {
-            const response = await fetch('/api/asteroid/status');
-            const data = await response.json();
-            botToggle.checked = data.enabled || false;
-        } catch (error) {
-            console.error('Error fetching asteroid miner status:', error);
+        const setSelectValue = (select, value) => {
+            const valStr = (value ?? '').toString();
+            const option = Array.from(select.options).find(o => o.value === valStr);
+            if (option) {
+                select.value = valStr;
+            }
+        };
+
+        // Populate time selectors
+        const addNumberOptions = (select, max) => {
+            select.innerHTML = '';
+            for (let i = 0; i <= max; i++) {
+                const opt = document.createElement('option');
+                opt.value = i.toString();
+                opt.textContent = `[${i.toString().padStart(2, '0')}]`;
+                select.appendChild(opt);
+            }
+        };
+
+        // Initialize time selectors
+        addNumberOptions(sleepStartHour, 23);
+        addNumberOptions(wakeHour, 23);
+        addNumberOptions(sleepStartMinute, 59);
+        addNumberOptions(wakeMinute, 59);
+
+        // Populate planet selector
+        const populatePlanets = async (currentPlanetId) => {
+            try {
+                const data = await fetchJson('/api/expedition/planets');
+                const planets = data.planets || [];
+                planetSelect.innerHTML = '';
+                if (!planets.length) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.textContent = 'No planets found';
+                    planetSelect.appendChild(opt);
+                    return;
+                }
+                planets.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = p.coords ? `${p.name} ${p.coords}` : p.name;
+                    planetSelect.appendChild(opt);
+                });
+                if (currentPlanetId) {
+                    setSelectValue(planetSelect, currentPlanetId);
+                }
+            } catch (error) {
+                console.error('Error loading planets:', error);
+            }
+        };
+
+        const populateFleetGroups = async (currentValue, currentName) => {
+            try {
+                const data = await fetchJson('/api/fleet/groups');
+                const groups = data.groups || [];
+                fleetGroupSelect.innerHTML = '';
+                if (!groups.length) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.textContent = 'No fleet groups found';
+                    fleetGroupSelect.appendChild(opt);
+                    return;
+                }
+                groups.forEach(g => {
+                    const opt = document.createElement('option');
+                    opt.value = g.value;
+                    opt.textContent = g.name;
+                    fleetGroupSelect.appendChild(opt);
+                });
+                if (currentValue) {
+                    setSelectValue(fleetGroupSelect, currentValue);
+                } else if (currentName) {
+                    const option = Array.from(fleetGroupSelect.options).find(o => o.textContent === currentName);
+                    if (option) {
+                        fleetGroupSelect.value = option.value;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading fleet groups:', error);
+            }
+        };
+
+        // Auto-save planet selection
+        planetSelect.addEventListener('change', async () => {
+            try {
+                await fetchJson('/api/asteroid/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ planet_id: planetSelect.value })
+                });
+                console.log('Planet saved:', planetSelect.value);
+            } catch (error) {
+                console.error('Error saving planet:', error);
+                alert('Failed to save planet selection');
+            }
+        });
+
+        // Auto-save sleep settings
+        const saveSleepSettings = async () => {
+            try {
+                await fetchJson('/api/asteroid/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sleep_mode: sleepModeCheckbox.checked,
+                        random_sleep_mode: randomSleepCheckbox.checked,
+                        sleep_start: {
+                            hour: parseInt(sleepStartHour.value, 10) || 0,
+                            minute: parseInt(sleepStartMinute.value, 10) || 0
+                        },
+                        wake_up: {
+                            hour: parseInt(wakeHour.value, 10) || 0,
+                            minute: parseInt(wakeMinute.value, 10) || 0
+                        }
+                    })
+                });
+                console.log('Sleep settings saved');
+            } catch (error) {
+                console.error('Error saving sleep settings:', error);
+            }
+        };
+
+        // Add event listeners for sleep settings auto-save
+        sleepModeCheckbox.addEventListener('change', saveSleepSettings);
+        randomSleepCheckbox.addEventListener('change', saveSleepSettings);
+        sleepStartHour.addEventListener('change', saveSleepSettings);
+        sleepStartMinute.addEventListener('change', saveSleepSettings);
+        wakeHour.addEventListener('change', saveSleepSettings);
+        wakeMinute.addEventListener('change', saveSleepSettings);
+
+        // Auto-save fleet group selection
+        fleetGroupSelect.addEventListener('change', async () => {
+            try {
+                const fleetOption = fleetGroupSelect.options[fleetGroupSelect.selectedIndex];
+                await fetchJson('/api/asteroid/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fleet_group_name: fleetOption ? fleetOption.textContent : '',
+                        fleet_group_value: fleetGroupSelect.value
+                    })
+                });
+                console.log('Fleet group saved:', fleetGroupSelect.value);
+            } catch (error) {
+                console.error('Error saving fleet group:', error);
+                alert('Failed to save fleet group selection');
+            }
+        });
+
+        // Load config and populate selectors
+        const loadConfig = async () => {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                const currentPlanetId = config.ASTEROID_PLANET_ID || config.asteroidPlanet || '';
+                await populatePlanets(currentPlanetId);
+
+                // Load sleep settings from asteroid_mode
+                const asteroidMode = config.asteroid_mode || {};
+                await populateFleetGroups(asteroidMode.fleet_group_value, asteroidMode.fleet_group_name);
+                sleepModeCheckbox.checked = asteroidMode.sleep_mode || false;
+                randomSleepCheckbox.checked = asteroidMode.random_sleep_mode || false;
+
+                const sleepStart = asteroidMode.sleep_start || {};
+                const wakeUp = asteroidMode.wake_up || {};
+                setSelectValue(sleepStartHour, sleepStart.hour || 23);
+                setSelectValue(sleepStartMinute, sleepStart.minute || 0);
+                setSelectValue(wakeHour, wakeUp.hour || 7);
+                setSelectValue(wakeMinute, wakeUp.minute || 30);
+            } catch (error) {
+                console.error('Error loading config:', error);
+            }
+        };
+
+        // Update toggle state based on asteroid miner status
+        async function updateToggleState() {
+            if (isUpdatingToggle) return;
+
+            try {
+                const response = await fetch('/api/asteroid/status');
+                const data = await response.json();
+                botToggle.checked = data.enabled || false;
+            } catch (error) {
+                console.error('Error fetching asteroid miner status:', error);
+            }
         }
-    }
 
-    // Handle toggle click
-    botToggle.addEventListener('change', async () => {
-        isUpdatingToggle = true;
-        botToggle.disabled = true;
+        // Handle toggle click
+        botToggle.addEventListener('change', async () => {
+            isUpdatingToggle = true;
+            botToggle.disabled = true;
 
-        try {
-            const endpoint = botToggle.checked ? '/api/asteroid/start' : '/api/asteroid/stop';
-            const response = await fetch(endpoint, { method: 'POST' });
-            const data = await response.json();
+            try {
+                const endpoint = botToggle.checked ? '/api/asteroid/start' : '/api/asteroid/stop';
+                const response = await fetch(endpoint, { method: 'POST' });
+                const data = await response.json();
 
-            console.log('Asteroid miner toggle response:', data);
+                console.log('Asteroid miner toggle response:', data);
 
-            // Update state after a short delay
-            setTimeout(async () => {
-                await updateToggleState();
+                // Update state after a short delay
+                setTimeout(async () => {
+                    await updateToggleState();
+                    botToggle.disabled = false;
+                    isUpdatingToggle = false;
+                }, 500);
+            } catch (error) {
+                console.error('Error toggling asteroid miner:', error);
+                // Revert toggle on error
+                botToggle.checked = !botToggle.checked;
                 botToggle.disabled = false;
                 isUpdatingToggle = false;
-            }, 500);
-        } catch (error) {
-            console.error('Error toggling asteroid miner:', error);
-            // Revert toggle on error
-            botToggle.checked = !botToggle.checked;
-            botToggle.disabled = false;
-            isUpdatingToggle = false;
-        }
+            }
+        });
+
+        // Initialize
+        loadConfig();
+        updateToggleState();
+
+        // Poll asteroid miner status periodically
+        setInterval(updateToggleState, 2000);
     });
-
-    // Poll asteroid miner status periodically
-    setInterval(updateToggleState, 2000);
-
-    // Initial state update
-    updateToggleState();
 </script>
 {% endblock %}

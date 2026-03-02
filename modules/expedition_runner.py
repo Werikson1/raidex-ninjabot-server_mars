@@ -87,7 +87,8 @@ class ExpeditionRunner:
             # Sleep window guard
             sleep_seconds = self._sleep_window_remaining()
             if sleep_seconds > 0:
-                logger.info(f"Expedition sleeping for {int(sleep_seconds // 60)} minutes (sleep window)")
+                wake_time = (datetime.now() + timedelta(seconds=sleep_seconds)).strftime("%H:%M")
+                logger.info(f"Expedition sleeping until {wake_time} ({int(sleep_seconds // 60)} minutes)")
                 await self._sleep_with_stop(sleep_seconds, stop_cb)
                 continue
 
@@ -160,7 +161,7 @@ class ExpeditionRunner:
     async def _navigate_to_expedition(self, page: Page):
         """Navigate to the autoexpedition page for the configured planet."""
         planet_id = self.config.get("planet_id") or config.MAIN_PLANET_ID
-        url = f"https://cypher.ogamex.net/fleet/autoexpedition?planet={planet_id}"
+        url = f"https://mars.ogamex.net/fleet/autoexpedition?planet={planet_id}"
         logger.info(f"? Opening expedition page for planet {planet_id}")
         await page.goto(url, wait_until="load", timeout=self.nav_timeout_ms)
         try:

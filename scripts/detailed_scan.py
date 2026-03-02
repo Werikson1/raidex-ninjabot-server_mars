@@ -6,7 +6,7 @@ with sync_playwright() as p:
     page = browser.new_page()
     
     print("Navegando para OGameX...")
-    page.goto('https://cypher.ogamex.net/')
+    page.goto('https://mars.ogamex.net/')
     page.wait_for_load_state('networkidle')
     
     # Check for bot detection

@@ -1,6 +1,6 @@
 """
 Bot fingerprint probe using the new stealth context.
-Runs a quick check against cypher.ogamex.net and reports key signals.
+Runs a quick check against mars.ogamex.net and reports key signals.
 """
 
 import asyncio
@@ -12,11 +12,14 @@ from modules.stealth import apply_stealth, get_stealth_args, get_stealth_user_ag
 
 
 async def main():
-    stealth_args = get_stealth_args() + ["--start-maximized"]
-    user_agent = get_stealth_user_agent()
-    viewport = {"width": 1366, "height": 768}
-
     async with async_playwright() as p:
+        probe = await p.chromium.launch(headless=True)
+        chrome_version = probe.version
+        await probe.close()
+        stealth_args = get_stealth_args() + ["--start-maximized"]
+        user_agent = get_stealth_user_agent(chrome_version=chrome_version)
+        viewport = {"width": 1366, "height": 768}
+
         context = await p.chromium.launch_persistent_context(
             user_data_dir="test_profile",
             headless=False,
@@ -28,11 +31,11 @@ async def main():
             ignore_default_args=["--enable-automation"],
         )
 
-        await apply_stealth(context, user_agent=user_agent)
+        await apply_stealth(context, user_agent=user_agent, chrome_version=chrome_version)
 
         page = context.pages[0] if context.pages else await context.new_page()
 
-        await page.goto("https://cypher.ogamex.net/", wait_until="networkidle")
+        await page.goto("https://mars.ogamex.net/", wait_until="networkidle")
 
         detection = await page.evaluate(
             """(() => ({
