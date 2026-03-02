@@ -1,10 +1,10 @@
 {
     "HEADLESS_MODE": false,
     "TELEGRAM_ENABLED": true,
-    "TELEGRAM_BOT_TOKEN": "8512782833:AAEyT2bEFDyY68djCmUh30NWu43CjO3U9go",
+    "TELEGRAM_BOT_TOKEN": "telegran_token",
     "TELEGRAM_CHAT_ID": "960771858",
-    "TELEGRAM_USERNAME": "@ogame_xbot",
-    "FLEET_GROUP_NAME": "5433d121-6efd-455d-a58f-0aef576a77bf",
+    "TELEGRAM_USERNAME": "@user_name",
+    "FLEET_GROUP_NAME": "200 MM",
     "COOLDOWN_HOURS": 1,
     "SEARCH_DELAY_MIN": 0.3,
     "SEARCH_DELAY_MAX": 0.8,
